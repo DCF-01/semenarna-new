@@ -35,14 +35,14 @@ namespace semenarna_id2 {
                 /*if(ctx.Users.Any(u => u.UserName == "admin")) {*/
                 /*var usr = userMgr.FindByNameAsync("admin").GetAwaiter().GetResult();
                 var res = userMgr.DeleteAsync(usr).GetAwaiter().GetResult();*/
-                    
-                    //create admin
-                    /*var adminUser = new IdentityUser {
-                        UserName = "admin",
-                        Email = "admin@paralax.mk"
-                    };
-                    var result = userMgr.CreateAsync(adminUser, "radant098").GetAwaiter().GetResult();
-                    userMgr.AddToRoleAsync(adminUser, adminRole.Name).GetAwaiter().GetResult();*/
+
+                //create admin
+                /*var adminUser = new IdentityUser {
+                    UserName = "admin",
+                    Email = "admin@paralax.mk"
+                };
+                var result = userMgr.CreateAsync(adminUser, "radant098").GetAwaiter().GetResult();
+                userMgr.AddToRoleAsync(adminUser, adminRole.Name).GetAwaiter().GetResult();*/
 
                 /*}*/
             }
