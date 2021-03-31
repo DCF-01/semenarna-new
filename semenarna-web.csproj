@@ -21,4 +21,9 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\Panel\" />
+    <Folder Include="Views\Panel\" />
+  </ItemGroup>
+
 </Project>

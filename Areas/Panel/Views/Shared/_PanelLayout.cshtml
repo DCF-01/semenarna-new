@@ -214,9 +214,9 @@
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-chart-pie"></i>
+                                <i class="nav-icon fas fa-box-open"></i>
                                 <p>
-                                    Charts
+                                    Product Management
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
@@ -249,15 +249,15 @@
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-edit"></i>
+                                <i class="nav-icon fas fa-users"></i>
                                 <p>
-                                    Forms
+                                    User Management
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a asp-controller="Panel" asp-action="ManageUsers" class="nav-link">
+                                    <a asp-action="Users" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Users</p>
                                     </a>
@@ -298,7 +298,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a asp-controller="Panel" asp-action="Test" class="nav-link">
+                                    <a href="@Url.ActionLink("{Users}", "{Manage}", new { area = "Panel" });" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>All Products</p>
                                     </a>

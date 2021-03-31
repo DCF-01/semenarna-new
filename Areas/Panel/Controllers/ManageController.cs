@@ -11,10 +11,11 @@ using System.Threading.Tasks;
 
 namespace semenarna_id2.Controllers {
     [Authorize(Roles = "Admin")]
-    public class PanelController : Controller {
+    [Area("Panel")]
+    public class ManageController : Controller {
         private UserManager<IdentityUser> _userManager;
 
-        public PanelController(UserManager<IdentityUser> userManager) {
+        public ManageController(UserManager<IdentityUser> userManager) {
             _userManager= userManager;
         }
         [HttpGet]
@@ -26,7 +27,7 @@ namespace semenarna_id2.Controllers {
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> ManageUsers() {
+        public async Task<IActionResult> Users() {
 
 
             var users = await _userManager.Users.ToListAsync();
@@ -39,7 +40,7 @@ namespace semenarna_id2.Controllers {
 
         }
         [HttpDelete]
-        public async Task<IActionResult> ManageUsers(string Id) {
+        public async Task<IActionResult> Users(string Id) {
             //delete user
             var user = await _userManager.FindByIdAsync(Id);
             var result = await _userManager.DeleteAsync(user);
