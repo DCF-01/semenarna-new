@@ -19,7 +19,7 @@ namespace semenarna_id2.Controllers {
     public class ProductsController : Controller {
         private ApplicationDbContext _ctx;
 
-        public ProductsController( ApplicationDbContext context) {
+        public ProductsController(ApplicationDbContext context) {
             _ctx = context;
         }
         [HttpGet]
@@ -40,19 +40,40 @@ namespace semenarna_id2.Controllers {
         }
         [HttpPost]
         public async Task<IActionResult> Create(ProductViewModel product_data) {
+            try {
 
-            var product = new TestProductModel {
-                Name = product_data.Name,
-                Description = product_data.Description
-            };
+                var product = new TestProductModel {
+                    Name = product_data.Name,
+                };
 
-            var result = await _ctx.TestProduct.AddAsync(product);
+                IFormFile Image = product_data.Img;
 
-            await _ctx.SaveChangesAsync();
+                if (Image != null && Image.Length > 0) {
+                    byte[] ba = null;
+                    using (var fs = Image.OpenReadStream())
+                    using (var ms = new MemoryStream()) {
+                        fs.CopyTo(ms);
+                        ba = ms.ToArray();
+                    }
+                    product.Img = ba;
+                }
+                else {
+                    throw new Exception("No Image file was provided");
+                }
 
-            return RedirectToAction("Create", "Products");
+                await _ctx.TestProduct.AddAsync(product);
+
+                await _ctx.SaveChangesAsync();
+
+                return RedirectToAction("Create", "Products");
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                return NotFound("Error: No file provided");
+            }
         }
-        
+
+
         [HttpDelete]
         public async Task<IActionResult> Delete(int id) {
             //delete product
@@ -70,7 +91,7 @@ namespace semenarna_id2.Controllers {
         //Display edited product
         [HttpGet]
         public IActionResult Details(int id) {
-            var result =  _ctx.TestProduct.Find(id);
+            var result = _ctx.TestProduct.Find(id);
 
             var byte_arr_img = result.Img;
 
@@ -95,8 +116,8 @@ namespace semenarna_id2.Controllers {
                 Description = productViewModel.Description,
             };
 
-            if(Image != null) {
-                if(Image.Length > 0) {
+            if (Image != null) {
+                if (Image.Length > 0) {
                     byte[] p1 = null;
                     using (var fs = Image.OpenReadStream())
                     using (var ms = new MemoryStream()) {
