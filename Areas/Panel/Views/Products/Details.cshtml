@@ -1,0 +1,26 @@
+﻿@model ProductViewModel
+
+@{ 
+    ViewBag.Title = User.Identity.Name;
+}
+
+<div class="container-lg pt-3">
+    <img src="data:image/jpeg;base64,@Model.GetImg">
+    <form action="" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" id="productNameInput" class="form-control" value="@Model.Name" asp-for="Name">
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <input type="text" id="productDescriptionInput" class="form-control" value="@Model.Description" asp-for="Description">
+        </div>
+        <div class="form-group">
+            <label>Image</label>
+            <input type="file" name="Img" id="Imageinput" asp-for="Img">
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Update" class="btn btn-default" />
+        </div>
+    </form>
+</div>
