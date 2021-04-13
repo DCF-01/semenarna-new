@@ -13,7 +13,8 @@ delete_user_btn.forEach(element => {
 
         fetch(delete_url, {
             method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
-            credentials: 'include'
+            credentials: 'include',
+            redirect: 'follow'
         }).then((res) => {
             if (res.ok) {
                 location.reload();
@@ -28,5 +29,3 @@ delete_user_btn.forEach(element => {
 });
 
 
-    /*
-    });*/

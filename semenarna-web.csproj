@@ -37,6 +37,7 @@
     <Folder Include="Areas\Panel\Models\" />
     <Folder Include="Areas\Store\Data\" />
     <Folder Include="Areas\Store\Models\" />
+    <Folder Include="wwwroot\lib\" />
   </ItemGroup>
 
 </Project>

@@ -108,13 +108,22 @@ namespace semenarna_id2.Controllers {
         //Update product route
         [HttpPost]
         public async Task<IActionResult> Details(int id, ProductViewModel productViewModel) {
-            IFormFile Image = productViewModel.Img;
+            IFormFile Image;
 
-            var updated_product = new TestProductModel {
-                Id = id,
-                Name = productViewModel.Name,
-                Description = productViewModel.Description,
-            };
+            if (productViewModel.Img != null) {
+                Image = productViewModel.Img;
+            }
+            else {
+                Image = null;
+            }
+
+            var entity = await _ctx.TestProduct.FirstOrDefaultAsync(item => item.Id == id);
+
+
+
+            entity.Name = productViewModel.Name;
+            entity.Description = productViewModel.Description;
+
 
             if (Image != null) {
                 if (Image.Length > 0) {
@@ -124,13 +133,9 @@ namespace semenarna_id2.Controllers {
                         fs.CopyTo(ms);
                         p1 = ms.ToArray();
                     }
-                    updated_product.Img = p1;
+                    entity.Img = p1;
                 }
             }
-
-
-
-            var result = _ctx.TestProduct.Update(updated_product);
 
             await _ctx.SaveChangesAsync();
 
