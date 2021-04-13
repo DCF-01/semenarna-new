@@ -1,4 +1,4 @@
-﻿using semenarna_id2.Areas.Panel.ViewModels;
+﻿using semenarna_id2.Areas.Store.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

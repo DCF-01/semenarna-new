@@ -43,11 +43,11 @@
                             <a class="nav-link active" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item active">
-                            <a class="nav-link active" asp-area="Store" asp-controller="Home" asp-action="Index">Store</a>
+                            <a class="nav-link active" asp-area="Store" asp-controller="Base" asp-action="Index">Store</a>
                         </li>
                         @if (User.IsInRole("Admin")) {
                             <li class="nav-item active">
-                                <a class="nav-link" asp-area="Panel" asp-controller="Home" asp-action="Index">Panel</a>
+                                <a class="nav-link" asp-area="Panel" asp-controller="Base" asp-action="Index">Panel</a>
                             </li>
                         }
 

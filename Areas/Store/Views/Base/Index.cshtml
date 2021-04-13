@@ -1,0 +1,98 @@
+﻿@model StoreViewModel
+@{
+    var prev = Model.Page_number - 1;
+    var next = Model.Page_number + 1;
+}
+<div class="container" -lg>
+    <div class="form">
+        <div class="form-group row">
+            <div class="col">
+                <label>Пребарај</label>
+                <input class="form-control" type="text" placeholder="Име на производ" id="store-search">
+                <ul class="list-group" id="search-suggestions">
+                    @*<li class="list-group-item">
+                        <div class="row d-flex align-items-center">
+                            <p class="m-0">Text</p>
+                            <img src="~/img/1.jpg" width="48px" />
+                        </div>
+                    </li>*@
+                </ul>
+            </div>
+            <div class="col">
+            </div>
+        </div>
+        <div class="form-group row">
+            <select class="form-control">
+                <option>Опција 1</option>
+                <option>Опција 2</option>
+                <option>Опција 3</option>
+            </select>
+
+        </div>
+    </div>
+</div>
+<div class="container-lg mt-5 mb">
+    <div class="row">
+        @*12*@
+        @foreach (var product in Model.Product_list) {
+            <div class="col-sm-6 col-md-4 col-lg-3 mb-5">
+                <div class="card mx-auto text-center" style="width: 14rem;">
+                    <img src="data:image/jpeg;base64,@product.Img" class="card-img-top" alt="...">
+                    <div class="card-body justify-content-center">
+                        <h5 class="card-title"><a href="https://localhost:44380/Store/Product/Single/@product.Id">@product.Name</a></h5>
+                        <p class="card-text">This is a long product description.</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        @if (User.Identity.IsAuthenticated) {
+                            <li class="list-group-item"><s>Regular price: 220 @product.Id</s></li>
+                            <li class="list-group-item">Sale price: 120</li>
+                        }
+                        else {
+                            <li class="list-group-item">Regular price: 220</li>
+                        }
+                    </ul>
+                    <div class="card-body">
+                        <a href="#" class="btn btn-primary">Add to cart</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <nav aria-label="...">
+        <ul class="pagination">
+            @if (Model.Page_number < 2) {
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                </li>
+            }
+            else {
+                <li class="page-item">
+                    <a class="page-link" href="@prev" tabindex="-1">Previous</a>
+                </li>
+            }
+
+
+            @for (int i = 1; i <= Model.Number_of_pages; i++) {
+                if (i == Model.Page_number) {
+                    <li class="page-item active">
+                        <a class="page-link" asp-controller="Base" asp-action="Index" asp-route-id="@i">@i<span class="sr-only">(current)</span></a>
+                    </li>
+                }
+                else {
+                    <li class="page-item"><a class="page-link" asp-controller="Base" asp-action="Index" asp-route-id="@i">@i</a></li>
+                }
+
+            }
+            @if (Model.Page_number >= Model.Number_of_pages) {
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            }
+            else {
+                <li class="page-item">
+                    <a class="page-link" href="@next">Next</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>

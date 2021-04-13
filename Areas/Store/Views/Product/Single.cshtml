@@ -1,0 +1,54 @@
+﻿@model ProductViewModel
+
+<div class="container-lg mt-5">
+    <div class="row mb-5">
+        <div class="col-6">
+            <img src="data:image/png;base64, @Model.Img" alt="Alternate Text" />
+        </div>
+        <div class="col-6">
+            <p class="display-3">@Model.Name</p>
+            <hr />
+            <p>@Model.Description</p>
+            <p>Second Row Description</p>
+            <p>@Model.Id</p>
+            <hr />
+            <div class="row align-items-center">
+                <i class="far fa-check-circle fa-3x pr-3" style="color: green;"></i>
+                <p class="m-0 h4">Производот е на залиха</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row pt-5">
+        <table class="table table-striped ">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">First</th>
+                    <th scope="col">Last</th>
+                    <th scope="col">Handle</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>mdo</td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>fat</td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>Larry</td>
+                    <td>the Bird</td>
+                    <td>twitter</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

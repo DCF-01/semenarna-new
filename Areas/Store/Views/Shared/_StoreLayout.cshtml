@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - semenarna</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/lib/fontawesome-free/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
@@ -40,14 +41,14 @@
                     <a class="navbar-brand" href="#">Hidden brand</a>
                     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                         <li class="nav-item active">
-                            <a class="nav-link active" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link active" href="/">Home</a>
                         </li>
                         <li class="nav-item active">
-                            <a class="nav-link active" asp-area="Store" asp-controller="Home" asp-action="Index">Products</a>
+                            <a class="nav-link active" asp-area="Store" asp-controller="Base" asp-action="Index">Products</a>
                         </li>
                         @if (User.IsInRole("Admin")) {
                             <li class="nav-item active">
-                                <a class="nav-link" asp-area="Panel" asp-controller="Home" asp-action="Index">Panel</a>
+                                <a class="nav-link" asp-area="Panel" asp-controller="Base" asp-action="Index">Panel</a>
                             </li>
                         }
 
@@ -83,6 +84,7 @@
             &copy; 2021 - semenarna - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+    <script src="~/js/store.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
