@@ -3,8 +3,11 @@ const search_suggestions_box = document.getElementById('search-suggestions');
 let query_url = 'https://localhost:44380/Store/Query/Find';
 let query_string;
 let table_body = document.getElementById('table-body');
+let alert_container = document.getElementById('alert-container');
 
 let add_to_cart_btns = document.querySelectorAll('.add-to-cart-btn');
+
+let timeout_toast;
 
 function displayQuerySearch(data) {
     query_string = store_search_box.value;
@@ -178,21 +181,84 @@ class Cart {
     }
 
 }
-
+// cart objects
 let cart = null;
 let cart_str = window.localStorage.getItem('cart');
 let cart_obj = JSON.parse(cart_str);
 
-
-if (window.location.href === 'https://localhost:44380/Cart') {
-    initCart();
-    listCartItems();
+async function checkUserLogin() {
+    let query = 'https://localhost:44380/Auth/CheckLogin';
+    fetch(query, {
+        method: 'GET', // POST, PUT, DELETE, etc.
+        headers: {
+            'Content-Type': 'text/plain;charset=UTF-8'
+        },
+        credentials: 'include', // omit, include
+        redirect: 'follow', // manual, error
+    }).then(res => {
+        if (res.ok) {
+            res.json()
+                .then(data => {
+                    if (JSON.parse(data) === true) {
+                        console.log(true);
+                        return true;
+                    }
+                    else {
+                        console.log(false);
+                        return false;
+                    }
+                });
+        }
+    })
 }
-else {
-    window.onload = (event) => {
-        initCart();
+
+async function getUserCart() {
+    let query = 
+
+    let userCart = fetch(query, {
+        method: 'GET', // POST, PUT, DELETE, etc.
+        headers: {
+            'Content-Type': 'text/plain;charset=UTF-8'
+        },
+        credentials: 'include', // omit, include
+        redirect: 'follow', // manual, error
+    })
+        .then(res => {
+            if (res.ok) {
+                res.json()
+                    .then(data => {
+                        return JSON.parse(data);
+                    })
+            }
+        })
+
+    return userCart;
+}
+
+
+
+//init cart on window load
+window.onload = (event) => {
+    checkUserLogin().then(res => {
+        res.json()
+            .then(value => {
+                if (JSON.parse(value) === true) {
+                    cart = getUserCart().then(data => {
+                        return JSON.parse(data);
+                    })
+                }
+                else {
+                    initCart();
+                }
+            })
+    });
+    //list items
+    if (window.location.href === 'https://localhost:44380/Cart') {
+        listCartItems();
     }
 }
+
+
 
 function initCart() {
     if (cart_str !== null) {
@@ -209,6 +275,22 @@ function checkCart() {
         return true;
     }
     return false;
+}
+
+function createAlert() {
+    let code = `<div class="alert alert-success alert-dismissible fade show" role = "alert" >
+            <strong>Производот е додаден во вашата кошничка</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>`;
+
+    alert_container.innerHTML += code;
+
+}
+
+function closeAlert() {
+    $('.alert').alert('close');
 }
 
 add_to_cart_btns.forEach(el => {
@@ -236,7 +318,16 @@ add_to_cart_btns.forEach(el => {
                         console.log(cart);
 
                         window.localStorage.setItem('cart', JSON.stringify(cart));
-                    })
+
+                        //create alert product added
+                        createAlert();
+
+                        timeout_toast = setTimeout(closeAlert, 4000);
+
+
+
+                        /*alert_container.*/
+                    });
             }
         })
         /*console.log(id);*/

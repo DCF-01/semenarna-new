@@ -62,5 +62,18 @@ namespace semenarna_id2.Controllers {
         public IActionResult AccessDenied() {
             return View();
         }
+
+        [HttpGet]
+        public IActionResult CheckLogin() {
+            if (User.Identity.IsAuthenticated) {
+                var result = true;
+
+                return Ok(result);
+            }
+            else {
+                var result = false;
+                return Ok(result);
+            }
+        }
     }
 }

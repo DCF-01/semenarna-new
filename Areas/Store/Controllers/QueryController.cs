@@ -14,11 +14,11 @@ namespace semenarna_id2.Areas.Store.Controllers {
         public QueryController(ApplicationDbContext applicationDbContext) {
             _ctx = applicationDbContext;
         }
-        
+
         /*private TestProductModel[] StartsWith() {
             return
         }*/
-        
+
         public IActionResult Index() {
             return View();
         }
@@ -27,32 +27,35 @@ namespace semenarna_id2.Areas.Store.Controllers {
         public async Task<IActionResult> Single(int id) {
             var product = await _ctx.TestProduct.FindAsync(id);
 
-
-
-
-
-
             return Ok(product);
         }
 
-        public IActionResult Find([FromQuery] string name="", [FromQuery] string id="") {
-            if (name.Length >= 1) {
-                var products = from b in _ctx.TestProduct
-                               where b.Name.StartsWith(name)
-                               select b;
-                var result = products.ToArray();
+        public IActionResult Find([FromQuery] string name = "", [FromQuery] string id = "") {
 
-                return Ok(result);
-            }
-            if (id.Length >= 1) {
-                var products = from b in _ctx.TestProduct
-                               where b.Name.StartsWith(id)
-                               select b;
-                var result = products.ToArray();
+            try {
+                if (Request.Query.ContainsKey("name")) {
+                    var products = from b in _ctx.TestProduct
+                                   where b.Name.StartsWith(name)
+                                   select b;
+                    var result = products.ToArray();
 
-                return Ok(result);
+                    return Ok(result);
+                }
+                if (Request.Query.ContainsKey("id")) {
+                    var products = from b in _ctx.TestProduct
+                                   where b.Name.StartsWith(id)
+                                   select b;
+                    var result = products.ToArray();
+
+                    return Ok(result);
+                }
+                else {
+                    return NotFound();
+                }
             }
-            else {
+            catch (Exception e) {
+                Console.WriteLine(e);
+
                 return NotFound();
             }
 

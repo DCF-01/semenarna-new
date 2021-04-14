@@ -11,5 +11,6 @@ namespace semenarna_id2.Data {
             : base(options) {
         }
         public DbSet<TestProductModel> TestProduct { get; set; }
+        public DbSet<UserCartModel> UserCart { get; set; }
     }
 }
