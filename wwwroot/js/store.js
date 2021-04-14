@@ -1,9 +1,14 @@
 ﻿const store_search_box = document.getElementById('store-search');
 const search_suggestions_box = document.getElementById('search-suggestions');
 let query_url = 'https://localhost:44380/Store/Query/Find';
-let query_string = store_search_box.value;
+let query_string;
+let table_body = document.getElementById('table-body');
+
+let add_to_cart_btns = document.querySelectorAll('.add-to-cart-btn');
 
 function displayQuerySearch(data) {
+    query_string = store_search_box.value;
+
     let max = 5;
     if (data.length < 5) {
         max = data.length;
@@ -62,16 +67,157 @@ function clearSearchBox() {
     search_suggestions_box.innerHTML = '';
 }
 
+if (store_search_box !== null) {
+    store_search_box.addEventListener('keyup', () => {
+        clearSearchBox();
 
-store_search_box.addEventListener('keyup', () => {
-    clearSearchBox();
+        query_string = store_search_box.value;
+        if (query_string.length >= 1) {
 
-    query_string = store_search_box.value;
-    if (query_string.length >= 1) {
+            console.log(query_string);
 
-        console.log(query_string);
+            const query = query_url + '?name=' + query_string;
 
-        const query = query_url + '?name=' + query_string;
+            fetch(query, {
+                method: 'GET', // POST, PUT, DELETE, etc.
+                headers: {
+                    'Content-Type': 'text/plain;charset=UTF-8'
+                },
+                credentials: 'include', // omit, include
+                redirect: 'follow', // manual, error
+            }).then(res => {
+                if (res.ok) {
+                    res.json().then(e => {
+                        displayQuerySearch(e);
+                    });
+                }
+                else {
+                    console.log(res.status, 'error');
+                }
+            });
+        }
+
+    })
+}
+
+
+/* CART */
+
+class Product {
+    constructor(id, name, price, quantity, img) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.img = img;
+    }
+}
+
+class Cart {
+    constructor(items, userId) {
+        this.items = items;
+        this.userId = userId;
+    }
+
+
+    add(item) {
+        let length = this.items.length;
+        if (length > 0) {
+            for (let i = 0; i < length; i++) {
+                if (this.items[i].id === item.id) {
+                    this.items[i].quantity += 1;
+                    return true;
+                }
+                /*if (i === length - 1){
+                    this.items.push(item);
+                    return true;
+                }*/
+            }
+            this.items.push(item);
+            return true
+        }
+        else {
+            this.items.push(item);
+            return true
+        }
+    }
+
+    getById(id) {
+        this.items.forEach(e => {
+            if (e.id === id) {
+                return e;
+            }
+            return null;
+        });
+    }
+
+    /* get userId() {
+         return this.userId
+     }
+ 
+     set userId(id) {
+         this.userId = id;
+     }*/
+
+    /*get items() {
+        return this.items;
+    }*/
+
+    /*set items(updated_items) {
+        this.items = updated_items;
+    }*/
+
+    remove(id) {
+        let temp = this.items;
+        this.items = [];
+        this.temp.foreach(item => {
+            if (item.id !== id) {
+                this.items.push(item);
+            }
+        })
+    }
+
+}
+
+let cart = null;
+let cart_str = window.localStorage.getItem('cart');
+let cart_obj = JSON.parse(cart_str);
+
+
+if (window.location.href === 'https://localhost:44380/Cart') {
+    initCart();
+    listCartItems();
+}
+else {
+    window.onload = (event) => {
+        initCart();
+    }
+}
+
+function initCart() {
+    if (cart_str !== null) {
+        cart = new Cart(cart_obj.items, cart_obj.userId);
+        return true;
+    }
+    else {
+        cart = new Cart([], null);
+    }
+}
+
+function checkCart() {
+    if (cart.items.length > 0) {
+        return true;
+    }
+    return false;
+}
+
+add_to_cart_btns.forEach(el => {
+    el.addEventListener('click', (e) => {
+
+        let element = e.target;
+        let id = element.querySelector('.item-id').textContent;
+
+        let query = 'https://localhost:44380/Store/Query/Single/' + id;
 
         fetch(query, {
             method: 'GET', // POST, PUT, DELETE, etc.
@@ -82,14 +228,69 @@ store_search_box.addEventListener('keyup', () => {
             redirect: 'follow', // manual, error
         }).then(res => {
             if (res.ok) {
-                res.json().then(e => {
-                    displayQuerySearch(e);
-                });
-            }
-            else {
-                console.log(res.status, 'error');
-            }
-        });
-    }
+                res.json()
+                    .then(data => {
+                        let product = new Product(data.id, data.name, data.price, 1, data.img);
 
+                        cart.add(product);
+                        console.log(cart);
+
+                        window.localStorage.setItem('cart', JSON.stringify(cart));
+                    })
+            }
+        })
+        /*console.log(id);*/
+    })
 })
+
+
+
+function listCartItems() {
+    if (checkCart()) {
+        let count = 0;
+        cart.items.forEach(item => {
+            let tr = document.createElement('tr');
+
+            //table heading
+            let th = document.createElement('th');
+            count += 1;
+            th.textContent = count;
+            th.scope = 'row';
+
+            let td_1 = document.createElement('td');
+            td_1.textContent = item.id
+            td_1.style.display = 'none';
+
+            let td_2 = document.createElement('td');
+            td_2.textContent = item.name
+
+            let td_3 = document.createElement('td');
+            td_3.textContent = item.price
+
+            let td_4 = document.createElement('td');
+            td_4.textContent = item.quantity
+
+            let td_5 = document.createElement('td');
+            let img = document.createElement('img');
+            img.width = 48;
+            img.src = 'data:image/jpeg;base64, ' + item.img;
+            td_5.appendChild(img);
+
+
+
+            tr.appendChild(th);
+            tr.appendChild(td_1);
+            tr.appendChild(td_2);
+            tr.appendChild(td_3);
+            tr.appendChild(td_4);
+            tr.appendChild(td_5);
+
+            table_body.appendChild(tr);
+
+        })
+    }
+}
+
+
+
+/*https://localhost:44380/Store/Query/Single?id=47*/

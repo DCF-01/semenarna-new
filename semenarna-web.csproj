@@ -34,6 +34,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Cart\Data\" />
+    <Folder Include="Areas\Cart\Models\" />
     <Folder Include="Areas\Panel\Models\" />
     <Folder Include="Areas\Store\Data\" />
     <Folder Include="Areas\Store\Models\" />

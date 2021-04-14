@@ -32,7 +32,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
 
 
 
-            return View();
+            return Ok(product);
         }
 
         public IActionResult Find([FromQuery] string name="", [FromQuery] string id="") {
