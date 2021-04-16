@@ -14,6 +14,41 @@
             <input type="text" id="productDescriptionInput" class="form-control" asp-for="Description">
         </div>
         <div class="form-group">
+            <label>Price</label>
+            <input type="text" id="productDescriptionInput" class="form-control" asp-for="Price">
+        </div>
+        <div class="form-group">
+            <label>SalePrice</label>
+            <input type="text" id="productDescriptionInput" class="form-control" asp-for="SalePrice">
+        </div>
+        <div class="form-group">
+            <label>On Sale</label>
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="OnSale" name="OnSale" value="true">
+                <label class="custom-control-label" for="OnSale">Set sale status</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>In Stock</label>
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="InStock" name="InStock" value="true">
+                <label class="custom-control-label" for="InStock">Set stock status</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Spec</label>
+            <input type="text" id="productDescriptionInput" class="form-control" asp-for="Spec">
+        </div>
+        <div class="form-group">
+            <label>Categories</label>
+            @foreach (var item in Model.GetCategories) {
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="@item.Name" name="Category" value="@item.Name">
+                    <label class="custom-control-label" for="@item.Name">@item.Name</label>
+                </div>
+            }
+        </div>
+        <div class="form-group">
             <label>Image</label>
             <input type="file" name="Img" id="Imageinput" asp-for="Img">
         </div>

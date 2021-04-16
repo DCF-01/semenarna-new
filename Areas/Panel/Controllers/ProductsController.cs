@@ -35,16 +35,42 @@ namespace semenarna_id2.Controllers {
             return View(result);
         }
         [HttpGet]
-        public IActionResult Create() {
-            return View(new ProductViewModel());
+        public async Task<IActionResult> Create() {
+
+            var all = from c in _ctx.Categories
+                      select c;
+
+
+            var res = await all.ToListAsync();
+
+            var categories = new ProductViewModel {
+                GetCategories = res
+            };
+
+            return View(categories);
         }
         [HttpPost]
         public async Task<IActionResult> Create(ProductViewModel product_data) {
             try {
+                bool sale_state = (product_data.OnSale != null) || false;
+                bool stock_state = (product_data.InStock != null) || false;
+
+               
 
                 var product = new Product {
                     Name = product_data.Name,
+                    Description = product_data.Description,
+                    Price = product_data.Price,
+                    SalePrice = product_data.SalePrice,
+                    OnSale = sale_state,
+                    InStock = stock_state
                 };
+
+                /* foreach(item in product_data.Categories) {
+                     product.Categories.Add(item);
+                 }*/
+
+                /*product.Categories.Add();*/
 
                 IFormFile Image = product_data.Img;
 

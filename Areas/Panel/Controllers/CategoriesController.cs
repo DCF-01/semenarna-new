@@ -30,6 +30,12 @@ namespace semenarna_id2.Areas.Panel.Controllers {
         }
         [HttpGet]
         public IActionResult Create() {
+
+            /*var all = from item in _ctx.Categories
+                      select item;*/
+
+            /*var res = all.ToList();*/
+
             return View();
         }
 
