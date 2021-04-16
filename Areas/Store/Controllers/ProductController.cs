@@ -15,11 +15,11 @@ namespace semenarna_id2.Areas.Store.Controllers {
         }
         public async Task<IActionResult> Single(int id) {
 
-            var result = await _ctx.TestProduct.FindAsync(id);
+            var result = await _ctx.Products.FindAsync(id);
 
             if (result != null) {
                 var product = new ProductViewModel {
-                    Id = result.Id,
+                    Id = result.ProductId,
                     Name = result.Name,
                     Description = result.Description,
                     Img = Convert.ToBase64String(result.Img)

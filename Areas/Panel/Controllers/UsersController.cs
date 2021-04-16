@@ -17,9 +17,9 @@ namespace semenarna_id2.Areas.Panel.Controllers {
     [Area("Panel")]
     public class UsersController : Controller {
         private ApplicationDbContext _ctx;
-        private UserManager<IdentityUser> _userManager;
+        private UserManager<ApplicationUser> _userManager;
 
-        public UsersController(UserManager<IdentityUser> userManager, ApplicationDbContext context) {
+        public UsersController(UserManager<ApplicationUser> userManager, ApplicationDbContext context) {
             _ctx = context;
             _userManager = userManager;
         }

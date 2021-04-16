@@ -21,39 +21,48 @@ namespace semenarna_id2 {
                 var scope = host.Services.CreateScope();
 
                 var ctx = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+                var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
                 var roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
                 ctx.Database.EnsureCreated();
 
                 var adminRole = new IdentityRole("Admin");
                 var userRole = new IdentityRole("User");
-                roleMgr.CreateAsync(userRole).GetAwaiter().GetResult();
+                /*roleMgr.CreateAsync(userRole).GetAwaiter().GetResult();*/
+                roleMgr.CreateAsync(adminRole).GetAwaiter().GetResult();
 
-                if (!ctx.Roles.Any()) {
+                /*if (!ctx.Roles.Any()) {
                     //create role
                     roleMgr.CreateAsync(adminRole).GetAwaiter().GetResult();
-                }
-                if (!ctx.Users.Any(u => u.UserName == "admin"))
+                }*/
+                if (!ctx.Users.Any(e => e.UserName == "admin"))
                 {
-                    /*var usr = userMgr.FindByNameAsync("admin").GetAwaiter().GetResult();
-                    var res = userMgr.DeleteAsync(usr).GetAwaiter().GetResult();*/
+
+                    var cart = new Cart {
+                        Products = null
+                    };
 
                     //create admin
-                    var adminUser = new IdentityUser
-                    {
+                    var adminUser = new ApplicationUser {
                         UserName = "admin",
-                        Email = "admin@paralax.mk"
+                        Email = "admin@paralax.mk",
+                        Cart = cart
                     };
-                    var result = userMgr.CreateAsync(adminUser, "radant098").GetAwaiter().GetResult();
-                    userMgr.AddToRoleAsync(adminUser, adminRole.Name).GetAwaiter().GetResult();
+
+                    cart.User = adminUser;
+                    ctx.Carts.AddAsync(cart).GetAwaiter().GetResult();
+
+                    /*var result = userMgr.CreateAsync(adminUser, "radant098").GetAwaiter().GetResult();*/
+                    var res = userMgr.AddToRoleAsync(adminUser, adminRole.Name).GetAwaiter().GetResult();
+
+                    ctx.SaveChangesAsync().GetAwaiter().GetResult();
 
                 }
-                if (!ctx.TestProduct.Any()) {
-                    var seedList = new List<TestProductModel>();
+                /*if (!ctx.Products.Any()) {
+                    var seedList = new List<Product>();
 
                     for(int i = 0; i < 6; i++) {
-                        var product = new TestProductModel {
+                        var product = new Product {
                             Name = "Test Product " + i,
                             Description = "Fake description " + i
                         };
@@ -62,10 +71,10 @@ namespace semenarna_id2 {
 
 
                     }
-                    seedList.ForEach(n => ctx.TestProduct.Add(n));
+                    seedList.ForEach(n => ctx.Products.Add(n));
                     ctx.SaveChangesAsync();
 
-                }
+                }*/
             }
             catch(Exception e) {
                 Console.WriteLine(e.Message);

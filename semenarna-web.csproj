@@ -40,6 +40,7 @@
     <Folder Include="Areas\Store\Data\" />
     <Folder Include="Areas\Store\Models\" />
     <Folder Include="Areas\Store\Views\Shared\" />
+    <Folder Include="Data\Migrations\" />
     <Folder Include="wwwroot\lib\" />
   </ItemGroup>
 

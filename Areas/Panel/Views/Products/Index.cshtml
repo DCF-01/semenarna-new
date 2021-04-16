@@ -1,4 +1,4 @@
-﻿@model List<TestProductModel>
+﻿@model List<Product>
 @{
     
     ViewBag.Title = User.Identity.Name;
@@ -24,10 +24,10 @@
                 <th scope="row">@i</th>
                 <td>@product.Name</td>
                 <td>@product.Description</td>
-                <td><a href="@Context.Request.Path/Details/@product.Id">Edit</a></td>
+                <td><a href="@Context.Request.Path/Details/@product.ProductId">Edit</a></td>
                 <td>
                     <button type="button" class="close delete-user-btn" aria-label="Close">
-                        <div class="user-id">@product.Id</div>
+                        <div class="user-id">@product.ProductId</div>
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </td>

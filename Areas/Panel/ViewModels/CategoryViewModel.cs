@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace semenarna_id2.Models
-{
-    public class TestProductModel {
+namespace semenarna_id2.Areas.Panel.ViewModels {
+    public class CategoryViewModel {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
-        public byte[] Img { get; set; }
     }
 }

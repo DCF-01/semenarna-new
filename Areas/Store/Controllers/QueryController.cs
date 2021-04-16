@@ -25,7 +25,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
 
 
         public async Task<IActionResult> Single(int id) {
-            var product = await _ctx.TestProduct.FindAsync(id);
+            var product = await _ctx.Products.FindAsync(id);
 
             return Ok(product);
         }
@@ -34,7 +34,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
 
             try {
                 if (Request.Query.ContainsKey("name")) {
-                    var products = from b in _ctx.TestProduct
+                    var products = from b in _ctx.Products
                                    where b.Name.StartsWith(name)
                                    select b;
                     var result = products.ToArray();
@@ -42,7 +42,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
                     return Ok(result);
                 }
                 if (Request.Query.ContainsKey("id")) {
-                    var products = from b in _ctx.TestProduct
+                    var products = from b in _ctx.Products
                                    where b.Name.StartsWith(id)
                                    select b;
                     var result = products.ToArray();

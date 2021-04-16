@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using semenarna_id2.Data;
+using semenarna_id2.Models;
 using semenarna_id2.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -9,13 +11,15 @@ using System.Threading.Tasks;
 namespace semenarna_id2.Controllers {
     public class AuthController : Controller {
 
-        private SignInManager<IdentityUser> _signInManager;
-        private UserManager<IdentityUser> _userManager;
+        private SignInManager<ApplicationUser> _signInManager;
+        private UserManager<ApplicationUser> _userManager;
         private RoleManager<IdentityRole> _roleManager;
-        public AuthController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager) {
+        private ApplicationDbContext _ctx;
+        public AuthController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext applicationDbContext) {
             _signInManager = signInManager;
             _userManager = userManager;
             _roleManager = roleManager;
+            _ctx = applicationDbContext;
         }
 
         [HttpGet]
@@ -26,14 +30,20 @@ namespace semenarna_id2.Controllers {
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel) {
             if (ModelState.IsValid) {
-               /* var userRole = new IdentityRole("User");*//**/
-                var usr = new IdentityUser {
+                /* var userRole = new IdentityRole("User");*//**/
+
+
+                var usr = new ApplicationUser {
                     Email = registerViewModel.Email,
-                    UserName = registerViewModel.Email
+                    UserName = registerViewModel.Email,
+                    Cart = null
                 };
+
                 var res = await _userManager.CreateAsync(usr, registerViewModel.Password);
                 await _userManager.AddToRoleAsync(usr, "User");
+
                 if (res.Succeeded) {
+                  
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -42,12 +52,26 @@ namespace semenarna_id2.Controllers {
 
         [HttpGet]
         public IActionResult Login() {
+            
+
+
             return View(new LoginViewModel());
         }
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel loginViewModel) {
             var result = await _signInManager.PasswordSignInAsync(loginViewModel.Username, loginViewModel.Password, false, false);
+
+            var user = _userManager.Users.Where(usr => usr.UserName == loginViewModel.Username)
+                .Select(usr => usr);
+
+            /*var f = user.ToArray();*/
+
+           /* var cart = new UserCartModel {
+                UserId = f.Id,
+                User = (ApplicationUserModel) f,
+                TestProducts = new List<TestProductModel> { }
+            };*/
 
             return RedirectToAction("Index", "Home");
         }

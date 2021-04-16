@@ -15,7 +15,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
             _ctx = ctx;
         }
 
-        public StoreViewModel GetProductList(int id, TestProductModel[] all) {
+        public StoreViewModel GetProductList(int id, Product[] all) {
 
             int page_number;
 
@@ -48,7 +48,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
 
             for (int i = start; i < max; i++) {
                 ProductViewModel p = new ProductViewModel {
-                    Id = all[i].Id,
+                    Id = all[i].ProductId,
                     Name = all[i].Name,
                     Description = all[i].Description,
                     Img = Convert.ToBase64String(all[i].Img)
@@ -71,7 +71,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
         [HttpGet]
         public IActionResult Index(int id) {
             // all products
-            var all = _ctx.TestProduct.ToArray();
+            var all = _ctx.Products.ToArray();
 
             //return 24 product of selected page
             StoreViewModel result = GetProductList(id, all);
@@ -81,7 +81,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
         [HttpGet]
         public IActionResult Find([FromQuery] string name) {
 
-            var products = from b in _ctx.TestProduct
+            var products = from b in _ctx.Products
                            where b.Name.StartsWith(name)
                            select b;
 

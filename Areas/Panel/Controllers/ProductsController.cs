@@ -24,7 +24,7 @@ namespace semenarna_id2.Controllers {
         }
         [HttpGet]
         public async Task<IActionResult> Index() {
-            var result = await _ctx.TestProduct.ToListAsync();
+            var result = await _ctx.Products.ToListAsync();
 
             /*var data = result.Select(c => new ProductViewModel {
                 Id = c.Id,
@@ -42,7 +42,7 @@ namespace semenarna_id2.Controllers {
         public async Task<IActionResult> Create(ProductViewModel product_data) {
             try {
 
-                var product = new TestProductModel {
+                var product = new Product {
                     Name = product_data.Name,
                 };
 
@@ -61,7 +61,7 @@ namespace semenarna_id2.Controllers {
                     throw new Exception("No Image file was provided");
                 }
 
-                await _ctx.TestProduct.AddAsync(product);
+                await _ctx.Products.AddAsync(product);
 
                 await _ctx.SaveChangesAsync();
 
@@ -77,8 +77,8 @@ namespace semenarna_id2.Controllers {
         [HttpDelete]
         public async Task<IActionResult> Delete(int id) {
             //delete product
-            var product = _ctx.TestProduct.Find(id);
-            _ctx.TestProduct.Remove(product);
+            var product = _ctx.Products.Find(id);
+            _ctx.Products.Remove(product);
 
             if (product != null) {
                 await _ctx.SaveChangesAsync();
@@ -91,7 +91,7 @@ namespace semenarna_id2.Controllers {
         //Display edited product
         [HttpGet]
         public IActionResult Details(int id) {
-            var result = _ctx.TestProduct.Find(id);
+            var result = _ctx.Products.Find(id);
 
             var byte_arr_img = result.Img;
 
@@ -117,7 +117,7 @@ namespace semenarna_id2.Controllers {
                 Image = null;
             }
 
-            var entity = await _ctx.TestProduct.FirstOrDefaultAsync(item => item.Id == id);
+            var entity = await _ctx.Products.FirstOrDefaultAsync(item => item.ProductId == id);
 
 
 

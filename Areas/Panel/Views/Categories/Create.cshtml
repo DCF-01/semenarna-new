@@ -1,0 +1,16 @@
+﻿@model CategoryViewModel
+@{
+    ViewBag.Title = User.Identity.Name;
+    Layout = "~/Areas/Panel/Views/Shared/_PanelLayout.cshtml";
+}
+<div class="container-lg pt-3">
+    <form asp-controller="Categories" asp-action="Create" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" id="productNameInput" class="form-control" asp-for="Name">
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </form>
+</div>
