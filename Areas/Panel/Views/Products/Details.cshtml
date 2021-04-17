@@ -1,6 +1,6 @@
 ﻿@model ProductViewModel
 
-@{ 
+@{
     ViewBag.Title = User.Identity.Name;
 }
 
@@ -15,6 +15,62 @@
             <label>Description</label>
             <input type="text" id="productDescriptionInput" class="form-control" value="@Model.Description" asp-for="Description">
         </div>
+        <div class="form-group">
+            <label>Price</label>
+            <input type="text" id="productDescriptionInput" class="form-control" value="@Model.Price" asp-for="Price">
+        </div>
+        <div class="form-group">
+            <label>Sale Price</label>
+            <input type="text" id="productDescriptionInput" class="form-control" value="@Model.SalePrice" asp-for="SalePrice">
+        </div>
+        <div class="form-group">
+            <label>On Sale</label>
+            <div class="custom-control custom-checkbox">
+                @if (Model.OnSale == "true") {
+                    <input type="checkbox" id="OnSale" class="custom-control-input" name="OnSale" value="@Model.OnSale" checked>
+                }
+                else {
+                    <input type="checkbox" id="OnSale" class="custom-control-input" name="OnSale" value="@Model.OnSale" >
+                }
+                <label class="custom-control-label" for="OnSale">On Sale</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>In Stock</label>
+            <div class="custom-control custom-checkbox">
+                @if (Model.InStock == "true") {
+                    <input type="checkbox" id="InStock" class="custom-control-input" name="InStock" value="@Model.InStock" checked>
+                }
+                else {
+                    <input type="checkbox" id="InStock" class="custom-control-input" name="InStock" value="@Model.InStock">
+
+                }
+                <label class="custom-control-label" for="InStock">In Stock</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Categories</label>
+            @if (Model.GetCategories != null) {
+                @foreach (var item in Model.GetCategories) {
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" id="@item.Name" class="custom-control-input" name="Categories[]" value="@item.Name" checked>
+                        <label class="custom-control-label" for="@item.Name">@item.Name</label>
+                    </div>
+                }
+            }
+
+        </div>
+        <div class="form-group">
+            <label>Spec</label>
+            @*<select class="custom-select">
+                    <option selected>Open this select menu</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>*@
+        </div>
+
+
         <div class="form-group">
             <label>Image</label>
             <input type="file" name="Img" id="Imageinput" asp-for="Img">

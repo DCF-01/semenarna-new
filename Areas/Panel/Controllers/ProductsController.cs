@@ -40,12 +40,13 @@ namespace semenarna_id2.Controllers {
             var all = from c in _ctx.Categories
                       select c;
 
-
-            var res = await all.ToListAsync();
-
             var categories = new ProductViewModel {
-                GetCategories = res
+                GetCategories = new List<Category>()
             };
+
+            foreach (var item in all) {
+                categories.GetCategories.Add(item);
+            }
 
             return View(categories);
         }
@@ -55,7 +56,10 @@ namespace semenarna_id2.Controllers {
                 bool sale_state = (product_data.OnSale != null) || false;
                 bool stock_state = (product_data.InStock != null) || false;
 
-               
+                var categories = from c in _ctx.Categories
+                                 where product_data.Categories.Contains(c.Name)
+                                 select c;
+
 
                 var product = new Product {
                     Name = product_data.Name,
@@ -63,14 +67,16 @@ namespace semenarna_id2.Controllers {
                     Price = product_data.Price,
                     SalePrice = product_data.SalePrice,
                     OnSale = sale_state,
-                    InStock = stock_state
+                    InStock = stock_state,
+                    Spec = null
+                };
+                product.Categories = new List<Category>();
+
+                foreach (var item in categories) {
+                    product.Categories.Add(item);
                 };
 
-                /* foreach(item in product_data.Categories) {
-                     product.Categories.Add(item);
-                 }*/
 
-                /*product.Categories.Add();*/
 
                 IFormFile Image = product_data.Img;
 
@@ -84,6 +90,7 @@ namespace semenarna_id2.Controllers {
                     product.Img = ba;
                 }
                 else {
+                    product.Img = null;
                     throw new Exception("No Image file was provided");
                 }
 
@@ -95,7 +102,7 @@ namespace semenarna_id2.Controllers {
             }
             catch (Exception e) {
                 Console.WriteLine(e);
-                return NotFound("Error: No file provided");
+                return NotFound($"Error: {e}");
             }
         }
 
@@ -117,7 +124,13 @@ namespace semenarna_id2.Controllers {
         //Display edited product
         [HttpGet]
         public IActionResult Details(int id) {
-            var result = _ctx.Products.Find(id);
+
+            var data = from p in _ctx.Products.Include(product => product.Categories)
+                       where p.ProductId == id
+                       select p;
+
+
+            var result = data.Single();
 
             var byte_arr_img = result.Img;
 
@@ -126,46 +139,94 @@ namespace semenarna_id2.Controllers {
             var item = new ProductViewModel {
                 Name = result.Name,
                 Description = result.Description,
+                Price = result.Price,
+                SalePrice = result.SalePrice,
+                OnSale = result.OnSale.ToString(),
+                InStock = result.InStock.ToString(),
+                Spec = null,
                 GetImg = img
             };
+
+            item.GetCategories = new List<Category>();
+
+            if (result.Categories != null) {
+                foreach (var i in result.Categories) {
+                    item.GetCategories.Add(i);
+                }
+            }
+
+
 
             return View(item);
         }
         //Update product route
         [HttpPost]
         public async Task<IActionResult> Details(int id, ProductViewModel productViewModel) {
-            IFormFile Image;
+            try {
 
-            if (productViewModel.Img != null) {
-                Image = productViewModel.Img;
-            }
-            else {
-                Image = null;
-            }
-
-            var entity = await _ctx.Products.FirstOrDefaultAsync(item => item.ProductId == id);
-
-
-
-            entity.Name = productViewModel.Name;
-            entity.Description = productViewModel.Description;
-
-
-            if (Image != null) {
-                if (Image.Length > 0) {
-                    byte[] p1 = null;
-                    using (var fs = Image.OpenReadStream())
-                    using (var ms = new MemoryStream()) {
-                        fs.CopyTo(ms);
-                        p1 = ms.ToArray();
-                    }
-                    entity.Img = p1;
+                if (productViewModel.Categories == null) {
+                    throw new Exception("A product must have at least 1 category");
                 }
+                // Product Img
+                IFormFile Image;
+
+                if (productViewModel.Img != null) {
+                    Image = productViewModel.Img;
+                }
+                else {
+                    Image = null;
+                }
+                //product to update
+                var entity = await _ctx.Products.FirstOrDefaultAsync(item => item.ProductId == id);
+
+                bool sale_state = (productViewModel.OnSale != null) || false;
+                bool stock_state = (productViewModel.InStock != null) || false;
+
+
+
+                var categories = from c in _ctx.Categories
+                                 where productViewModel.Categories.Contains(c.Name)
+                                 select c;
+
+                var product = new Product {
+                    Name = productViewModel.Name,
+                    Description = productViewModel.Description,
+                    Price = productViewModel.Price,
+                    SalePrice = productViewModel.SalePrice,
+                    OnSale = sale_state,
+                    InStock = stock_state,
+                    Spec = null
+                };
+                product.Categories = new List<Category>();
+
+                foreach (var item in categories) {
+                    product.Categories.Add(item);
+                };
+
+                entity.Name = productViewModel.Name;
+                entity.Description = productViewModel.Description;
+
+
+                if (Image != null) {
+                    if (Image.Length > 0) {
+                        byte[] p1 = null;
+                        using (var fs = Image.OpenReadStream())
+                        using (var ms = new MemoryStream()) {
+                            fs.CopyTo(ms);
+                            p1 = ms.ToArray();
+                        }
+                        entity.Img = p1;
+                    }
+                }
+
+                await _ctx.SaveChangesAsync();
+
+                return RedirectToAction("Index", "Products");
+
             }
-
-            await _ctx.SaveChangesAsync();
-
-            return RedirectToAction("Index", "Products");
+            catch(Exception e) {
+                return BadRequest("Bad request: " + e.Message);
+            }
         }
 
     }

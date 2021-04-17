@@ -13,7 +13,7 @@ namespace semenarna_id2.Models
         public string SalePrice { get; set; }
         public bool OnSale { get; set; }
         public bool InStock { get; set; }
-        public List<Category> Categories { get; set; }
+        public ICollection<Category> Categories { get; set; }
         public Spec Spec { get; set; }
         public byte[] Img { get; set; }
     }

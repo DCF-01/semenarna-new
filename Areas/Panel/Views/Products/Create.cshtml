@@ -43,7 +43,7 @@
             <label>Categories</label>
             @foreach (var item in Model.GetCategories) {
                 <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="@item.Name" name="Category" value="@item.Name">
+                    <input type="checkbox" class="custom-control-input" id="@item.Name" name="Categories[]" value="@item.Name">
                     <label class="custom-control-label" for="@item.Name">@item.Name</label>
                 </div>
             }
