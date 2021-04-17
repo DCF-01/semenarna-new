@@ -125,6 +125,8 @@ namespace semenarna_id2.Controllers {
         [HttpGet]
         public IActionResult Details(int id) {
 
+            var all_categories = _ctx.Categories.ToArray();
+            
             var data = from p in _ctx.Products.Include(product => product.Categories)
                        where p.ProductId == id
                        select p;
@@ -148,6 +150,12 @@ namespace semenarna_id2.Controllers {
             };
 
             item.GetCategories = new List<Category>();
+
+            //all categories - for comparison checkec/unchecked categories view
+            item.Categories = new string[all_categories.Length];
+            for(int i = 0; i < all_categories.Length; i++) {
+                item.Categories[i] = all_categories[i].Name;
+            }
 
             if (result.Categories != null) {
                 foreach (var i in result.Categories) {
