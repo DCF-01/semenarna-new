@@ -19,14 +19,16 @@ namespace semenarna_id2.Areas.Panel.Controllers {
         [HttpGet]
         public IActionResult Index() {
 
-            var all = from x in _ctx.Categories
-                      select x;
+            var all_categories = _ctx.Categories.Select(item => new CategoryViewModel {
+                Id = item.CategoryId,
+                Name = item.Name,
+                ProductCount = item.Products.Count()
+            }).ToList();
 
 
-            var result = all.ToList();
-            
-            
-            return View(result);
+            var a = all_categories.First();
+
+            return View(all_categories);
         }
         [HttpGet]
         public IActionResult Create() {
@@ -53,6 +55,24 @@ namespace semenarna_id2.Areas.Panel.Controllers {
             await _ctx.SaveChangesAsync();
 
             return RedirectToAction("Index");
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id) {
+            try {
+                if (id == null) {
+                    throw new Exception("Item id not cannot be empty.");
+                }
+                var category = await _ctx.Categories.FindAsync(id);
+                var res = _ctx.Categories.Remove(category);
+
+                await _ctx.SaveChangesAsync();
+
+                return Ok($"Item {category.Name} deleted");
+            }
+            catch (Exception e) {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

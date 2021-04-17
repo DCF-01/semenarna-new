@@ -108,64 +108,64 @@ namespace semenarna_id2.Controllers {
 
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(int id) {
-            //delete product
-            var product = _ctx.Products.Find(id);
-            _ctx.Products.Remove(product);
+        public async Task<IActionResult> Delete([FromRoute] int id) {
+            try {
+                //delete product
+                var product = _ctx.Products.Find(id);
 
-            if (product != null) {
-                await _ctx.SaveChangesAsync();
-                return NoContent();
+                if (product != null) {
+                    _ctx.Products.Remove(product);
+                    await _ctx.SaveChangesAsync();
+                    return Ok();
+                }
+                else {
+                    return StatusCode(500);
+                }
             }
-            else {
-                return BadRequest();
+            catch (Exception e) {
+                return BadRequest(e.Message);
             }
         }
         //Display edited product
         [HttpGet]
-        public IActionResult Details(int id) {
+        public async Task<IActionResult> Details(int id) {
+            try {
+                //get product with related categories
+                var product = await _ctx.Products.Include(product => product.Categories).FirstOrDefaultAsync();
+                           
 
-            var all_categories = _ctx.Categories.ToArray();
-            
-            var data = from p in _ctx.Products.Include(product => product.Categories)
-                       where p.ProductId == id
-                       select p;
+                var byte_arr_img = product.Img;
 
+                string img = Convert.ToBase64String(byte_arr_img);
 
-            var result = data.Single();
+                var item = new ProductViewModel {
+                    Name = product.Name,
+                    Description = product.Description,
+                    Price = product.Price,
+                    SalePrice = product.SalePrice,
+                    OnSale = product.OnSale.ToString(),
+                    InStock = product.InStock.ToString(),
+                    Spec = null,
+                    GetImg = img
+                };
 
-            var byte_arr_img = result.Img;
+                //current active categories
+                item.GetCategories = new List<Category>();
 
-            string img = Convert.ToBase64String(byte_arr_img);
+                //all available categories
+                item.Categories = _ctx.Categories.Select(item => item.Name).ToArray();
 
-            var item = new ProductViewModel {
-                Name = result.Name,
-                Description = result.Description,
-                Price = result.Price,
-                SalePrice = result.SalePrice,
-                OnSale = result.OnSale.ToString(),
-                InStock = result.InStock.ToString(),
-                Spec = null,
-                GetImg = img
-            };
-
-            item.GetCategories = new List<Category>();
-
-            //all categories - for comparison checkec/unchecked categories view
-            item.Categories = new string[all_categories.Length];
-            for(int i = 0; i < all_categories.Length; i++) {
-                item.Categories[i] = all_categories[i].Name;
-            }
-
-            if (result.Categories != null) {
-                foreach (var i in result.Categories) {
-                    item.GetCategories.Add(i);
+                if (product.Categories != null) {
+                    foreach (var i in product.Categories) {
+                        item.GetCategories.Add(i);
+                    }
                 }
+
+                return View(item);
             }
-
-
-
-            return View(item);
+            catch(Exception e) {
+                return StatusCode(500);
+            }
         }
         //Update product route
         [HttpPost]
@@ -232,7 +232,7 @@ namespace semenarna_id2.Controllers {
                 return RedirectToAction("Index", "Products");
 
             }
-            catch(Exception e) {
+            catch (Exception e) {
                 return BadRequest("Bad request: " + e.Message);
             }
         }
