@@ -37,25 +37,25 @@
 <div class="container-lg mt-5 mb">
     <div class="row">
         @*12*@
-        @foreach (var product in Model.Product_list) {
+        @foreach (var product in Model.Products) {
             <div class="col-sm-6 col-md-4 col-lg-3 mb-5">
                 <div class="card mx-auto text-center" style="width: 14rem;">
                     <img src="data:image/jpeg;base64,@product.Img" class="card-img-top" alt="...">
                     <div class="card-body justify-content-center">
-                        <h5 class="card-title"><a href="https://localhost:44380/Store/Product/Single/@product.Id">@product.Name</a></h5>
-                        <p class="card-text">This is a long product description.</p>
+                        <h5 class="card-title"><a href="https://localhost:44380/Store/Product/Single/@product.ProductId">@product.Name</a></h5>
+                        <p class="card-text">@product.Description</p>
                     </div>
                     <ul class="list-group list-group-flush">
                         @if (User.Identity.IsAuthenticated) {
-                            <li class="list-group-item"><s>Regular price: 220 @product.Id</s></li>
-                            <li class="list-group-item">Sale price: 120</li>
+                            <li class="list-group-item"><s>Regular price: @product.Price</s></li>
+                            <li class="list-group-item">Sale price: @product.SalePrice</li>
                         }
                         else {
-                            <li class="list-group-item">Regular price: 220</li>
+                            <li class="list-group-item">Regular price: @product.Price</li>
                         }
                     </ul>
                     <div class="card-body">
-                        <a href="#" class="btn btn-primary add-to-cart-btn">Add to cart<span class="item-id d-none">@product.Id</span></a>
+                        <a href="#" class="btn btn-primary add-to-cart-btn">Add to cart<span class="item-id d-none">@product.ProductId</span></a>
                     </div>
                 </div>
             </div>

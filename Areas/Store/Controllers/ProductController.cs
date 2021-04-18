@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using semenarna_id2.Areas.Store.ViewModels;
 using semenarna_id2.Data;
 using System;
@@ -15,15 +16,26 @@ namespace semenarna_id2.Areas.Store.Controllers {
         }
         public async Task<IActionResult> Single(int id) {
 
-            var result = await _ctx.Products.FindAsync(id);
+            var item = await _ctx.Products.Include(item => item.Categories)
+                                    .Where(item => item.ProductId == id)
+                                    .Select(item => item)
+                                    .FirstOrDefaultAsync();
 
-            if (result != null) {
+            if (item != null) {
                 var product = new ProductViewModel {
-                    Id = result.ProductId,
-                    Name = result.Name,
-                    Description = result.Description,
-                    Img = Convert.ToBase64String(result.Img)
+                    ProductId = item.ProductId,
+                    Name = item.Name,
+                    Description = item.Description,
+                    Price = item.Price,
+                    SalePrice = item.SalePrice,
+                    OnSale = item.OnSale,
+                    InStock = item.InStock,
+                    Categories = item.Categories,
+                    Spec = null,
+                    Img = Convert.ToBase64String(item.Img)
                 };
+                var a = 0;
+
                 return View(product);
             }
 
