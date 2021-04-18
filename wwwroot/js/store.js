@@ -213,7 +213,8 @@ async function checkUserLogin() {
 }
 
 async function getUserCart() {
-    let query = 
+    query_string = store_search_box.value
+    let query = query_url + '?name=' + query_string;
 
     let userCart = fetch(query, {
         method: 'GET', // POST, PUT, DELETE, etc.

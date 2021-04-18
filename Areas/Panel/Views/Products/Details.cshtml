@@ -26,7 +26,7 @@
         <div class="form-group">
             <label>On Sale</label>
             <div class="custom-control custom-checkbox">
-                @if (Model.OnSale == "true") {
+                @if (Model.OnSale == "True") {
                     <input type="checkbox" id="OnSale" class="custom-control-input" name="OnSale" value="@Model.OnSale" checked>
                 }
                 else {
@@ -38,7 +38,7 @@
         <div class="form-group">
             <label>In Stock</label>
             <div class="custom-control custom-checkbox">
-                @if (Model.InStock == "true") {
+                @if (Model.InStock == "True") {
                     <input type="checkbox" id="InStock" class="custom-control-input" name="InStock" value="@Model.InStock" checked>
                 }
                 else {

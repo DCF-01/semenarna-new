@@ -131,8 +131,10 @@ namespace semenarna_id2.Controllers {
         public async Task<IActionResult> Details(int id) {
             try {
                 //get product with related categories
-                var product = await _ctx.Products.Include(product => product.Categories).FirstOrDefaultAsync();
-                           
+                var product = await _ctx.Products.Include(product => product.Categories)
+                    .Where(product => product.ProductId == id)
+                    .FirstOrDefaultAsync();
+
 
                 var byte_arr_img = product.Img;
 
@@ -163,7 +165,7 @@ namespace semenarna_id2.Controllers {
 
                 return View(item);
             }
-            catch(Exception e) {
+            catch (Exception e) {
                 return StatusCode(500);
             }
         }
@@ -175,6 +177,12 @@ namespace semenarna_id2.Controllers {
                 if (productViewModel.Categories == null) {
                     throw new Exception("A product must have at least 1 category");
                 }
+                if (productViewModel.Name == null) {
+                    throw new Exception("The product must have a name");
+                }
+                if (productViewModel.Description == null) {
+                    throw new Exception("The product must have a description");
+                }
                 // Product Img
                 IFormFile Image;
 
@@ -185,7 +193,9 @@ namespace semenarna_id2.Controllers {
                     Image = null;
                 }
                 //product to update
-                var entity = await _ctx.Products.FirstOrDefaultAsync(item => item.ProductId == id);
+                var entity = await _ctx.Products
+                    .Include(product => product.Categories)
+                    .FirstOrDefaultAsync(item => item.ProductId == id);
 
                 bool sale_state = (productViewModel.OnSale != null) || false;
                 bool stock_state = (productViewModel.InStock != null) || false;
@@ -196,23 +206,17 @@ namespace semenarna_id2.Controllers {
                                  where productViewModel.Categories.Contains(c.Name)
                                  select c;
 
-                var product = new Product {
-                    Name = productViewModel.Name,
-                    Description = productViewModel.Description,
-                    Price = productViewModel.Price,
-                    SalePrice = productViewModel.SalePrice,
-                    OnSale = sale_state,
-                    InStock = stock_state,
-                    Spec = null
-                };
-                product.Categories = new List<Category>();
-
                 foreach (var item in categories) {
-                    product.Categories.Add(item);
+                    entity.Categories.Add(item);
                 };
 
                 entity.Name = productViewModel.Name;
                 entity.Description = productViewModel.Description;
+                entity.Price = productViewModel.Price;
+                entity.SalePrice = productViewModel.SalePrice;
+                entity.OnSale = sale_state;
+                entity.InStock = stock_state;
+                entity.Spec = null;
 
 
                 if (Image != null) {
