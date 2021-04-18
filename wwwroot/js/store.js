@@ -35,7 +35,7 @@ function displayQuerySearch(data) {
 
         //p element (description)
         let price = document.createElement('p');
-        price.textContent = data[i].description
+        price.textContent = data[i].price;
         price.className = 'm-0 p-2';
 
         //img element (image)

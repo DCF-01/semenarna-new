@@ -8,15 +8,21 @@
         <div class="col-6">
             <p class="display-3">@Model.Name</p>
             <hr />
-            <p>Цена: @Model.Price</p>
-            <p>Опис: @Model.Description</p>
-            <p>Категории: @foreach(var i in Model.Categories) {
-                <span><a href="#">@i.Name</a></span>
+            @if (Model.OnSale) {
+                <p>Цена: @Model.SalePrice</p>
             }
+            else {
+                <p>Цена: @Model.Price</p>
+            }
+            <p>Опис: @Model.Description</p>
+            <p>
+                Категории: @foreach (var i in Model.Categories) {
+                    <span><a href="#">@i.Name</a></span>
+                }
             </p>
             <hr />
             <div class="row align-items-center">
-                @if (Model.InStock == true) {
+                @if (Model.InStock) {
                     <i class="far fa-check-circle fa-3x pr-3" style="color: green;"></i>
                     <p class="m-0 h4">Производот е на залиха</p>
                 }

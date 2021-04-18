@@ -1,0 +1,40 @@
+﻿@model UserViewModel
+
+<div class="container-lg pt-3">
+    <form action="" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label>Name</label>
+            <input class="form-control" type="text" placeholder="@Model.UserName" readonly>
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input class="form-control" type="text" placeholder="@Model.Email" readonly>
+        </div>
+        <div class="form-group">
+            <label>Email Confirmation</label>
+            @if (Model.EmailConfirmed) {
+                <p class="h4 pt-2">Email confirmed</p>
+            }
+            else {
+                <p class="h4">Email has not been confirmed</p>
+            }
+        </div>
+        <div class="form-group">
+            <label>Role</label>
+            <select class="form-control" name="RoleSelected">
+                @foreach (var role in Model.GetRoles) {
+                    if (role == Model.CurrentRole) {
+                        <option value="@role" selected>@role</option>
+                    }
+                    else {
+                        <option value="@role">@role</option>
+
+                    }
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Update" class="btn btn-default" />
+        </div>
+    </form>
+</div>
