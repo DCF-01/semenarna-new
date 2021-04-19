@@ -47,13 +47,32 @@ namespace semenarna_id2.Areas.Cart.Controllers {
             var user = await _ctx.Users.Include("Cart")
                         .Where(user => user.Id == user_id).FirstOrDefaultAsync();
 
-            var new_products = _ctx.Products
-                                    .Where(product => cartViewModel.CartItemIds
-                                    .Contains(product.ProductId.ToString()))
-                                    .Select(product => product).ToList();
+            var item_ids = new List<string>();
 
-            user.Cart.Products = new_products;
-                        
+            foreach(var i in cartViewModel.Products) {
+                item_ids.Add(i.ProductId);
+            }
+
+
+            var new_products = _ctx.Products
+                                    .Where(product => item_ids.Contains(product.ProductId.ToString()
+                                    .Select(product => product))).ToList();
+
+            var add_to_db = new List<CartProduct>();
+
+            foreach(var p in cartViewModel.Products) {
+                var new_product = new CartProduct {
+                    Product = _ctx.Products.Find(int.Parse(p.ProductId)),
+                    Quantity = int.Parse(p.Quantity),
+                };
+                user.Cart.CartProducts.Add(new_product);
+            }
+
+            await _ctx.SaveChangesAsync();
+                                    
+                                    
+                                   
+                               
 
 
             return Ok();

@@ -5,6 +5,6 @@ using System.Threading.Tasks;
 
 namespace semenarna_id2.Areas.Cart.ViewModels {
     public class CartViewModel {
-        public string[] CartItemIds { get; set; }
+        public List<CartProductViewModel> Products { get; set; }
     }
 }

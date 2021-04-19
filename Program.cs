@@ -38,19 +38,11 @@ namespace semenarna_id2 {
                 if (!ctx.Users.Any(e => e.UserName == "admin"))
                 {
 
-                    var cart = new Cart {
-                        Products = null
-                    };
-
                     //create admin
                     var adminUser = new ApplicationUser {
                         UserName = "admin",
                         Email = "admin@paralax.mk",
-                        Cart = cart
                     };
-
-                    cart.User = adminUser;
-                    ctx.Carts.AddAsync(cart).GetAwaiter().GetResult();
 
                     /*var result = userMgr.CreateAsync(adminUser, "radant098").GetAwaiter().GetResult();*/
                     var res = userMgr.AddToRoleAsync(adminUser, adminRole.Name).GetAwaiter().GetResult();

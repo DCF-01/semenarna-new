@@ -216,7 +216,7 @@ function getUserCart(callback) {
             if (res.ok) {
                 res.json()
                     .then(data => {
-                        let product = new Product(data.id, data.name, data.price, 1, data.img);
+                        /*let product = new Product(data.id, data.name, data.price, 1, data.img);*/
                         
                         cart = new Cart(data.products, null);
                         localStorage.setItem('cart', cart);
