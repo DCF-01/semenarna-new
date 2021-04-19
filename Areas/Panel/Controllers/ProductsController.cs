@@ -37,18 +37,14 @@ namespace semenarna_id2.Controllers {
         [HttpGet]
         public async Task<IActionResult> Create() {
 
-            var all = from c in _ctx.Categories
-                      select c;
+            var categories = await _ctx.Categories
+                .Select(c => c.Name).ToListAsync();
 
-            var categories = new ProductViewModel {
-                GetCategories = new List<Category>()
+            var productViewModel = new ProductViewModel {
+                GetCategories = categories
             };
 
-            foreach (var item in all) {
-                categories.GetCategories.Add(item);
-            }
-
-            return View(categories);
+            return View(productViewModel);
         }
         [HttpPost]
         public async Task<IActionResult> Create(ProductViewModel product_data) {
@@ -128,7 +124,7 @@ namespace semenarna_id2.Controllers {
         }
         //Display edited product
         [HttpGet]
-        public async Task<IActionResult> Details(int id) {
+        public async Task<IActionResult> Manage(int id) {
             try {
                 //get product with related categories
                 var product = await _ctx.Products.Include(product => product.Categories)
@@ -152,26 +148,26 @@ namespace semenarna_id2.Controllers {
                 };
 
                 //current active categories
-                item.GetCategories = new List<Category>();
+                item.GetCategories = new List<string>();
 
                 //all available categories
                 item.Categories = _ctx.Categories.Select(item => item.Name).ToArray();
 
                 if (product.Categories != null) {
                     foreach (var i in product.Categories) {
-                        item.GetCategories.Add(i);
+                        item.GetCategories.Add(i.Name);
                     }
                 }
 
                 return View(item);
             }
             catch (Exception e) {
-                return StatusCode(500);
+                return BadRequest($"Error: {e.Message}");
             }
         }
         //Update product route
         [HttpPost]
-        public async Task<IActionResult> Details(int id, ProductViewModel productViewModel) {
+        public async Task<IActionResult> Manage(int id, ProductViewModel productViewModel) {
             try {
 
                 if (productViewModel.Categories == null) {
@@ -205,6 +201,10 @@ namespace semenarna_id2.Controllers {
                 var categories = from c in _ctx.Categories
                                  where productViewModel.Categories.Contains(c.Name)
                                  select c;
+
+                //remove all from product categories field
+                entity.Categories = new List<Category>();
+                
 
                 foreach (var item in categories) {
                     entity.Categories.Add(item);

@@ -105,6 +105,15 @@ if (store_search_box !== null) {
 
 
 /* CART */
+// cart objects
+let cart;
+let cart_str;
+let cart_obj;
+
+
+//helper var / check if element exists
+let cart_table_exists
+
 
 class Product {
     constructor(id, name, price, quantity, img) {
@@ -154,22 +163,6 @@ class Cart {
         });
     }
 
-    /* get userId() {
-         return this.userId
-     }
- 
-     set userId(id) {
-         this.userId = id;
-     }*/
-
-    /*get items() {
-        return this.items;
-    }*/
-
-    /*set items(updated_items) {
-        this.items = updated_items;
-    }*/
-
     remove(id) {
         let temp = this.items;
         this.items = [];
@@ -181,40 +174,35 @@ class Cart {
     }
 
 }
-// cart objects
-let cart = null;
-let cart_str = window.localStorage.getItem('cart');
-let cart_obj = JSON.parse(cart_str);
 
-async function checkUserLogin() {
+
+function checkUserLogin(callback) {
     let query = 'https://localhost:44380/Auth/CheckLogin';
-    fetch(query, {
+    return fetch(query, {
         method: 'GET', // POST, PUT, DELETE, etc.
         headers: {
             'Content-Type': 'text/plain;charset=UTF-8'
         },
         credentials: 'include', // omit, include
         redirect: 'follow', // manual, error
-    }).then(res => {
-        if (res.ok) {
-            res.json()
-                .then(data => {
-                    if (JSON.parse(data) === true) {
-                        console.log(true);
-                        return true;
-                    }
-                    else {
-                        console.log(false);
-                        return false;
-                    }
-                });
+    }).then((response) => {
+        if (response.ok) {
+            response.json().then((data) => {
+                //true or false (login status)
+                let result = JSON.parse(data);
+                callback(result);
+            });
+        }
+        else {
+            console.log(response.status);
         }
     })
+
 }
 
-async function getUserCart() {
-    query_string = store_search_box.value
-    let query = query_url + '?name=' + query_string;
+
+function getUserCart(callback) {
+    let query = 'https://localhost:44380/Cart/Base/Get';
 
     let userCart = fetch(query, {
         method: 'GET', // POST, PUT, DELETE, etc.
@@ -228,7 +216,11 @@ async function getUserCart() {
             if (res.ok) {
                 res.json()
                     .then(data => {
-                        return JSON.parse(data);
+                        let product = new Product(data.id, data.name, data.price, 1, data.img);
+                        
+                        cart = new Cart(data.products, null);
+                        localStorage.setItem('cart', cart);
+                        callback();
                     })
             }
         })
@@ -236,27 +228,32 @@ async function getUserCart() {
     return userCart;
 }
 
+function displayProducts(loggedStatus) {
+    if (loggedStatus === true) {
+        getUserCart(listCartItems);
+    }
+    else {
+        initCart()
+        if (cart_table_exists !== null) {
+            listCartItems();
+        }
+    }
 
+}
 
 //init cart on window load
 window.onload = (event) => {
-    checkUserLogin().then(res => {
-        res.json()
-            .then(value => {
-                if (JSON.parse(value) === true) {
-                    cart = getUserCart().then(data => {
-                        return JSON.parse(data);
-                    })
-                }
-                else {
-                    initCart();
-                }
-            })
-    });
-    //list items
-    if (window.location.href === 'https://localhost:44380/Cart') {
-        listCartItems();
-    }
+    // cart objects
+    cart = null;
+    cart_str = window.localStorage.getItem('cart');
+    cart_obj = JSON.parse(cart_str);
+
+    //helper variable
+    cart_table_exists = document.querySelector('#cart-table');
+
+    //if logged in, executes the callback (1st arg);
+    checkUserLogin(displayProducts)
+
 }
 
 
@@ -264,7 +261,6 @@ window.onload = (event) => {
 function initCart() {
     if (cart_str !== null) {
         cart = new Cart(cart_obj.items, cart_obj.userId);
-        return true;
     }
     else {
         cart = new Cart([], null);
@@ -320,22 +316,50 @@ add_to_cart_btns.forEach(el => {
 
                         window.localStorage.setItem('cart', JSON.stringify(cart));
 
+                        checkUserLogin(addCartToDb);
+
                         //create alert product added
                         createAlert();
 
                         timeout_toast = setTimeout(closeAlert, 4000);
 
 
-
-                        /*alert_container.*/
                     });
             }
-        })
-        /*console.log(id);*/
-    })
-})
+        });
+    });
+});
 
+function addCartToDb(loggedStatus) {
+    if (loggedStatus === true) {
 
+        //add all product ID's to str array
+        let str_array_products = [];
+        let temp = JSON.parse(localStorage.getItem('cart'));
+
+        temp.items.forEach(i => {
+            str_array_products.push(i.id);
+        });
+
+        let query = 'https://localhost:44380/Cart/Base/Update'
+        fetch(query, {
+            method: 'POST', // POST, PUT, DELETE, etc.
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include', // omit, include
+            redirect: 'follow', // manual, error
+            body: JSON.stringify(str_array_products)
+        }).then((response) => {
+            if (response.ok) {
+                console.log('CartDb updated');
+            }
+            else {
+                console.log(response.status, 'error');
+            }
+        });
+    }
+}
 
 function listCartItems() {
     if (checkCart()) {

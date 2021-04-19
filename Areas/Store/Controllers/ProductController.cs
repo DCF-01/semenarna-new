@@ -34,7 +34,6 @@ namespace semenarna_id2.Areas.Store.Controllers {
                     Spec = null,
                     Img = Convert.ToBase64String(item.Img)
                 };
-                var a = 0;
 
                 return View(product);
             }

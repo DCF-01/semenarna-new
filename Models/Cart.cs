@@ -10,6 +10,6 @@ namespace semenarna_id2.Models {
         public int CartId { get; set; }
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
-        public ICollection<Product> Products { get; set; }
+        public ICollection<CartProduct> CartProducts { get; set; }
     }
 }

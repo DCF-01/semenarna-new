@@ -53,23 +53,20 @@
 
             @if (Model.GetCategories.Count() > 0) {
                 foreach (var itemName in Model.Categories) {
-                    foreach (var item in Model.GetCategories) {
-                        if (itemName == item.Name) {
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" id="@itemName" class="custom-control-input" name="Categories[]" value="@itemName" checked>
-                                <label class="custom-control-label" for="@itemName">@itemName</label>
-                                <br />
-                            </div>
-                        }
-                        else {
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" id="@itemName" class="custom-control-input" name="Categories[]" value="@itemName">
-                                <label class="custom-control-label" for="@itemName">@itemName</label>
-                                <br />
-                            </div>
-                        }
+                    if (Model.GetCategories.Contains(itemName)) {
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" id="@itemName" class="custom-control-input" name="Categories[]" value="@itemName" checked>
+                            <label class="custom-control-label" for="@itemName">@itemName</label>
+                            <br />
+                        </div>
                     }
-
+                    else {
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" id="@itemName" class="custom-control-input" name="Categories[]" value="@itemName">
+                            <label class="custom-control-label" for="@itemName">@itemName</label>
+                            <br />
+                        </div>
+                    }
                 }
             }
             else {

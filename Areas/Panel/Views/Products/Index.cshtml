@@ -13,7 +13,7 @@
             <th scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col">Description</th>
-            <th scope="col">Details</th>
+            <th scope="col">Manage</th>
             <th scope="col"></th>
         </tr>
     </thead>
@@ -24,7 +24,7 @@
                 <th scope="row">@i</th>
                 <td>@product.Name</td>
                 <td>@product.Description</td>
-                <td><a href="@Context.Request.Path/Details/@product.ProductId">Edit</a></td>
+                <td><a href="@Context.Request.Path/Manage/@product.ProductId">Edit</a></td>
                 <td>
                     <button type="button" class="close delete-item-btn" aria-label="Close">
                         <div class="item-id">@product.ProductId</div>
