@@ -203,14 +203,15 @@ function checkUserLogin(callback) {
 
 function getUserCart(callback) {
     let query = 'https://localhost:44380/Cart/Base/Get';
+    cart = new Cart([], null);
 
     let userCart = fetch(query, {
-        method: 'GET', // POST, PUT, DELETE, etc.
+        method: 'GET', 
         headers: {
             'Content-Type': 'text/plain;charset=UTF-8'
         },
-        credentials: 'include', // omit, include
-        redirect: 'follow', // manual, error
+        credentials: 'include',
+        redirect: 'follow',
     })
         .then(res => {
             if (res.ok) {
@@ -218,10 +219,12 @@ function getUserCart(callback) {
                     .then(data => {
                         /*let product = new Product(data.id, data.name, data.price, 1, data.img);*/
                         
-                        cart = new Cart(data.products, null);
-                        localStorage.setItem('cart', cart);
-                        callback();
-                    })
+                        if (data !== null) {
+                            cart = new Cart(data.items, null);
+                        }
+                        localStorage.setItem('cart', JSON.stringify(cart));
+                        callback(cart);
+                    });
             }
         })
 
@@ -245,7 +248,7 @@ function displayProducts(loggedStatus) {
 window.onload = (event) => {
     // cart objects
     cart = null;
-    cart_str = window.localStorage.getItem('cart');
+    cart_str = localStorage.getItem('cart');
     cart_obj = JSON.parse(cart_str);
 
     //helper variable
@@ -257,7 +260,7 @@ window.onload = (event) => {
 }
 
 
-
+//use existing or create new cart
 function initCart() {
     if (cart_str !== null) {
         cart = new Cart(cart_obj.items, cart_obj.userId);
@@ -299,17 +302,17 @@ add_to_cart_btns.forEach(el => {
         let query = 'https://localhost:44380/Store/Query/Single/' + id;
 
         fetch(query, {
-            method: 'GET', // POST, PUT, DELETE, etc.
+            method: 'GET',
             headers: {
                 'Content-Type': 'text/plain;charset=UTF-8'
             },
-            credentials: 'include', // omit, include
-            redirect: 'follow', // manual, error
+            credentials: 'include',
+            redirect: 'follow',
         }).then(res => {
             if (res.ok) {
                 res.json()
                     .then(data => {
-                        let product = new Product(data.id, data.name, data.price, 1, data.img);
+                        let product = new Product(data.productId, data.name, data.price, 1, data.img);
 
                         cart.add(product);
                         console.log(cart);
@@ -334,22 +337,28 @@ function addCartToDb(loggedStatus) {
     if (loggedStatus === true) {
 
         //add all product ID's to str array
-        let str_array_products = [];
+        let array_products = [];
         let temp = JSON.parse(localStorage.getItem('cart'));
+    /*let product = new Product(data.id, data.name, data.price, 1, data.img);*/
+        //only id and quantity
+        
 
         temp.items.forEach(i => {
-            str_array_products.push(i.id);
+            let p = new Product(i.id, null, null, i.quantity, null);
+            array_products.push(p);
         });
+
+        let cart_to_server = new Cart(array_products, null);
 
         let query = 'https://localhost:44380/Cart/Base/Update'
         fetch(query, {
-            method: 'POST', // POST, PUT, DELETE, etc.
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            credentials: 'include', // omit, include
-            redirect: 'follow', // manual, error
-            body: JSON.stringify(str_array_products)
+            credentials: 'include',
+            redirect: 'follow',
+            body: JSON.stringify(cart_to_server)
         }).then((response) => {
             if (response.ok) {
                 console.log('CartDb updated');
@@ -361,7 +370,7 @@ function addCartToDb(loggedStatus) {
     }
 }
 
-function listCartItems() {
+function listCartItems(cart) {
     if (checkCart()) {
         let count = 0;
         cart.items.forEach(item => {
