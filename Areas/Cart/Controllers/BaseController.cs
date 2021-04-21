@@ -40,7 +40,7 @@ namespace semenarna_id2.Areas.Cart.Controllers {
             var user = _ctx.Users.Include(user => user.Cart).ThenInclude(cart => cart.CartProducts).ThenInclude(product => product.Product)
                                     .Where(user => user.Id == user_id).FirstOrDefault();
 
-                            /*.Where(user => user.Id == user_id).FirstOrDefaultAsync();*/
+            /*.Where(user => user.Id == user_id).FirstOrDefaultAsync();*/
 
             /*let product = new Product(data.id, data.name, data.price, 1, data.img);*/
 
@@ -74,7 +74,13 @@ namespace semenarna_id2.Areas.Cart.Controllers {
         public async Task<IActionResult> Update([FromBody] CartViewModel cartViewModel) {
 
             if (cartViewModel.items != null) {
-
+                //check client side no id doubles
+                var checked_items = new List<CartProductViewModel>();
+                foreach (var item in checked_items) {
+                    if (!checked_items.Contains(item)) {
+                        checked_items.Add(item);
+                    }
+                }
 
 
                 var user_id = _userManager.GetUserId(User);

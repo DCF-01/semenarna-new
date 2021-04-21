@@ -206,7 +206,7 @@ function getUserCart(callback) {
     cart = new Cart([], null);
 
     let userCart = fetch(query, {
-        method: 'GET', 
+        method: 'GET',
         headers: {
             'Content-Type': 'text/plain;charset=UTF-8'
         },
@@ -218,7 +218,7 @@ function getUserCart(callback) {
                 res.json()
                     .then(data => {
                         /*let product = new Product(data.id, data.name, data.price, 1, data.img);*/
-                        
+
                         if (data !== null) {
                             cart = new Cart(data.items, null);
                         }
@@ -332,6 +332,24 @@ add_to_cart_btns.forEach(el => {
         });
     });
 });
+//update client cart then check login and update back-end if logged in
+function updateCartQuantity(id, quantity) {
+    if (cart.items !== null) {
+        cart.items.forEach(item => {
+            if (item.id === parseInt(id)) {
+                let int_quantity = parseInt(quantity);
+                //only update if !== 
+                if (int_quantity !== item.quantity) {
+                    item.quantity = int_quantity;
+                    //add to localstorage and update backend cart
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    checkUserLogin(addCartToDb);
+                }
+            }
+        });
+
+    }
+}
 
 function addCartToDb(loggedStatus) {
     if (loggedStatus === true) {
@@ -339,9 +357,9 @@ function addCartToDb(loggedStatus) {
         //add all product ID's to str array
         let array_products = [];
         let temp = JSON.parse(localStorage.getItem('cart'));
-    /*let product = new Product(data.id, data.name, data.price, 1, data.img);*/
+        /*let product = new Product(data.id, data.name, data.price, 1, data.img);*/
         //only id and quantity
-        
+
 
         temp.items.forEach(i => {
             let p = new Product(i.id, null, null, i.quantity, null);
@@ -371,7 +389,7 @@ function addCartToDb(loggedStatus) {
 }
 
 function listCartItems(cart) {
-    if (checkCart()) {
+    if (checkCart() && cart_table_exists !== null) {
         let count = 0;
         cart.items.forEach(item => {
             let tr = document.createElement('tr');
@@ -393,14 +411,14 @@ function listCartItems(cart) {
             td_3.textContent = item.price
 
             let td_4 = document.createElement('td');
-            td_4.textContent = item.quantity
+            let current_quantity = item.quantity;
+            td_4.innerHTML = `<span class='quantity-text'>${current_quantity}</span> <a href='#' class='cart-edit-quantity'>Edit</a>`;
 
             let td_5 = document.createElement('td');
             let img = document.createElement('img');
             img.width = 48;
             img.src = 'data:image/jpeg;base64, ' + item.img;
             td_5.appendChild(img);
-
 
 
             tr.appendChild(th);
@@ -412,8 +430,56 @@ function listCartItems(cart) {
 
             table_body.appendChild(tr);
 
+
+
+
+
+        });
+        let cart_edit_nodes = document.querySelectorAll('.cart-edit-quantity');
+        cart_edit_nodes.forEach(i => {
+            i.addEventListener('click', (e) => {
+                openInputBox(e);
+            })
         })
     }
+}
+
+function openInputBox(event) {
+    let parent = event.target.parentNode;
+    console.log(parent);
+
+    let current_quantity = parent.querySelector('.quantity-text').textContent;
+
+    parent.innerHTML = `<input type="number" class="quantity-input" name="quantity" min="1" value=${current_quantity}> <a href='#' class='cart-update-quantity'>Update</a>`;
+
+    //input box element
+    let input_value_el = parent.querySelector('.quantity-input');
+
+    //update button (a element)
+    let cart_update_quantity = document.querySelector('.cart-update-quantity');
+
+    cart_update_quantity.addEventListener('click', (e) => {
+        //parent node (td)
+        let parent = e.target.parentNode;
+        console.log(e.target.parentNode);
+
+        //update current html quantity from input box value
+        current_quantity = input_value_el.value;
+        parent.innerHTML = `<span class='quantity-text'>${current_quantity}</span> <a href='#' class='cart-edit-quantity'>Edit</a>`;
+        let quantity_text = parent.querySelector('.quantity-text');
+        quantity_text.textContent = current_quantity;
+
+        //update js cart quantity
+        let td_id = parent.parentNode.querySelector('td');
+        let item_id = td_id.textContent;
+
+        updateCartQuantity(item_id, current_quantity);
+
+        let cart_edit_quantity = parent.querySelector('.cart-edit-quantity');
+        cart_edit_quantity.addEventListener('click', (e) => {
+            openInputBox();
+        });
+    });
 }
 
 
