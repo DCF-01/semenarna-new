@@ -40,16 +40,9 @@ namespace semenarna_id2.Areas.Cart.Controllers {
             var user = _ctx.Users.Include(user => user.Cart).ThenInclude(cart => cart.CartProducts).ThenInclude(product => product.Product)
                                     .Where(user => user.Id == user_id).FirstOrDefault();
 
-            /*.Where(user => user.Id == user_id).FirstOrDefaultAsync();*/
-
-            /*let product = new Product(data.id, data.name, data.price, 1, data.img);*/
-
             if (user.Cart.CartProducts != null) {
 
-
-                var json_cart = new CartViewModel();/* {
-                    items = new CartProductViewModel[user.Cart.CartProducts.Count()]
-                };*/
+                var json_cart = new CartViewModel();
 
                 var list = new List<CartProductViewModel>();
                 foreach (var item in user.Cart.CartProducts) {
@@ -65,8 +58,6 @@ namespace semenarna_id2.Areas.Cart.Controllers {
                 json_cart.items = list.ToArray();
 
                 return Ok(json_cart);
-                /*var a = new { CartProducts = new[] { 1, 2, 3 } };
-                return Ok(a);*/
             }
             else return Ok(null);
         }

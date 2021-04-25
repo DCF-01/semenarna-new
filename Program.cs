@@ -16,7 +16,7 @@ namespace semenarna_id2 {
         public static void Main(string[] args) {
             var host = CreateHostBuilder(args).Build();
 
-            try { 
+            try {
 
                 var scope = host.Services.CreateScope();
 
@@ -28,47 +28,29 @@ namespace semenarna_id2 {
 
                 var adminRole = new IdentityRole("Admin");
                 var userRole = new IdentityRole("User");
-                /*roleMgr.CreateAsync(userRole).GetAwaiter().GetResult();*/
-                roleMgr.CreateAsync(adminRole).GetAwaiter().GetResult();
 
-                /*if (!ctx.Roles.Any()) {
+                if (!ctx.Roles.Any()) {
                     //create role
+                    roleMgr.CreateAsync(userRole).GetAwaiter().GetResult();
                     roleMgr.CreateAsync(adminRole).GetAwaiter().GetResult();
-                }*/
-                if (!ctx.Users.Any(e => e.UserName == "admin"))
-                {
+                }
+                if (!ctx.Users.Any(e => e.UserName == "admin")) {
 
                     //create admin
                     var adminUser = new ApplicationUser {
                         UserName = "admin",
                         Email = "admin@paralax.mk",
+                        Cart = new Cart()
                     };
 
-                    /*var result = userMgr.CreateAsync(adminUser, "radant098").GetAwaiter().GetResult();*/
+                    var result = userMgr.CreateAsync(adminUser, "radant098").GetAwaiter().GetResult();
                     var res = userMgr.AddToRoleAsync(adminUser, adminRole.Name).GetAwaiter().GetResult();
 
                     ctx.SaveChangesAsync().GetAwaiter().GetResult();
 
                 }
-                /*if (!ctx.Products.Any()) {
-                    var seedList = new List<Product>();
-
-                    for(int i = 0; i < 6; i++) {
-                        var product = new Product {
-                            Name = "Test Product " + i,
-                            Description = "Fake description " + i
-                        };
-                        seedList.Add(product);
-
-
-
-                    }
-                    seedList.ForEach(n => ctx.Products.Add(n));
-                    ctx.SaveChangesAsync();
-
-                }*/
             }
-            catch(Exception e) {
+            catch (Exception e) {
                 Console.WriteLine(e.Message);
             }
 
