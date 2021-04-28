@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace semenarna_id2.Models {
-    public class Spec {
-        public int SpecId { get; set; }
+namespace semenarna_id2.Areas.Panel.ViewModels {
+    public class SpecViewModel  {
         public string Name { get; set; }
         public string[] First { get; set; }
         public string[] Second { get; set; }

@@ -14,7 +14,10 @@ namespace semenarna_id2.Areas.Store.ViewModels {
         public bool OnSale { get; set; }
         public bool InStock { get; set; }
         public ICollection<Category> Categories { get; set; }
-        public Spec Spec { get; set; }
+        public List<string> SpecFirst { get; set; }
+        public List<string> SpecSecond { get; set; }
+        public List<string> SpecThird { get; set; }
+        public List<string> SpecFourth { get; set; }
         public string Img { get; set; }
     }
 }

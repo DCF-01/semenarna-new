@@ -82,13 +82,18 @@
 
         </div>
         <div class="form-group">
-            <label>Spec</label>
-            @*<select class="custom-select">
-                    <option selected>Open this select menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>*@
+            <label>Role</label>
+            <select class="form-control" name="RoleSelected">
+                @foreach (var spec in Model.GetSpecs) {
+                    if (spec == Model.CurrentSpec) {
+                        <option value="@spec" selected>@spec</option>
+                    }
+                    else {
+                        <option value="@spec">@spec</option>
+
+                    }
+                }
+            </select>
         </div>
 
 

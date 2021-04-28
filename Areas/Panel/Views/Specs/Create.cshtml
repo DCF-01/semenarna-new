@@ -1,0 +1,90 @@
+﻿@model SpecViewModel
+@{
+    ViewBag.Title = User.Identity.Name;
+    Layout = "~/Areas/Panel/Views/Shared/_PanelLayout.cshtml";
+}
+<div class="container-lg pt-3">
+    <form asp-controller="Specs" asp-action="Create" method="post" enctype="multipart/form-data">
+        <div class="form-group row">
+            <div class="col-6">
+                <label>Spec Name</label>
+                <input type="text" class="form-control" name="Name">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-3">
+                <label>Type</label>
+                <input type="text" class="form-control" name="First[]">
+            </div>
+            <div class="col-3">
+                <label>Title1</label>
+                <input type="text" class="form-control" name="First[]">
+            </div>
+            <div class="col-3">
+                <label>Title2</label>
+                <input type="text" class="form-control" name="First[]">
+            </div>
+            <div class="col-3">
+                <label>Title3</label>
+                <input type="text" class="form-control" name="First[]">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-3">
+                <label>Type Value </label>
+                <input type="text" class="form-control" name="Second[]">
+            </div>
+            <div class="col-3">
+                <label>Value 1</label>
+                <input type="text" class="form-control" name="Second[]">
+            </div>
+            <div class="col-3">
+                <label>Value 2</label>
+                <input type="text" class="form-control" name="Second[]">
+            </div>
+            <div class="col-3">
+                <label>Value 3</label>
+                <input type="text" class="form-control" name="Second[]">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-3">
+                <label>Type Value</label>
+                <input type="text" class="form-control" name="Third[]">
+            </div>
+            <div class="col-3">
+                <label>Value 1</label>
+                <input type="text" class="form-control" name="Third[]">
+            </div>
+            <div class="col-3">
+                <label>Value 2</label>
+                <input type="text" class="form-control" name="Third[]">
+            </div>
+            <div class="col-3">
+                <label>Value 3</label>
+                <input type="text" class="form-control" name="Third[]">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-3">
+                <label>Type Value</label>
+                <input type="text" class="form-control" name="Fourth[]">
+            </div>
+            <div class="col-3">
+                <label>Value 1</label>
+                <input type="text" class="form-control" name="Fourth[]">
+            </div>
+            <div class="col-3">
+                <label>Value 2</label>
+                <input type="text" class="form-control" name="Fourth[]">
+            </div>
+            <div class="col-3">
+                <label>Value 3</label>
+                <input type="text" class="form-control" name="Fourth[]">
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </form>
+</div>

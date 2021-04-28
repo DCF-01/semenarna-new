@@ -1,71 +1,74 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - semenarna</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+          integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+          crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" />
 
-    <script src="https://use.fontawesome.com/68b17132bc.js"></script>
 </head>
 <body>
     <header>
-        <div class="container-xl">
+        <div class="container-fluid p-0">
             <div class="secondary-menu">
-                <span>002 336 996</span>
-                <ul>
-                    <li>one</li>
-                    <li>one</li>
-                    <li>one</li>
-                </ul>
+                <span>02 2783 226</span>
+                <span>MK | EN</span>
             </div>
-
-            <div class="container-fluid">
-                <nav class="navbar navbar-light bg-light">
-                    <a class="navbar-brand" href="#">
-                        <img src="/docs/4.6/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
-                        Bootstrap
-                    </a>
-                    <form class="form-inline">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                    </form>
-                </nav>
+            <div class="container-fluid pl-3 pr-3">
+                <div class="row">
+                    <div class="col-3">
+                        <a class="navbar-brand" href="#">
+                            <img src="/img/temp-logo.jpg" width="250" height="60" class="d-inline-block align-top"
+                                 alt="">
+                        </a>
+                    </div>
+                    <div class="col-4">
+                        <span></span>
+                    </div>
+                    <div class="col-5 d-flex align-items-center ">
+                        <div class="form-group w-100 m-0">
+                            <div class="d-flex align-items-center">
+                                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"
+                        aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-                    <a class="navbar-brand" href="#">Hidden brand</a>
                     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                         <li class="nav-item active">
-                            <a class="nav-link active" href="/">Home</a>
+                            <a class="nav-link active" href="/">ПРОИЗВОДИ</a>
                         </li>
                         <li class="nav-item active">
-                            <a class="nav-link active" asp-area="Store" asp-controller="Base" asp-action="Index">Products</a>
+                            <a class="nav-link active" asp-area="Store" asp-controller="Base"
+                               asp-action="Index">КОШНИЦА</a>
                         </li>
-                        @if (User.IsInRole("Admin")) {
-                            <li class="nav-item active">
-                                <a class="nav-link" asp-area="Panel" asp-controller="Base" asp-action="Index">Panel</a>
-                            </li>
-                        }
-
+                        <li class="nav-item active">
+                            <a class="nav-link active" asp-area="Store" asp-controller="Base" asp-action="Index">
+                                ЗА
+                                НАС
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <div class="menu-icons">
-                    @if (User.Identity.IsAuthenticated) {
-                        <span>Welcome @User.Identity.Name</span>
-                        <a class="btn btn-info ml-2" asp-area="" asp-controller="Auth" asp-action="Logout">Logout</a>
-                    }
-                    else {
-                        <span>Welcome, please log in.</span>
-                        <a class="btn btn-info ml-2" asp-area="" asp-controller="Auth" asp-action="Login">Login</a>
-                    }
-                    <a href="/Cart"><i class="fas fa-shopping-cart fa-2x ml-2"></i></a>
+                    <i class="fa fa-user-circle" aria-hidden="true" style="padding-right: 5px;"></i>
+                    <span style="padding-right: 20px;">Најавете се</span>
+                    <a href="/Cart"><i class="fas fa-shopping-cart "></i></a>
                 </div>
             </nav>
         </div>

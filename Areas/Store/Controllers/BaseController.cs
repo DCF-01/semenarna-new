@@ -59,7 +59,6 @@ namespace semenarna_id2.Areas.Store.Controllers {
                     OnSale = item.OnSale,
                     InStock = item.InStock,
                     Categories = item.Categories,
-                    Spec = null,
                     Img = Convert.ToBase64String(item.Img)
                 };
                 item_list.Add(new_item);

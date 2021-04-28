@@ -18,30 +18,32 @@ namespace semenarna_id2.Controllers {
     [Area("Panel")]
     public class ProductsController : Controller {
         private ApplicationDbContext _ctx;
+        private UserManager<ApplicationUser> _userManager;
 
-        public ProductsController(ApplicationDbContext context) {
+        public ProductsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager) {
             _ctx = context;
+            _userManager = userManager;
         }
         [HttpGet]
         public async Task<IActionResult> Index() {
             var result = await _ctx.Products.ToListAsync();
 
-            /*var data = result.Select(c => new ProductViewModel {
-                Id = c.Id,
-                Name = c.Name,
-                Description = c.Description
-            }).ToList();*/
-
             return View(result);
         }
         [HttpGet]
         public async Task<IActionResult> Create() {
+            
 
             var categories = await _ctx.Categories
                 .Select(c => c.Name).ToListAsync();
+            var specs = await _ctx.Specs
+                .Select(spec => spec.Name).ToListAsync();
+
 
             var productViewModel = new ProductViewModel {
-                GetCategories = categories
+                GetCategories = categories,
+                GetSpecs = specs,
+                CurrentSpec = ""
             };
 
             return View(productViewModel);
@@ -56,6 +58,9 @@ namespace semenarna_id2.Controllers {
                                  where product_data.Categories.Contains(c.Name)
                                  select c;
 
+                var spec = _ctx.Specs
+                    .Where(s => s.Name == product_data.CurrentSpec)
+                    .Select(s => s).FirstOrDefault();
 
                 var product = new Product {
                     Name = product_data.Name,
@@ -64,7 +69,7 @@ namespace semenarna_id2.Controllers {
                     SalePrice = product_data.SalePrice,
                     OnSale = sale_state,
                     InStock = stock_state,
-                    Spec = null
+                    Spec = spec
                 };
                 product.Categories = new List<Category>();
 
@@ -128,8 +133,13 @@ namespace semenarna_id2.Controllers {
             try {
                 //get product with related categories
                 var product = await _ctx.Products.Include(product => product.Categories)
+                    .Include(product => product.Spec)
+                    .ThenInclude(p => p.Name)
                     .Where(product => product.ProductId == id)
                     .FirstOrDefaultAsync();
+
+                var all_specs = await _ctx.Specs
+                    .Select(s => s.Name).ToListAsync();
 
 
                 var byte_arr_img = product.Img;
@@ -143,7 +153,8 @@ namespace semenarna_id2.Controllers {
                     SalePrice = product.SalePrice,
                     OnSale = product.OnSale.ToString(),
                     InStock = product.InStock.ToString(),
-                    Spec = null,
+                    CurrentSpec = product.Spec.Name,
+                    GetSpecs = all_specs,
                     GetImg = img
                 };
 
@@ -179,6 +190,14 @@ namespace semenarna_id2.Controllers {
                 if (productViewModel.Description == null) {
                     throw new Exception("The product must have a description");
                 }
+                if(productViewModel.CurrentSpec == null) {
+                    throw new Exception("Spec required");
+                }
+
+                var spec = _ctx.Specs
+                    .Where(s => s.Name == productViewModel.CurrentSpec)
+                    .Select(s => s).FirstOrDefault();
+
                 // Product Img
                 IFormFile Image;
 
@@ -216,7 +235,7 @@ namespace semenarna_id2.Controllers {
                 entity.SalePrice = productViewModel.SalePrice;
                 entity.OnSale = sale_state;
                 entity.InStock = stock_state;
-                entity.Spec = null;
+                entity.Spec = spec;
 
 
                 if (Image != null) {
