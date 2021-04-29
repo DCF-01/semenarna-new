@@ -73,5 +73,65 @@ namespace semenarna_id2.Areas.Panel.Controllers {
             
             return View();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Manage(int id) {
+            try {
+                var spec = await _ctx.Specs.FindAsync(id);
+
+                return View(spec);
+
+            }
+            catch (Exception e) {
+                return View("An error has ocurred.");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Manage(int id, SpecViewModel specViewModel) {
+            if (specViewModel.Name == null) {
+                throw new Exception("Name cannot be empty");
+            }
+            //spec entity to be updated
+            var spec = await _ctx.Specs.FindAsync(id);
+
+            //helper vars
+            string spec_name = specViewModel.Name;
+            List<string> first_col = new List<string>();
+            List<string> second_col = new List<string>();
+            List<string> third_col = new List<string>();
+            List<string> fourth_col = new List<string>();
+
+            foreach (var item in specViewModel.First) {
+                if (item != null) {
+                    first_col.Add(item);
+                }
+            }
+            foreach (var item in specViewModel.Second) {
+                if (item != null) {
+                    second_col.Add(item);
+                }
+            }
+            foreach (var item in specViewModel.Third) {
+                if (item != null) {
+                    third_col.Add(item);
+                }
+            }
+            foreach (var item in specViewModel.Fourth) {
+                if (item != null) {
+                    fourth_col.Add(item);
+                }
+            }
+
+            spec.Name = spec_name;
+            spec.First = first_col.ToArray();
+            spec.Second = second_col.ToArray();
+            spec.Third = third_col.ToArray();
+            spec.Fourth = fourth_col.ToArray();
+
+            await _ctx.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
     }
 }

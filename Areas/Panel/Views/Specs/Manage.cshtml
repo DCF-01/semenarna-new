@@ -1,0 +1,64 @@
+﻿@model Spec
+@{
+    ViewBag.Title = User.Identity.Name;
+    Layout = "~/Areas/Panel/Views/Shared/_PanelLayout.cshtml";
+}
+@{
+    int max = 0;
+    var arr = new[] { Model.First, Model.Second, Model.Third, Model.Fourth };
+    for (int i = 0; i < 4; i++) {
+        if (arr[i].Length > max) {
+            max = arr[i].Length;
+        }
+    }
+}
+<div class="container-lg pt-3">
+    <form asp-controller="Specs" asp-action="Manage" method="post" enctype="multipart/form-data" id="spec-form">
+        <div class="form-group row">
+            <div class="col-6">
+                <label>Spec Name</label>
+                <input type="text" class="form-control" name="Name" value="@Model.Name">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-3">
+                <label>Type</label>
+                <input type="text" class="form-control" name="First[]" value="@arr[0][0]">
+            </div>
+            <div class="col-3">
+                <label>Title1</label>
+                <input type="text" class="form-control" name="Second[]" value="@arr[1][0]">
+            </div>
+            <div class="col-3">
+                <label>Title2</label>
+                <input type="text" class="form-control" name="Third[]" value="@arr[2][0]">
+            </div>
+            <div class="col-3">
+                <label>Title3</label>
+                <input type="text" class="form-control" name="Fourth[]" value="@arr[3][0]">
+            </div>
+        </div>
+        @for (int i = 1; i < max; i++) {
+            <div class="form-group row">
+                <div class="col-3">
+                    <input type="text" class="form-control" name="First[]" value="@arr[0][i]">
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control" name="Second[]" value="@arr[1][i]">
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control" name="Third[]" value="@arr[2][i]">
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control" name="Fourth[]" value="@arr[3][i]">
+                </div>
+            </div>
+        }
+        <div class="form-group" id="spec-add-item-group">
+            <button type="button" class="btn btn-secondary" id="add-row-btn"><i class="fas fa-plus pr-2"></i>Add row</button>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </form>
+</div>
