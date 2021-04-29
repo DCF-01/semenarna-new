@@ -34,38 +34,38 @@ namespace semenarna_id2.Areas.Panel.Controllers {
                 throw new Exception("Name cannot be empty");
             }
             string spec_name = specViewModel.Name;
-            List<string> first_row = new List<string>();
-            List<string> second_row = new List<string>();
-            List<string> third_row = new List<string>();
-            List<string> fourth_row = new List<string>();
+            List<string> first_col = new List<string>();
+            List<string> second_col = new List<string>();
+            List<string> third_col = new List<string>();
+            List<string> fourth_col = new List<string>();
 
             foreach (var item in specViewModel.First) {
                 if (item != null) {
-                    first_row.Add(item);
+                    first_col.Add(item);
                 }
             }
             foreach (var item in specViewModel.Second) {
                 if (item != null) {
-                    second_row.Add(item);
+                    second_col.Add(item);
                 }
             }
             foreach (var item in specViewModel.Third) {
                 if (item != null) {
-                    third_row.Add(item);
+                    third_col.Add(item);
                 }
             }
             foreach (var item in specViewModel.Fourth) {
                 if (item != null) {
-                    fourth_row.Add(item);
+                    fourth_col.Add(item);
                 }
             }
 
             var spec = new Spec {
                 Name = spec_name,
-                First = first_row.ToArray(),
-                Second = second_row.ToArray(),
-                Third = third_row.ToArray(),
-                Fourth = fourth_row.ToArray()
+                First = first_col.ToArray(),
+                Second = second_col.ToArray(),
+                Third = third_col.ToArray(),
+                Fourth = fourth_col.ToArray()
             };
 
             await _ctx.Specs.AddAsync(spec);

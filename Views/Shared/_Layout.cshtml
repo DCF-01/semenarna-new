@@ -51,7 +51,8 @@
                 <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
                     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                         <li class="nav-item active">
-                            <a class="nav-link active" href="/">ПРОИЗВОДИ</a>
+                            <a class="nav-link active" asp-area="Cart" asp-controller="Base"
+                               asp-action="Index">ПРОИЗВОДИ</a>
                         </li>
                         <li class="nav-item active">
                             <a class="nav-link active" asp-area="Store" asp-controller="Base"
@@ -63,12 +64,24 @@
                                 НАС
                             </a>
                         </li>
+                        @if (User.IsInRole("Admin")) {
+                            <li class="nav-item active">
+                                <a class="nav-link active" asp-area="Panel" asp-controller="Base" asp-action="Index">
+                                    PANEL
+                                </a>
+                            </li>
+                        }
                     </ul>
                 </div>
                 <div class="menu-icons">
-                    <i class="fa fa-user-circle" aria-hidden="true" style="padding-right: 5px;"></i>
-                    <span style="padding-right: 20px;">Најавете се</span>
-                    <a href="/Cart"><i class="fas fa-shopping-cart "></i></a>
+                        <i class="fa fa-user-circle" aria-hidden="true" style="padding-right: 5px;"></i>
+                    @if (User.Identity.IsAuthenticated) {
+                        <span style="padding-right: 20px;">Welcome @User.Identity.Name</span>
+                    }
+                    else {
+                        <span style="padding-right: 20px;"><a asp-controller="Auth" asp-action="Login">Најавете се</a></span>
+                    }
+                        <a href="/Cart"><i class="fas fa-shopping-cart "></i></a>
                 </div>
             </nav>
         </div>

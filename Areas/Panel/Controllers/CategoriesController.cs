@@ -26,9 +26,15 @@ namespace semenarna_id2.Areas.Panel.Controllers {
             }).ToList();
 
 
-            var a = all_categories.First();
+            if (all_categories.Count > 0) {
 
-            return View(all_categories);
+                return View(all_categories);
+            }
+            else {
+                var empty_list = new List<CategoryViewModel>();
+                return View(empty_list);
+            }
+
         }
         [HttpGet]
         public IActionResult Create() {

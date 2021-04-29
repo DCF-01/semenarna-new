@@ -82,8 +82,8 @@
 
         </div>
         <div class="form-group">
-            <label>Role</label>
-            <select class="form-control" name="RoleSelected">
+            <label>Spec</label>
+            <select class="form-control" name="CurrentSpec">
                 @foreach (var spec in Model.GetSpecs) {
                     if (spec == Model.CurrentSpec) {
                         <option value="@spec" selected>@spec</option>

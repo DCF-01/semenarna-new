@@ -23,17 +23,15 @@ namespace semenarna_id2.Areas.Store.Controllers {
                                     .Select(item => item)
                                     .FirstOrDefaultAsync();
 
+
             
 
             //finish spec
 
             if (item != null) {
-                var spec = _ctx.Specs.Include(s => s.First)
-                .Include(s => s.Second)
-                .Include(s => s.Third)
-                .Include(s => s.Fourth)
+                var spec = await _ctx.Specs
                 .Where(s => s.Name == item.Spec.Name)
-                .Select(s => s).FirstOrDefault();
+                .Select(s => s).FirstOrDefaultAsync();
 
 
                 var product = new ProductViewModel {
@@ -45,6 +43,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
                     OnSale = item.OnSale,
                     InStock = item.InStock,
                     Categories = item.Categories,
+                    Spec = spec,
                     Img = Convert.ToBase64String(item.Img)
                 };
 

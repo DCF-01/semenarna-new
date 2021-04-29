@@ -12,19 +12,27 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model) {
-            i += 1;
-            <tr>
-                <th scope="row">@i</th>
-                <td>@item.Name</td>
-                <td>@item.ProductCount</td>
-                <td>
-                    <button type="button" class="close delete-item-btn" aria-label="Close">
-                        <div class="item-id">@item.Id</div>
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </td>
-            </tr>
+        @if (Model.Count > 0) {
+            @foreach (var item in Model) {
+                i += 1;
+                <tr>
+                    <th scope="row">@i</th>
+                    <td>@item.Name</td>
+                    <td>@item.ProductCount</td>
+                    <td>
+                        <button type="button" class="close delete-item-btn" aria-label="Close">
+                            <div class="item-id">@item.Id</div>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </td>
+                </tr>
+            }
+        }
+        else {
+    <tr>
+        <th scope="row" colspan="4"><p style="text-align: center; margin: 0;">No items to display.</p></th>
+        @*<td>No items to display.</td>*@
+    </tr>
         }
     </tbody>
 </table>

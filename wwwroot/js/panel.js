@@ -31,5 +31,35 @@ delete_user_btn.forEach(element => {
 
     });
 });
+/* add new spec row on click*/
+let add_row_btn = document.getElementById('add-row-btn');
+let spec_form = document.getElementById('spec-form');
+let spec_add_item_group = document.getElementById('spec-add-item-group');
 
+    
 
+function addSpecRow() {
+    let spec_row = document.createElement('div');
+    spec_row.className = 'form-group row';
+    spec_row.innerHTML = `
+        <div class="col-3">
+            <input type="text" class="form-control" name="First[]">
+        </div>
+        <div class="col-3">
+            <input type="text" class="form-control" name="Second[]">
+        </div>
+        <div class="col-3">
+            <input type="text" class="form-control" name="Third[]">
+        </div>
+        <div class="col-3">
+            <input type="text" class="form-control" name="Fourth[]">
+        </div>
+`;
+
+    spec_form.insertBefore(spec_row, spec_add_item_group);
+}
+
+add_row_btn.addEventListener('click', (e) => {
+    console.log('clicked')
+    addSpecRow();
+})

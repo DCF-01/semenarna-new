@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="~/panel-lib/dist/css/adminlte.css">
     <link rel="stylesheet" href="~/css/panel.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    
+
 
 </head>
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
@@ -236,15 +236,27 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a  asp-controller="Categories" asp-action="Index" class="nav-link">
+                                    <a asp-controller="Categories" asp-action="Index" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>All Categories</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a  asp-controller="Categories" asp-action="Create" class="nav-link">
+                                    <a asp-controller="Categories" asp-action="Create" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Create Category</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-controller="Specs" asp-action="Index" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>All Spec</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-controller="Specs" asp-action="Create" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Create Spec</p>
                                     </a>
                                 </li>
                             </ul>

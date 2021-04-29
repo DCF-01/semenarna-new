@@ -134,7 +134,6 @@ namespace semenarna_id2.Controllers {
                 //get product with related categories
                 var product = await _ctx.Products.Include(product => product.Categories)
                     .Include(product => product.Spec)
-                    .ThenInclude(p => p.Name)
                     .Where(product => product.ProductId == id)
                     .FirstOrDefaultAsync();
 
