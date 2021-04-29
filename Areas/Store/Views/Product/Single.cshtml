@@ -1,13 +1,10 @@
 ﻿@model ProductViewModel
 @{
-    int max = 0;
-    var arr = new[] { Model.Spec.First, Model.Spec.Second, Model.Spec.Third, Model.Spec.Fourth };
-    for (int i = 0; i < 4; i++) {
-        if (arr[i].Length > max) {
-            max = arr[i].Length;
-        }
-    }
+    int max = Model.Spec.Rest.Length;
+    var max_per_row = Model.Spec.ItemsPerRow;
+    var num_of_rows = (Model.Spec.Rest.Length + Model.Spec.First.Length) / max_per_row;
 }
+
 
 <div class="container-lg mt-5">
     <div class="row mb-5">
@@ -58,19 +55,20 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        @for (int j = 0; j < 4; j++) {
-                            <th scope="col">@arr[j][0]</th>
+                        @for (int j = 0; j < max_per_row; j++) {
+                            <th scope="col">@Model.Spec.First[j]</th>
                         }
                     </tr>
                 </thead>
                 <tbody>
-                    @for (int i = 1; i < max; i++) {
+                    @{ int start = 0;}
+                    @for (int i = 1; i < num_of_rows; i++) {
                         <tr>
-                            <th scope="row">@arr[0][i]</th>
-                            <td>@arr[1][i]</td>
-                            <td>@arr[2][i]</td>
-                            <td>@arr[3][i]</td>
+                            @for (int k = start; k < (start + max_per_row); k++) {
+                                <th>@Model.Spec.Rest[k]</th>
+                            }
                         </tr>
+                        start += max_per_row;
                     }
                 </tbody>
 

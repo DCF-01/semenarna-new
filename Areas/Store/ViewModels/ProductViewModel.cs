@@ -1,4 +1,5 @@
-﻿using semenarna_id2.Models;
+﻿using semenarna_id2.Areas.Panel.ViewModels;
+using semenarna_id2.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace semenarna_id2.Areas.Store.ViewModels {
         public bool OnSale { get; set; }
         public bool InStock { get; set; }
         public ICollection<Category> Categories { get; set; }
-        public Spec Spec { get; set; }
+        public StoreSpecViewModel Spec { get; set; }
         public string Img { get; set; }
     }
 }

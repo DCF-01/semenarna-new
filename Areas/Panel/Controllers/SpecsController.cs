@@ -30,47 +30,36 @@ namespace semenarna_id2.Areas.Panel.Controllers {
         }
         [HttpPost]
         public async Task<IActionResult> Create(SpecViewModel specViewModel) {
-            if(specViewModel.Name == null) {
+            if (specViewModel.Name == null) {
                 throw new Exception("Name cannot be empty");
             }
-            string spec_name = specViewModel.Name;
-            List<string> first_col = new List<string>();
-            List<string> second_col = new List<string>();
-            List<string> third_col = new List<string>();
-            List<string> fourth_col = new List<string>();
 
-            foreach (var item in specViewModel.First) {
-                if (item != null) {
-                    first_col.Add(item);
+            List<string> active_columns = new List<string>();
+            foreach (var i in specViewModel.First) {
+                if (i != null) {
+                    active_columns.Add(i);
                 }
+
             }
-            foreach (var item in specViewModel.Second) {
-                if (item != null) {
-                    second_col.Add(item);
-                }
-            }
-            foreach (var item in specViewModel.Third) {
-                if (item != null) {
-                    third_col.Add(item);
-                }
-            }
-            foreach (var item in specViewModel.Fourth) {
-                if (item != null) {
-                    fourth_col.Add(item);
+
+            //checked arr
+            List<string> rest = new List<string>();
+            for (int i = 0; i < specViewModel.Rest.Length; i++) {
+                if (specViewModel.Rest[i] != null) {
+                    rest.Add(specViewModel.Rest[i]);
                 }
             }
 
             var spec = new Spec {
-                Name = spec_name,
-                First = first_col.ToArray(),
-                Second = second_col.ToArray(),
-                Third = third_col.ToArray(),
-                Fourth = fourth_col.ToArray()
+                First = active_columns.ToArray(),
+                Rest = rest.ToArray(),
+                ItemsPerRow = active_columns.Count(),
+                Name = specViewModel.Name
             };
 
             await _ctx.Specs.AddAsync(spec);
             await _ctx.SaveChangesAsync();
-            
+
             return View();
         }
 
@@ -92,46 +81,55 @@ namespace semenarna_id2.Areas.Panel.Controllers {
             if (specViewModel.Name == null) {
                 throw new Exception("Name cannot be empty");
             }
-            //spec entity to be updated
+
             var spec = await _ctx.Specs.FindAsync(id);
 
-            //helper vars
-            string spec_name = specViewModel.Name;
-            List<string> first_col = new List<string>();
-            List<string> second_col = new List<string>();
-            List<string> third_col = new List<string>();
-            List<string> fourth_col = new List<string>();
+            List<string> active_columns = new List<string>();
+            foreach (var i in specViewModel.First) {
+                if (i != null) {
+                    active_columns.Add(i);
+                }
 
-            foreach (var item in specViewModel.First) {
-                if (item != null) {
-                    first_col.Add(item);
-                }
             }
-            foreach (var item in specViewModel.Second) {
-                if (item != null) {
-                    second_col.Add(item);
-                }
-            }
-            foreach (var item in specViewModel.Third) {
-                if (item != null) {
-                    third_col.Add(item);
-                }
-            }
-            foreach (var item in specViewModel.Fourth) {
-                if (item != null) {
-                    fourth_col.Add(item);
+
+            //checked arr
+            List<string> rest = new List<string>();
+            for (int i = 0; i < specViewModel.Rest.Length; i++) {
+                if (specViewModel.Rest[i] != null) {
+                    rest.Add(specViewModel.Rest[i]);
                 }
             }
 
-            spec.Name = spec_name;
-            spec.First = first_col.ToArray();
-            spec.Second = second_col.ToArray();
-            spec.Third = third_col.ToArray();
-            spec.Fourth = fourth_col.ToArray();
+            spec.First = active_columns.ToArray();
+            spec.Rest = rest.ToArray();
+            spec.ItemsPerRow = active_columns.Count();
+            spec.Name = specViewModel.Name;
+
 
             await _ctx.SaveChangesAsync();
 
+
             return RedirectToAction("Index");
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromRoute] int id) {
+            try {
+                //delete product
+                var spec = _ctx.Specs.Find(id);
+
+                if (spec != null) {
+                    _ctx.Specs.Remove(spec);
+                    await _ctx.SaveChangesAsync();
+                    return Ok();
+                }
+                else {
+                    return StatusCode(500);
+                }
+            }
+            catch (Exception e) {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

@@ -36,30 +36,96 @@ let add_row_btn = document.getElementById('add-row-btn');
 let spec_form = document.getElementById('spec-form');
 let spec_add_item_group = document.getElementById('spec-add-item-group');
 
-    
+
 
 function addSpecRow() {
-    let spec_row = document.createElement('div');
-    spec_row.className = 'form-group row';
-    spec_row.innerHTML = `
-        <div class="col-3">
-            <input type="text" class="form-control" name="First[]">
-        </div>
-        <div class="col-3">
-            <input type="text" class="form-control" name="Second[]">
-        </div>
-        <div class="col-3">
-            <input type="text" class="form-control" name="Third[]">
-        </div>
-        <div class="col-3">
-            <input type="text" class="form-control" name="Fourth[]">
-        </div>
-`;
+    let last_row = spec_add_item_group.previousElementSibling;
+    let spec_row = last_row.cloneNode(true);
 
     spec_form.insertBefore(spec_row, spec_add_item_group);
 }
 
-add_row_btn.addEventListener('click', (e) => {
-    console.log('clicked')
-    addSpecRow();
+if (add_row_btn !== null) {
+    add_row_btn.addEventListener('click', (e) => {
+        console.log('clicked')
+        addSpecRow();
+    });
+}
+
+let first_column = document.querySelectorAll('.first-column');
+let second_column = document.querySelectorAll('.second-column');
+let third_column = document.querySelectorAll('.third-column');
+let fourth_column = document.querySelectorAll('.fourth-column');
+
+
+
+
+
+first_column.forEach(el => {
+    el.addEventListener('keyup', (e) => {
+        let first_column_toggle = document.querySelectorAll('.first-column-toggle');
+        if (e.target.value === '') {
+            first_column_toggle.forEach(el => {
+                el.disabled = true;
+                el.style.opacity = 0.4;
+            });
+        }
+        else {
+            first_column_toggle.forEach(el => {
+                el.disabled = false;
+                el.style.opacity = 1
+            });
+        }
+    })
+})
+second_column.forEach(el => {
+    el.addEventListener('keyup', (e) => {
+        let second_column_toggle = document.querySelectorAll('.second-column-toggle');
+        if (e.target.value === '') {
+            second_column_toggle.forEach(el => {
+                el.disabled = true;
+                el.style.opacity = 0.4;
+            });
+        }
+        else {
+            second_column_toggle.forEach(el => {
+                el.disabled = false;
+                el.style.opacity = 1
+            });
+        }
+    })
+})
+third_column.forEach(el => {
+    el.addEventListener('keyup', (e) => {
+        let third_column_toggle = document.querySelectorAll('.third-column-toggle');
+        if (e.target.value === '') {
+            third_column_toggle.forEach(el => {
+                el.disabled = true;
+                el.style.opacity = 0.4;
+            });
+        }
+        else {
+            third_column_toggle.forEach(el => {
+                el.disabled = false;
+                el.style.opacity = 1;
+            });
+        }
+    })
+})
+fourth_column.forEach(el => {
+    el.addEventListener('keyup', (e) => {
+        let fourth_column_toggle = document.querySelectorAll('.fourth-column-toggle');
+        if (e.target.value === '') {
+            fourth_column_toggle.forEach(el => {
+                el.disabled = true;
+                el.style.opacity = 0.4;
+            });
+        }
+        else {
+            fourth_column_toggle.forEach(el => {
+                el.disabled = false;
+                el.style.opacity = 1;
+            });
+        }
+    })
 })

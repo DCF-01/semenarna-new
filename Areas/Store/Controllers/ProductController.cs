@@ -24,7 +24,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
                                     .FirstOrDefaultAsync();
 
 
-            
+
 
             //finish spec
 
@@ -43,15 +43,20 @@ namespace semenarna_id2.Areas.Store.Controllers {
                     OnSale = item.OnSale,
                     InStock = item.InStock,
                     Categories = item.Categories,
-                    Spec = spec,
+                    Spec = new StoreSpecViewModel {
+                        ItemsPerRow = spec.ItemsPerRow,
+                        First = spec.First,
+                        Rest = spec.Rest,
+                        Name = spec.Name
+                    },
                     Img = Convert.ToBase64String(item.Img)
                 };
 
-/*
-                product.SpecFirst = new List<string>();
-                foreach(var i in spec.First) {
-                    product.SpecFirst.Add(i.First.);
-                }*/
+                /*
+                                product.SpecFirst = new List<string>();
+                                foreach(var i in spec.First) {
+                                    product.SpecFirst.Add(i.First.);
+                                }*/
 
                 return View(product);
             }
