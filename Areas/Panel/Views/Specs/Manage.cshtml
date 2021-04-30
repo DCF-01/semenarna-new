@@ -4,11 +4,11 @@
     Layout = "~/Areas/Panel/Views/Shared/_PanelLayout.cshtml";
 }
 @{
-    int max = 0;
     var arr_first = Model.First;
     var arr_last = Model.Rest;
-    var num_of_rows = (Model.First.Length + Model.Rest.Length) / Model.ItemsPerRow;
-
+    //number of Rest[] rows
+    var num_of_rows = ((Model.First.Length + Model.Rest.Length) / Model.ItemsPerRow) - 1;
+    var start = 0;
 }
 <div class="container-lg pt-3">
     <form asp-controller="Specs" asp-action="Manage" method="post" enctype="multipart/form-data" id="spec-form">
@@ -18,27 +18,31 @@
                 <input type="text" class="form-control" name="Name" value="@Model.Name">
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row row-parent">
             @for (int k = 0; k < Model.ItemsPerRow; k++) {
-                <div class="col-3">
+                <div class="col">
                     <label>Field @(k+1)</label>
-                    <input type="text" class="form-control" name="First[]" value="@arr_first[k]">
+                    <input type="text" class="form-control column-@(k+1)" name="First[]" value="@arr_first[k]">
                 </div>
             }
         </div>
-        @{ var start = 0;}
         @for (int i = 1; i < num_of_rows; i++) {
-            <div class="form-group row">
+            <div class="form-group row row-parent">
                 @for (int j = start; j < Model.ItemsPerRow; j++) {
-                    <div class="col-3">
-                        <input type="text" class="form-control" name="Rest[]" value="@arr_last[j]">
+                    <div class="col">
+                        <input type="text" class="form-control column-toggle-@(j + 1)" name="Rest[]" value="@arr_last[j]">
                     </div>
                 }
             </div>
             start += Model.ItemsPerRow;
         }
         <div class="form-group" id="spec-add-item-group">
-            <button type="button" class="btn btn-secondary" id="add-row-btn"><i class="fas fa-plus pr-2"></i>Add row</button>
+            <button type="button" class="btn btn-secondary" id="add-row-btn"><i class="fas fa-plus pr-2"></i>Add Row</button>
+            <button type="button" class="btn btn-secondary" id="add-col-btn"><i class="fas fa-plus pr-2"></i>Add Column</button>
+        </div>
+        <div class="form-group" id="spec-remove-item-group">
+            <button type="button" class="btn btn-secondary" id="remove-row-btn"><i class="fas fa-plus pr-2"></i>Delete Row</button>
+            <button type="button" class="btn btn-secondary" id="remove-col-btn"><i class="fas fa-plus pr-2"></i>Delete Column</button>
         </div>
         <div class="form-group">
             <input type="submit" value="Create" class="btn btn-default" />

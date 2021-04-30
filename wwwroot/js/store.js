@@ -477,7 +477,7 @@ function openInputBox(event) {
 
         let cart_edit_quantity = parent.querySelector('.cart-edit-quantity');
         cart_edit_quantity.addEventListener('click', (e) => {
-            openInputBox();
+            openInputBox(e);
         });
     });
 }

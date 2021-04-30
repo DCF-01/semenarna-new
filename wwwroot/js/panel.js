@@ -1,5 +1,7 @@
 ﻿const delete_user_btn = document.querySelectorAll('.delete-item-btn');
 const current_url = window.location.href;
+let alert_container = document.getElementById('alert-container-panel');
+var alert_timeout;
 
 delete_user_btn.forEach(element => {
     element.addEventListener('click', (e) => {
@@ -34,22 +36,83 @@ delete_user_btn.forEach(element => {
 /* add new spec row on click*/
 let add_row_btn = document.getElementById('add-row-btn');
 let add_col_btn = document.getElementById('add-col-btn');
+
+/* remove new spec row onclick*/
+let remove_row_btn = document.getElementById('remove-row-btn');
+let remove_col_btn = document.getElementById('remove-col-btn');
+
+
+
 let spec_form = document.getElementById('spec-form');
 let spec_add_item_group = document.getElementById('spec-add-item-group');
-let col_count = 4;
 
 
-function addSpecRow() {
-    let last_row = spec_add_item_group.previousElementSibling;
-    let spec_row = last_row.cloneNode(true);
 
-    spec_form.insertBefore(spec_row, spec_add_item_group);
+function removeSpecRow() {
+    let all_rows = document.querySelectorAll('.row-parent');
+    if (all_rows.length > 2) {
+        let node_to_remove = all_rows[all_rows.length - 1];
+        node_to_remove.remove();
+    }
+    else {
+        //toast
+        let alert_exists = document.querySelector('.alert');
+        if (alert_exists != null) {
+            clearTimeout(alert_timeout);
+            createAlert('Action canceled: There must be at least 2 rows.');
+            alert_timeout = setTimeout(closeAlert, 4000);
+        }
+        else {
+            createAlert('Action canceled: There must be at least 2 rows.');
+            alert_timeout = setTimeout(closeAlert, 4000);
+        }
+    }
+
+
 }
 
-function addSpecColumn() {
+function removeSpecCol() {
+    let all_rows = document.querySelectorAll('.row-parent');
+    if (all_rows[0].childElementCount > 2) {
+        all_rows.forEach(row => {
+            let node_to_remove = row.lastElementChild;
+            node_to_remove.remove();
+        });
+    }
+    else {
+        //toast
+        let alert_exists = document.querySelector('.alert');
+        if (alert_exists != null) {
+            clearTimeout(alert_timeout);
+            createAlert('Action canceled: There must be at least 2 columns.');
+            alert_timeout = setTimeout(closeAlert, 4000);
+        }
+        else {
+            createAlert('Action canceled: There must be at least 2 columns.');
+            alert_timeout = setTimeout(closeAlert, 4000);
+        }
+    }
+}
+
+function addSpecRow() {
+    let row_count = document.querySelectorAll('row-parent').childElementCount;
+
+    let last_row = spec_add_item_group.previousElementSibling;
+    //new row
+    let spec_row = last_row.cloneNode(true);
+    spec_row.firstChild.className = `form-control column-toggle-${row_count + 1}`;
+    spec_form.insertBefore(spec_row, spec_add_item_group);
+
+    addListener();
+}
+
+function addSpecCol() {
 
 
     let all_rows = document.querySelectorAll('.row-parent');
+
+    let first_row = document.querySelector('.row-parent');
+    let col_count = first_row.childElementCount;
 
     col_count += 1;
     all_rows.forEach(row => {
@@ -66,28 +129,7 @@ function addSpecColumn() {
         row.appendChild(new_node);
 
     });
-    /*let col_string = `.column-${col_count}`;*/
-    let master_node = document.querySelector(`.column-${col_count}`);
-
-
-    master_node.addEventListener('keyup', (e) => {
-        let slave_nodes = document.querySelectorAll('.column-toggle-' + col_count);
-        if (e.target.value === '') {
-            slave_nodes.forEach(el => {
-                el.disabled = true;
-                el.style.opacity = 0.4;
-            });
-        }
-        else {
-            slave_nodes.forEach(el => {
-                el.disabled = false;
-                el.style.opacity = 1
-            });
-        }
-
-    });
-
-
+    addListener();
 }
 
 if (add_row_btn !== null) {
@@ -100,81 +142,66 @@ if (add_row_btn !== null) {
 if (add_col_btn !== null) {
     add_col_btn.addEventListener('click', (e) => {
         console.log('clicked')
-        addSpecColumn();
+        addSpecCol();
     });
 }
 
-let first_column = document.querySelectorAll('.column-1');
-let second_column = document.querySelectorAll('.column-2');
-let third_column = document.querySelectorAll('.column-3');
-let fourth_column = document.querySelectorAll('.column-4');
+if (remove_row_btn !== null) {
+    remove_row_btn.addEventListener('click', (e) => {
+        console.log('clicked')
+        removeSpecRow();
+    });
+}
+
+if (remove_col_btn !== null) {
+    remove_col_btn.addEventListener('click', (e) => {
+        console.log('clicked')
+        removeSpecCol();
+    });
+}
+
+//add eventListener to all master nodes
+function addListener(element = null) {
+    let parent_el = document.querySelector('.row-parent');
+    let num_of_cols = parent_el.childElementCount;
+
+    for (i = 1; i <= num_of_cols; i++) {
+        let master_node = document.querySelector(`.column-${i}`);
+        let slave_nodes = document.querySelectorAll(`.column-toggle-${i}`);
+
+        master_node.addEventListener('keyup', (e) => {
+            if (e.target.value === '') {
+                slave_nodes.forEach(el => {
+                    el.disabled = true;
+                    el.style.opacity = 0.4;
+                });
+            }
+            else {
+                slave_nodes.forEach(el => {
+                    el.disabled = false;
+                    el.style.opacity = 1
+                });
+            }
+        });
+    }
+
+}
+function createAlert(message_str = 'An error has occured.') {
+    let code = `<div class="alert alert-danger alert-dismissible fade show" role = "alert" >
+            <strong>${message_str}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>`;
+
+    alert_container.innerHTML += code;
+
+}
+
+function closeAlert() {
+    $('.alert').alert('close');
+}
 
 
-first_column.forEach(el => {
-    el.addEventListener('keyup', (e) => {
-        let first_column_toggle = document.querySelectorAll('.column-toggle-1');
-        if (e.target.value === '') {
-            first_column_toggle.forEach(el => {
-                el.disabled = true;
-                el.style.opacity = 0.4;
-            });
-        }
-        else {
-            first_column_toggle.forEach(el => {
-                el.disabled = false;
-                el.style.opacity = 1
-            });
-        }
-    })
-})
-second_column.forEach(el => {
-    el.addEventListener('keyup', (e) => {
-        let second_column_toggle = document.querySelectorAll('.column-toggle-2');
-        if (e.target.value === '') {
-            second_column_toggle.forEach(el => {
-                el.disabled = true;
-                el.style.opacity = 0.4;
-            });
-        }
-        else {
-            second_column_toggle.forEach(el => {
-                el.disabled = false;
-                el.style.opacity = 1
-            });
-        }
-    })
-})
-third_column.forEach(el => {
-    el.addEventListener('keyup', (e) => {
-        let third_column_toggle = document.querySelectorAll('.column-toggle-3');
-        if (e.target.value === '') {
-            third_column_toggle.forEach(el => {
-                el.disabled = true;
-                el.style.opacity = 0.4;
-            });
-        }
-        else {
-            third_column_toggle.forEach(el => {
-                el.disabled = false;
-                el.style.opacity = 1;
-            });
-        }
-    })
-})
-fourth_column.forEach(el => {
-    el.addEventListener('keyup', (e) => {
-        let fourth_column_toggle = document.querySelectorAll('.column-toggle-4');
-        if (e.target.value === '') {
-            fourth_column_toggle.forEach(el => {
-                el.disabled = true;
-                el.style.opacity = 0.4;
-            });
-        }
-        else {
-            fourth_column_toggle.forEach(el => {
-                el.disabled = false;
-                el.style.opacity = 1;
-            });
-        }
-    })
-})
+//exec once on js load
+addListener();

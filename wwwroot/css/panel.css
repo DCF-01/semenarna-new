@@ -1,3 +1,9 @@
 ﻿.item-id {
     display: none;
 }
+#alert-container-panel {
+    position: fixed;
+    top: 88%;
+    left: 40%;
+    z-index: 100;
+}
