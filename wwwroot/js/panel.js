@@ -33,9 +33,10 @@ delete_user_btn.forEach(element => {
 });
 /* add new spec row on click*/
 let add_row_btn = document.getElementById('add-row-btn');
+let add_col_btn = document.getElementById('add-col-btn');
 let spec_form = document.getElementById('spec-form');
 let spec_add_item_group = document.getElementById('spec-add-item-group');
-
+let col_count = 4;
 
 
 function addSpecRow() {
@@ -45,6 +46,50 @@ function addSpecRow() {
     spec_form.insertBefore(spec_row, spec_add_item_group);
 }
 
+function addSpecColumn() {
+
+
+    let all_rows = document.querySelectorAll('.row-parent');
+
+    col_count += 1;
+    all_rows.forEach(row => {
+        let last_node = row.lastElementChild;
+        let new_node = last_node.cloneNode(true);
+
+        let node_name = new_node.lastElementChild.getAttribute('name');
+        if (node_name === 'First[]') {
+            new_node.lastElementChild.className = 'form-control column-' + col_count;
+        }
+        else {
+            new_node.lastElementChild.className = 'form-control column-toggle-' + col_count;
+        }
+        row.appendChild(new_node);
+
+    });
+    /*let col_string = `.column-${col_count}`;*/
+    let master_node = document.querySelector(`.column-${col_count}`);
+
+
+    master_node.addEventListener('keyup', (e) => {
+        let slave_nodes = document.querySelectorAll('.column-toggle-' + col_count);
+        if (e.target.value === '') {
+            slave_nodes.forEach(el => {
+                el.disabled = true;
+                el.style.opacity = 0.4;
+            });
+        }
+        else {
+            slave_nodes.forEach(el => {
+                el.disabled = false;
+                el.style.opacity = 1
+            });
+        }
+
+    });
+
+
+}
+
 if (add_row_btn !== null) {
     add_row_btn.addEventListener('click', (e) => {
         console.log('clicked')
@@ -52,18 +97,22 @@ if (add_row_btn !== null) {
     });
 }
 
-let first_column = document.querySelectorAll('.first-column');
-let second_column = document.querySelectorAll('.second-column');
-let third_column = document.querySelectorAll('.third-column');
-let fourth_column = document.querySelectorAll('.fourth-column');
+if (add_col_btn !== null) {
+    add_col_btn.addEventListener('click', (e) => {
+        console.log('clicked')
+        addSpecColumn();
+    });
+}
 
-
-
+let first_column = document.querySelectorAll('.column-1');
+let second_column = document.querySelectorAll('.column-2');
+let third_column = document.querySelectorAll('.column-3');
+let fourth_column = document.querySelectorAll('.column-4');
 
 
 first_column.forEach(el => {
     el.addEventListener('keyup', (e) => {
-        let first_column_toggle = document.querySelectorAll('.first-column-toggle');
+        let first_column_toggle = document.querySelectorAll('.column-toggle-1');
         if (e.target.value === '') {
             first_column_toggle.forEach(el => {
                 el.disabled = true;
@@ -80,7 +129,7 @@ first_column.forEach(el => {
 })
 second_column.forEach(el => {
     el.addEventListener('keyup', (e) => {
-        let second_column_toggle = document.querySelectorAll('.second-column-toggle');
+        let second_column_toggle = document.querySelectorAll('.column-toggle-2');
         if (e.target.value === '') {
             second_column_toggle.forEach(el => {
                 el.disabled = true;
@@ -97,7 +146,7 @@ second_column.forEach(el => {
 })
 third_column.forEach(el => {
     el.addEventListener('keyup', (e) => {
-        let third_column_toggle = document.querySelectorAll('.third-column-toggle');
+        let third_column_toggle = document.querySelectorAll('.column-toggle-3');
         if (e.target.value === '') {
             third_column_toggle.forEach(el => {
                 el.disabled = true;
@@ -114,7 +163,7 @@ third_column.forEach(el => {
 })
 fourth_column.forEach(el => {
     el.addEventListener('keyup', (e) => {
-        let fourth_column_toggle = document.querySelectorAll('.fourth-column-toggle');
+        let fourth_column_toggle = document.querySelectorAll('.column-toggle-4');
         if (e.target.value === '') {
             fourth_column_toggle.forEach(el => {
                 el.disabled = true;

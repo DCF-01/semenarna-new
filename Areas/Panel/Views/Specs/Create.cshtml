@@ -11,41 +11,42 @@
                 <input type="text" class="form-control" name="Name">
             </div>
         </div>
-        <div class="form-group row">
-            <div class="col-3">
+        <div class="form-group row row-parent">
+            <div class="col">
                 <label>Type</label>
-                <input type="text" class="form-control first-column" name="First[]">
+                <input type="text" class="form-control column-1" name="First[]">
             </div>
-            <div class="col-3">
+            <div class="col">
                 <label>Title1</label>
-                <input type="text" class="form-control second-column" name="First[]">
+                <input type="text" class="form-control column-2" name="First[]">
             </div>
-            <div class="col-3">
+            <div class="col">
                 <label>Title2</label>
-                <input type="text" class="form-control third-column" name="First[]">
+                <input type="text" class="form-control column-3" name="First[]">
             </div>
-            <div class="col-3">
+            <div class="col">
                 <label>Title3</label>
-                <input type="text" class="form-control fourth-column" name="First[]">
+                <input type="text" class="form-control column-4" name="First[]">
             </div>
         </div>
-        <div class="form-group row">
-            <div class="col-3">
-                <input type="text" class="form-control first-column-toggle" style="opacity: 0.4;" name="Rest[]" disabled>
+        <div class="form-group row row-parent">
+            <div class="col">
+                <input type="text" class="form-control column-toggle-1" style="opacity: 0.4;" name="Rest[]" disabled>
             </div>
-            <div class="col-3">
-                <input type="text" class="form-control second-column-toggle" style="opacity: 0.4;" name="Rest[]" disabled>
+            <div class="col">
+                <input type="text" class="form-control column-toggle-2" style="opacity: 0.4;" name="Rest[]" disabled>
             </div>
-            <div class="col-3">
-                <input type="text" class="form-control third-column-toggle" style="opacity: 0.4;" name="Rest[]" disabled>
+            <div class="col">
+                <input type="text" class="form-control column-toggle-3" style="opacity: 0.4;" name="Rest[]" disabled>
             </div>
-            <div class="col-3">
-                <input type="text" class="form-control fourth-column-toggle" style="opacity: 0.4;" name="Rest[]" disabled>
+            <div class="col">
+                <input type="text" class="form-control column-toggle-4" style="opacity: 0.4;" name="Rest[]" disabled>
             </div>
         </div>
-    <div class="form-group" id="spec-add-item-group">
-        <button type="button" class="btn btn-secondary" id="add-row-btn"><i class="fas fa-plus pr-2"></i>Add row</button>
-    </div>
+        <div class="form-group" id="spec-add-item-group">
+            <button type="button" class="btn btn-secondary" id="add-row-btn"><i class="fas fa-plus pr-2"></i>Add Row</button>
+            <button type="button" class="btn btn-secondary" id="add-col-btn"><i class="fas fa-plus pr-2"></i>Add Column</button>
+        </div>
         <div class="form-group">
             <input type="submit" value="Create" class="btn btn-default" />
         </div>
