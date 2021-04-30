@@ -28,15 +28,15 @@ namespace semenarna_id2.Areas.Panel.Controllers {
         [HttpGet]
         public async Task<IActionResult> Index() {
 
-            var users = await _userManager.Users
+            var users = await _ctx.Users
                                 .Select(user =>
                                 new UserViewModel {
                                     UserId = user.Id,
                                     UserName = user.UserName,
                                     Email = user.Email,
                                     EmailConfirmed = user.EmailConfirmed,
-                                    CurrentRole = _userManager.GetRolesAsync(user).GetAwaiter().GetResult().FirstOrDefault()
                                 }
+
                                 ).ToListAsync();
 
             return View(users);

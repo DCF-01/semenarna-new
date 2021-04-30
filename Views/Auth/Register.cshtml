@@ -1,20 +1,5 @@
 ﻿@model RegisterViewModel
     <div class="container-xl">
-        <script>
-            const attr = document.createAttribute('disabled');
-            var check = function () {
-                if (document.getElementById('password').value ==
-                    document.getElementById('confirm_password').value) {
-                    document.getElementById('message').style.color = 'green';
-                    document.getElementById('message').innerHTML = 'Пасвордот е валиден';
-                    document.getElementById('submit-btn-register').removeAttributeNode(attr);
-                } else {
-                    document.getElementById('message').style.color = 'red';
-                    document.getElementById('message').innerHTML = 'Пасвордот се разликува';
-                    document.getElementById('submit-btn-register').setAttributeNode(attr);
-                }
-            }
-        </script>
         <form asp-controller="Auth" asp-action="Register">
             <div class="form-group">
                 <label for="exampleInputEmail1">Email address</label>

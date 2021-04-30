@@ -37,8 +37,8 @@ namespace semenarna_id2.Areas.Cart.Controllers {
             var user_id = _userManager.GetUserId(User);
 
 
-            var user = _ctx.Users.Include(user => user.Cart).ThenInclude(cart => cart.CartProducts).ThenInclude(product => product.Product)
-                                    .Where(user => user.Id == user_id).FirstOrDefault();
+            var user = await _ctx.Users.Include(user => user.Cart).ThenInclude(cart => cart.CartProducts).ThenInclude(product => product.Product)
+                                    .Where(user => user.Id == user_id).FirstOrDefaultAsync();
 
             if (user.Cart.CartProducts != null) {
 

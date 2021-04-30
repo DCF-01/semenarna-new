@@ -12,7 +12,6 @@
             <th scope="col">Username</th>
             <th scope="col">Email</th>
             <th scope="col">Email Confirmed</th>
-            <th scope="col">Role</th>
             <th scope="col">Details</th>
             <th scope="col"></th>
         </tr>
@@ -30,7 +29,6 @@
                 else {
                     <td>Email has not been confirmed</td>
                 }
-                <td>@user.CurrentRole</td>
                 <td><a href="@Context.Request.Path/Manage/@user.UserId">Details</a></td>
                 <td>
                     <button type="button" class="close delete-item-btn" aria-label="Close">

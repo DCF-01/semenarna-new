@@ -36,7 +36,7 @@ namespace semenarna_id2.Controllers {
                 var usr = new ApplicationUser {
                     Email = registerViewModel.Email,
                     UserName = registerViewModel.Email,
-                    Cart = null
+                    Cart = new Cart()
                 };
 
                 var res = await _userManager.CreateAsync(usr, registerViewModel.Password);
