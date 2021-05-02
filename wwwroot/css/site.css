@@ -122,24 +122,23 @@ body {
     height: 400px;
 }
 
-.carousel-main .carousel-item img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    min-height: 100%;
-}
+    .carousel-main .carousel-item img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        min-height: 100%;
+    }
 
 .carousel-promotion .carousel-item {
     position: relative;
     height: 300px;
 }
 
-    .carousel-promotion .carousel-item img {
-        position: absolute;
-        top: 0;
-        left: 0;
-        min-height: 400px;
-    }
+.carousel-promotion .carousel-item img {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
 
 
 /* STORE CSS */
@@ -162,4 +161,22 @@ body {
     top: 92%;
     left: 40%;
     z-index: 100;
+}
+
+/* PRODUCTS PAGE */
+.categories-box {
+    padding-left: 40px;
+    border: 1px solid;
+}
+
+.grey-hr {
+    border-top: 1px solid grey;
+}
+
+.single-product-card {
+    background-color: white
+}
+
+.single-product-background {
+    background-color: grey;
 }
