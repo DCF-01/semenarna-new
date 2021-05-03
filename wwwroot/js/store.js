@@ -238,7 +238,7 @@ function displayProducts(loggedStatus) {
     else {
         initCart()
         if (cart_table_exists !== null) {
-            listCartItems();
+            listCartItems(cart);
         }
     }
 
