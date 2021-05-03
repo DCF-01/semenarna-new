@@ -134,11 +134,11 @@ body {
     height: 300px;
 }
 
-.carousel-promotion .carousel-item img {
-    position: absolute;
-    top: 0;
-    left: 0;
-}
+    .carousel-promotion .carousel-item img {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
 
 
 /* STORE CSS */
@@ -179,4 +179,64 @@ body {
 
 .single-product-background {
     background-color: grey;
+}
+
+/*STORE PAGE*/
+.product-single {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.image-container {
+    position: relative;
+}
+
+.promotion-price-box {
+    background-color: green;
+    color: white;
+    border-radius: 3px;
+}
+
+.image-container .discount-circle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    background: green;
+    border-radius: 50%;
+    opacity: 0.8;
+}
+
+
+/* FONT SIZING*/
+p {
+    font-size: 1rem;
+}
+
+/*@media (min-width: 576px) {
+    p {
+        font-size: 0.6rem;
+    }
+}
+
+@media (min-width: 768px) {
+    p {
+        font-size: 0.8rem;
+    }
+}*/
+
+
+@media (min-width: 992px) {
+    p {
+        font-size: 0.9rem;
+    }
+}
+
+@media only screen and (min-width : 1680px) {
+
+    .container-custom {
+        max-width: 1500px;
+    }
 }
