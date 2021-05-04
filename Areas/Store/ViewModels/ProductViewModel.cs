@@ -10,8 +10,8 @@ namespace semenarna_id2.Areas.Store.ViewModels {
         public int ProductId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string Price { get; set; }
-        public string SalePrice { get; set; }
+        public int Price { get; set; }
+        public int SalePrice { get; set; }
         public bool OnSale { get; set; }
         public bool InStock { get; set; }
         public ICollection<Category> Categories { get; set; }

@@ -51,12 +51,12 @@
                 <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
                     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                         <li class="nav-item active">
-                            <a class="nav-link active" asp-area="Cart" asp-controller="Base"
-                               asp-action="Index">ПРОИЗВОДИ</a>
+                            <a class="nav-link active" href="/">
+                             ПОЧЕТНА</a>
                         </li>
                         <li class="nav-item active">
                             <a class="nav-link active" asp-area="Store" asp-controller="Base"
-                               asp-action="Index">КОШНИЦА</a>
+                               asp-action="Index">ПРОДАВНИЦА</a>
                         </li>
                         <li class="nav-item active">
                             <a class="nav-link active" asp-area="Store" asp-controller="Base" asp-action="Index">
@@ -79,7 +79,7 @@
                         <span style="padding-right: 20px;">Welcome @User.Identity.Name</span>
                     }
                     else {
-                        <span style="padding-right: 20px;"><a asp-controller="Auth" asp-action="Login">Најавете се</a></span>
+                        <span style="padding-right: 20px;"><a href="/auth/login">Најавете се</a></span>
                     }
                         <a href="/Cart"><i class="fas fa-shopping-cart "></i></a>
                 </div>

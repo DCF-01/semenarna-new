@@ -9,7 +9,7 @@ let add_to_cart_btns = document.querySelectorAll('.add-to-cart-btn');
 
 let timeout_toast;
 
-function displayQuerySearch(data) {
+function displayQuerySearch(data, url_param) {
     query_string = store_search_box.value;
 
     let max = 5;
@@ -26,7 +26,7 @@ function displayQuerySearch(data) {
 
         //div row d-flex align-items-center
         let div = document.createElement('div');
-        div.className = 'd-flex align-items-center';
+        div.className = 'd-flex align-items-center justify-content-between';
 
         //p element (name)
         let name = document.createElement('p');
@@ -58,12 +58,19 @@ function displayQuerySearch(data) {
 
         const link_all = document.createElement('a');
         link_all.textContent = 'View All';
-        link_all.href = 'https://localhost:44380/Store/Base/Find?name=' + query_string;
+        link_all.href = 'https://localhost:44380/Store/Base/Find' + url_param + query_string;
         new_node.appendChild(link_all);
 
         search_suggestions_box.appendChild(new_node);
     }
 
+}
+
+function isNumeric(str) {
+    if (typeof (str) != 'string') {
+        return false;
+    }
+    return !isNaN(str) && !isNaN(parseFloat(str));
 }
 
 function clearSearchBox() {
@@ -76,10 +83,23 @@ if (store_search_box !== null) {
 
         query_string = store_search_box.value;
         if (query_string.length >= 1) {
+            let url_param;
+            let query;
+            let check_active_category = document.querySelector('#active-category');
 
-            console.log(query_string);
+            if(check_active_category != null) {
+                query_url
+            }
 
-            const query = query_url + '?name=' + query_string;
+            if (isNumeric(query_string)) {
+                url_param = '?product_id='
+                query = query_url + url_param + parseInt(query_string);
+            }
+            else {
+                url_param = '?name='
+                query = query_url + url_param + query_string;
+            }
+
 
             fetch(query, {
                 method: 'GET', // POST, PUT, DELETE, etc.
@@ -91,7 +111,7 @@ if (store_search_box !== null) {
             }).then(res => {
                 if (res.ok) {
                     res.json().then(e => {
-                        displayQuerySearch(e);
+                        displayQuerySearch(e, url_param);
                     });
                 }
                 else {
@@ -482,6 +502,15 @@ function openInputBox(event) {
     });
 }
 
+let custom_input_clear = document.querySelector('#custom-input-clear');
 
+function clearInput() {
+    let custom_input = document.querySelector('.custom-input');
+    custom_input.value = '';
+}
+
+custom_input_clear.addEventListener('click', (e) => {
+    clearInput()
+})
 
 /*https://localhost:44380/Store/Query/Single?id=47*/

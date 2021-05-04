@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using semenarna_id2.Areas.Store.Controllers;
+using Microsoft.EntityFrameworkCore;
 
 namespace semenarna_id2.Areas.Store.Controllers {
     [Area("Store")]
@@ -30,24 +31,26 @@ namespace semenarna_id2.Areas.Store.Controllers {
             return Ok(product);
         }
 
-        public IActionResult Find([FromQuery] string name = "", [FromQuery] string id = "") {
+        public IActionResult Find([FromQuery] string name = "", [FromQuery] string product_id = "") {
 
             try {
                 if (Request.Query.ContainsKey("name")) {
-                    var products = from b in _ctx.Products
-                                   where b.Name.StartsWith(name)
-                                   select b;
-                    var result = products.ToArray();
+                    var products = _ctx.Products
+                                    .Where(p => EF.Functions.ILike(p.Name, $"%{name}%"))
+                                    .Select(p => p)
+                                    .ToList();
 
-                    return Ok(result);
+
+                    return Ok(products);
                 }
-                if (Request.Query.ContainsKey("id")) {
-                    var products = from b in _ctx.Products
-                                   where b.Name.StartsWith(id)
-                                   select b;
-                    var result = products.ToArray();
+                else if (Request.Query.ContainsKey("product_id")) {
+                    var products = _ctx.Products
+                                    .Where(p => EF.Functions.ILike(p.ProductId.ToString(), $"%{product_id}%"))
+                                    .Select(p => p)
+                                    .ToList();
 
-                    return Ok(result);
+
+                    return Ok(products);
                 }
                 else {
                     return NotFound();

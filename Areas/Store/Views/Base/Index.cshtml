@@ -6,97 +6,128 @@
 <div id="alert-container">
 </div>
 <div class="container-lg container-custom">
-    <div class="form">
-        <div class="form-group row">
-            <div class="col">
-                <label>Пребарај</label>
-                <input class="form-control" type="text" placeholder="Име на производ" id="store-search">
+    <form>
+        <div class="form-row">
+            <div class="col-sm-12 col-md-6 col-lg-4 d-flex justify-content-end align-items-end mb-sm-3">
+
+                <input class="custom-input w-sm-100 w-md-25" placeholder="Пребарај" type="text" id="store-search">
+                <button class="m-0" id="custom-input-clear">X</button>
                 <ul class="list-group" id="search-suggestions">
-                    @*<li class="list-group-item">
-                            <div class="row d-flex align-items-center">
-                                <p class="m-0">Text</p>
-                                <img src="~/img/1.jpg" width="48px" />
-                            </div>
-                        </li>*@
+                    
                 </ul>
-            </div>
-            <div class="col">
 
+                    
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-1 d-flex justify-content-center align-items-end mb-sm-3">
+                <p class="m-0">1-64 од 100</p>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4 mb-sm-3">
+                <select id="inputState" class="form-control">
+                    <option selected>Најниско до највисоко</option>
+                    <option>Највисоко до највисоко</option>
+                </select>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-3 form-inline mb-sm-3">
+                <label class="mr-3">Производи на страна:</label>
+                <select id="inputState" class="form-control">
+                    <option selected>24</option>
+                    <option>48</option>
+                    <option>48</option>
+                </select>
             </div>
         </div>
-        <div class="form-group row">
-            <select class="form-control">
-                <option>Опција 1</option>
-                <option>Опција 2</option>
-                <option>Опција 3</option>
-            </select>
-
-        </div>
-    </div>
+    </form>
 </div>
 <div class="container-lg container-custom mt-5 mb">
     <div class="row">
         <div class="col-lg-2 col-sm-12">
-            <div class="form categories-box">
-                <div class="form-group">
-                    <label class="form-check-label" for="exampleCheck1" style="border-bottom: 1px solid black">Филтри</label>
-                </div>
-                <div class="form-group" style="margin-left: -40px">
-                    <label>SKU</label>
-                    <input class="form-control" type="text" placeholder="1337-callM3">
-                </div>
-                <div class="form-group">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                </div>
-                <div class="form-group">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                </div>
-                <div class="form-group">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+            <div>
+                <p style="border-bottom: 1px solid green">Категории</p>
+            </div>
+            <div class="list-group categories-menu">
+                @{
+                    if (Model.Categories == null) {
+                        <a href="#" class="list-group-item list-group-item-action">No categories to display</a>
+                    }
+                    else {
+                        foreach (var c in Model.Categories) {
+                            if (c.Name == Model.CurrentCategory) {
+                                <a asp-controller="Base" asp-action="Category" asp-route-id="@c.CategoryId" class="list-group-item list-group-item-action active" id="active-category">
+                                    @c.Name
+                                </a>
+                            }
+                            else {
+
+                                <a asp-controller="Base" asp-action="Category" asp-route-id="@c.CategoryId" class="list-group-item list-group-item-action">@c.Name</a>
+                            }
+                        }
+                    }
+                }
             </div>
         </div>
         <div class="col-lg-10 col-sm-12">
             <div class="row">
                 @*12*@
                 @foreach (var product in Model.Products) {
-
-                    <div class="product-single col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                        <p class="h4">Тиволи - универзална тревна мешавина</p>
-                        <div>
-                            <hr class="grey-hr" />
+                    <div class="product-single col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-5">
+                        <p class="h5">@product.Name</p>
+                        <div class="mt-4">
                             <div class="image-container mb-4">
-                                <div class="discount-circle d-flex justify-content-center align-items-center">
-                                    <p class="m-0" style="font-size: 2rem; color:white;">-30%</p>
-                                </div>
+                                @if (product.OnSale) {
+                                    <div class="discount-circle d-flex justify-content-center align-items-center">
+                                        @{ double temp_number = ((double)product.SalePrice - (double)product.Price) / (double)product.Price;
+                                            double discount = Math.Round(temp_number * 100, 0);
+                                        }
+                                        <p class="m-0">@discount%</p>
+                                    </div>
+                                }
+                                else {
+                                    <div class="discount-circle d-none justify-content-center align-items-center">
+                                    </div>
+                                }
                                 <img class="img-fluid w-100" src="data:image/png;base64, @product.Img" alt="Alternate Text" />
                             </div>
-                            <div class="promotion-price-box d-flex justify-content-between pl-3 pr-3">
-                                <div class="d-flex align-items-end mt-3">
-                                    <p class="mb-0">Промотивна цена:</p>
+                            @if (product.OnSale) {
+
+                                <div class="promotion-price-box d-flex justify-content-between pl-3 pr-3">
+                                    <div class="d-flex align-items-center mt-2 mb-2">
+                                        <p class="mb-0">На попуст:</p>
+                                    </div>
+                                    <div class="d-flex align-items-center mt-2 mb-2">
+                                        <p class="h4 mb-0">@product.SalePrice</p>
+                                        <p class="mb-0">&nbsp;ден</p>
+                                    </div>
                                 </div>
-                                <div class="d-flex align-items-end mt-3">
-                                    <p class="h4 mb-0">310</p>
-                                    <p class="mb-0">&nbsp;ден</p>
+                            }
+                            else {
+                                <div class="promotion-price-box d-flex justify-content-between pl-3 pr-3" style="opacity: 0;">
+                                    <div class="d-flex align-items-end mt-3">
+                                        <p class="mb-0">Промотивна цена:</p>
+                                    </div>
+                                    <div class="d-flex align-items-end mt-3">
+                                        <p class="h4 mb-0">666</p>
+                                        <p class="mb-0">&nbsp;ден</p>
+                                    </div>
                                 </div>
-                            </div>
+                            }
                             <div class="d-flex justify-content-between pl-3 pr-3">
                                 <div class="d-flex align-items-end mt-3">
                                     <p class="mb-0">Цена:</p>
                                 </div>
                                 <div class="d-flex align-items-end">
-                                    <p class="h4 mb-0 mt-3">310</p>
+                                    <p class="h4 mb-0 mt-3">@product.Price</p>
                                     <p class="mb-0 mt-3">&nbsp;ден</p>
                                 </div>
                             </div>
                             <hr class="grey-hr mt-1" />
                             <div class="d-flex justify-content-between">
                                 <div class="d-flex align-items-center">
-                                    <i class="fas fa-check" style="color: green;"></i>
+                                    @if (product.InStock) {
+                                        <i class="fas fa-check" style="color: green;"></i>
+                                    }
+                                    else {
+                                        <i class="fas fa-times" style="color: red;"></i>
+                                    }
                                     <p class="m-0 pl-2">Залиха</p>
                                 </div>
                                 <button type="button" class="btn btn-success d-flex justify-content-between align-items-center"><i class="fas fa-shopping-cart pr-2"></i><p class="m-0">Додади</p></button>

@@ -144,6 +144,8 @@ body {
 /* STORE CSS */
 #search-suggestions {
     position: absolute;
+    top: 100%;
+    right: 0;
     z-index: 100;
 }
 
@@ -186,6 +188,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    padding: 0px 2rem;
 }
 
 .image-container {
@@ -202,30 +205,52 @@ body {
     position: absolute;
     top: 0;
     right: 0;
-    width: 100px;
-    height: 100px;
+    width: 75px;
+    height: 75px;
     background: green;
     border-radius: 50%;
     opacity: 0.8;
 }
 
+.discount-circle p {
+    font-size: 1.8rem;
+    color: white;
+}
+
+.custom-input {
+    border: 0;
+    border-bottom: 1px solid gray;
+
+}
+
+#custom-input-clear {
+    border: 0;
+    border-bottom: 1px solid gray;
+}
+
+#custom-input-clear:focus {
+    outline: none;
+}
+
+.custom-input:focus {
+    outline: none;
+}
+
+.categories-menu {
+    border: none;
+}
+
+.categories-menu .list-group-item.active {
+    background: green;
+    border: green 1px solid;
+}
 
 /* FONT SIZING*/
 p {
     font-size: 1rem;
 }
 
-/*@media (min-width: 576px) {
-    p {
-        font-size: 0.6rem;
-    }
-}
 
-@media (min-width: 768px) {
-    p {
-        font-size: 0.8rem;
-    }
-}*/
 
 
 @media (min-width: 992px) {
@@ -237,6 +262,6 @@ p {
 @media only screen and (min-width : 1680px) {
 
     .container-custom {
-        max-width: 1500px;
+        max-width: 1600px;
     }
 }
