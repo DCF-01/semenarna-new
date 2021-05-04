@@ -8,32 +8,36 @@
 <div class="container-lg container-custom">
     <form>
         <div class="form-row">
-            <div class="col-sm-12 col-md-6 col-lg-4 d-flex justify-content-end align-items-end mb-sm-3">
+            <div class="col-lg-2 col-sm-0"></div>
+            <div class="col-lg-10 col-sm-12">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-4 d-flex justify-content-center align-items-end mb-sm-3">
 
-                <input class="custom-input w-sm-100 w-md-25" placeholder="Пребарај" type="text" id="store-search">
-                <button class="m-0" id="custom-input-clear">X</button>
-                <ul class="list-group" id="search-suggestions">
-                    
-                </ul>
+                        <input class="custom-input w-100" placeholder="Пребарај" type="text" id="store-search">
+                        <button class="m-0" id="custom-input-clear">X</button>
+                        <ul class="list-group" id="search-suggestions">
+                        </ul>
 
-                    
-            </div>
-            <div class="col-sm-12 col-md-6 col-lg-1 d-flex justify-content-center align-items-end mb-sm-3">
-                <p class="m-0">1-64 од 100</p>
-            </div>
-            <div class="col-sm-12 col-md-6 col-lg-4 mb-sm-3">
-                <select id="inputState" class="form-control">
-                    <option selected>Најниско до највисоко</option>
-                    <option>Највисоко до највисоко</option>
-                </select>
-            </div>
-            <div class="col-sm-12 col-md-6 col-lg-3 form-inline mb-sm-3">
-                <label class="mr-3">Производи на страна:</label>
-                <select id="inputState" class="form-control">
-                    <option selected>24</option>
-                    <option>48</option>
-                    <option>48</option>
-                </select>
+
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-1 d-flex justify-content-center align-items-end mb-sm-3">
+                        <p class="m-0">1-64 од 100</p>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 mb-sm-3">
+                        <select id="inputState" class="form-control">
+                            <option selected>Најниско до највисоко</option>
+                            <option>Највисоко до највисоко</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-3 form-inline mb-sm-3">
+                        <label class="mr-3">Производи на страна:</label>
+                        <select id="inputState" class="form-control">
+                            <option selected>24</option>
+                            <option>48</option>
+                            <option>48</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
     </form>
@@ -70,7 +74,7 @@
                 @*12*@
                 @foreach (var product in Model.Products) {
                     <div class="product-single col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-5">
-                        <p class="h5">@product.Name</p>
+                        <p class="h5"><a asp-controller="Product" asp-action="Single" asp-route-id="@product.ProductId">@product.Name</a></p>
                         <div class="mt-4">
                             <div class="image-container mb-4">
                                 @if (product.OnSale) {
@@ -85,7 +89,9 @@
                                     <div class="discount-circle d-none justify-content-center align-items-center">
                                     </div>
                                 }
-                                <img class="img-fluid w-100" src="data:image/png;base64, @product.Img" alt="Alternate Text" />
+                                <a asp-controller="Product" asp-action="Single" asp-route-id="@product.ProductId">
+                                    <img class="img-fluid w-100" src="data:image/png;base64, @product.Img" alt="Alternate Text" />
+                                </a>
                             </div>
                             @if (product.OnSale) {
 

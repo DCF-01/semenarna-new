@@ -45,6 +45,15 @@
             }
         </div>
         <div class="form-group">
+            <label>Variations</label>
+            @foreach (var item in Model.GetVariations) {
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="@item" name="Categories[]" value="@item">
+                    <label class="custom-control-label" for="@item">@item</label>
+                </div>
+            }
+        </div>
+        <div class="form-group">
             <label>Specs</label>
             <select class="form-control" name="CurrentSpec">
                 @foreach (var spec in Model.GetSpecs) {
@@ -61,6 +70,10 @@
         <div class="form-group">
             <label>Image</label>
             <input type="file" name="Img" id="Imageinput" asp-for="Img">
+        </div>
+        <div class="form-group">
+            <label for="files">Select files:</label>
+            <input type="file" id="files" name="GalleryImages" multiple>
         </div>
         <div class="form-group">
             <input type="submit" value="Create" class="btn btn-default" />

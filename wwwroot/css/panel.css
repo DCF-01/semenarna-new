@@ -7,3 +7,11 @@
     left: 40%;
     z-index: 100;
 }
+
+.add-option-btn i {
+    pointer-events: none;
+}
+
+.remove-option-btn i {
+    pointer-events: none;
+}

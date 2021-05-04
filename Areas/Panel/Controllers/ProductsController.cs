@@ -32,7 +32,7 @@ namespace semenarna_id2.Controllers {
         }
         [HttpGet]
         public async Task<IActionResult> Create() {
-            
+
 
             var categories = await _ctx.Categories
                 .Select(c => c.Name).ToListAsync();
@@ -58,9 +58,14 @@ namespace semenarna_id2.Controllers {
                                  where product_data.Categories.Contains(c.Name)
                                  select c;
 
+                var variations = await _ctx.Variations
+                                .Where(item => product_data.Variations.Contains(item.Name))
+                                .Select(item => item).ToListAsync();
+
+
                 var spec = _ctx.Specs
-                    .Where(s => s.Name == product_data.CurrentSpec)
-                    .Select(s => s).FirstOrDefault();
+                .Where(s => s.Name == product_data.CurrentSpec)
+                .Select(s => s).FirstOrDefault();
 
                 var product = new Product {
                     Name = product_data.Name,
@@ -69,7 +74,8 @@ namespace semenarna_id2.Controllers {
                     SalePrice = product_data.SalePrice,
                     OnSale = sale_state,
                     InStock = stock_state,
-                    Spec = spec
+                    Spec = spec,
+                    Variations = variations
                 };
                 product.Categories = new List<Category>();
 
@@ -95,6 +101,23 @@ namespace semenarna_id2.Controllers {
                     throw new Exception("No Image file was provided");
                 }
 
+                if (product_data.GalleryImages != null) {
+                    product.GalleryImages = new List<Image>();
+
+                    foreach (IFormFile image in product_data.GalleryImages) {
+                        byte[] ba = null;
+                        using (var fs = image.OpenReadStream())
+                        using (var ms = new MemoryStream()) {
+                            fs.CopyTo(ms);
+                            ba = ms.ToArray();
+                        }
+                        var gallery_image = new Image {
+                            Img = ba
+                        };
+                        product.GalleryImages.Add(gallery_image);
+                    }
+                }
+
                 await _ctx.Products.AddAsync(product);
 
                 await _ctx.SaveChangesAsync();
@@ -109,14 +132,14 @@ namespace semenarna_id2.Controllers {
 
 
         [HttpDelete]
-        public async Task<IActionResult> Delete([FromRoute] int id) {
+        public IActionResult Delete([FromRoute] int id) {
             try {
                 //delete product
                 var product = _ctx.Products.Find(id);
 
                 if (product != null) {
                     _ctx.Products.Remove(product);
-                    await _ctx.SaveChangesAsync();
+                    _ctx.SaveChanges();
                     return Ok();
                 }
                 else {
@@ -134,12 +157,19 @@ namespace semenarna_id2.Controllers {
                 //get product with related categories
                 var product = await _ctx.Products.Include(product => product.Categories)
                     .Include(product => product.Spec)
+                    .Include(product => product.Variations)
                     .Where(product => product.ProductId == id)
                     .FirstOrDefaultAsync();
 
                 var all_specs = await _ctx.Specs
                     .Select(s => s.Name).ToListAsync();
 
+                var all_variations = await _ctx.Variations
+                    .Select(item => item.Name).ToListAsync();
+
+                var current_variations = await _ctx.Variations
+                                        .Where(item => product.Variations.Contains(item))
+                                        .Select(item => item.Name).ToListAsync();
 
                 var byte_arr_img = product.Img;
 
@@ -154,7 +184,9 @@ namespace semenarna_id2.Controllers {
                     InStock = product.InStock.ToString(),
                     CurrentSpec = product.Spec.Name,
                     GetSpecs = all_specs,
-                    GetImg = img
+                    GetImg = img,
+                    GetVariations = all_variations,
+                    CurrentVariations = current_variations
                 };
 
                 //current active categories
@@ -189,7 +221,7 @@ namespace semenarna_id2.Controllers {
                 if (productViewModel.Description == null) {
                     throw new Exception("The product must have a description");
                 }
-                if(productViewModel.CurrentSpec == null) {
+                if (productViewModel.CurrentSpec == null) {
                     throw new Exception("Spec required");
                 }
 
@@ -220,12 +252,21 @@ namespace semenarna_id2.Controllers {
                                  where productViewModel.Categories.Contains(c.Name)
                                  select c;
 
+                var variations = await _ctx.Variations
+                                    .Where(item => productViewModel.Variations.Contains(item.Name))
+                                    .Select(item => item).ToListAsync();
+
                 //remove all from product categories field
                 entity.Categories = new List<Category>();
-                
+                entity.Variations = new List<Variation>();
+
 
                 foreach (var item in categories) {
                     entity.Categories.Add(item);
+                };
+
+                foreach(var item in variations) {
+                    entity.Variations.Add(item);
                 };
 
                 entity.Name = productViewModel.Name;

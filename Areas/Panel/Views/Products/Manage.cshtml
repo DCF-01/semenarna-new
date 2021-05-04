@@ -82,6 +82,23 @@
 
         </div>
         <div class="form-group">
+            <label>Variations</label>
+            @foreach (var item in Model.GetVariations) {
+                if (Model.CurrentVariations.Contains(item)) {
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="@item" name="Variations[]" value="@item" checked>
+                        <label class="custom-control-label" for="@item">@item</label>
+                    </div>
+                }
+                else {
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="@item" name="Variations[]" value="@item">
+                        <label class="custom-control-label" for="@item">@item</label>
+                    </div>
+                }
+            }
+        </div>
+        <div class="form-group">
             <label>Spec</label>
             <select class="form-control" name="CurrentSpec">
                 @foreach (var spec in Model.GetSpecs) {

@@ -1,0 +1,30 @@
+﻿@model VariationViewModel
+@{
+    ViewBag.Title = User.Identity.Name;
+    Layout = "~/Areas/Panel/Views/Shared/_PanelLayout.cshtml";
+}
+<div class="container-lg pt-3">
+    <form asp-controller="Variations" asp-action="Create" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" class="form-control" asp-for="Name" placeholder="Variation name" required>
+        </div>
+        <div class="form-group">
+            <label>Options</label>
+            <div>
+                <input type="text" class="form-control" name="Options[]" placeholder="Option value" required>
+            </div>
+            <div class="option-control">
+                <button type="button" class="btn btn-secondary add-option-btn"><i class="fas fa-plus pr-2"></i>Add option</button>
+                <button type="button" class="btn btn-secondary remove-option-btn"><i class="fas fa-plus pr-2"></i>Remove option</button>
+            </div>
+        </div>
+        @*<div class="form-group">
+            <button type="button" class="btn btn-secondary add-variation-btn"><i class="fas fa-plus pr-2"></i>Add variation</button>
+            <button type="button" class="btn btn-secondary remove-variation-btn"><i class="fas fa-plus pr-2"></i>Remove variation</button>
+        </div>*@
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </form>
+</div>

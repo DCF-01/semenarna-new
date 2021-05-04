@@ -19,5 +19,11 @@ namespace semenarna_id2.Areas.Panel.ViewModels {
         public string CurrentSpec { get; set; }
         public IFormFile Img { get; set; }
         public string GetImg { get; set; }
+        public IFormFileCollection GalleryImages { get; set; }
+        public string[] Variations { get; set; }
+        public List<string> GetVariations { get; set; }
+        public List<string> CurrentVariations { get; set; }
+
+        
     }
 }

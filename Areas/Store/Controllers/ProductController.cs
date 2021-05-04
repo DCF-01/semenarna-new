@@ -19,6 +19,8 @@ namespace semenarna_id2.Areas.Store.Controllers {
 
             var item = await _ctx.Products.Include(item => item.Categories)
                                     .Include(item => item.Spec)
+                                    .Include(item => item.GalleryImages)
+                                    .Include(item => item.Variations)
                                     .Where(item => item.ProductId == id)
                                     .Select(item => item)
                                     .FirstOrDefaultAsync();
@@ -34,6 +36,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
                 .Select(s => s).FirstOrDefaultAsync();
 
 
+
                 var product = new ProductViewModel {
                     ProductId = item.ProductId,
                     Name = item.Name,
@@ -43,6 +46,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
                     OnSale = item.OnSale,
                     InStock = item.InStock,
                     Categories = item.Categories,
+                    Variations = item.Variations.ToList(),
                     Spec = new StoreSpecViewModel {
                         ItemsPerRow = spec.ItemsPerRow,
                         First = spec.First,
@@ -51,13 +55,13 @@ namespace semenarna_id2.Areas.Store.Controllers {
                     },
                     Img = Convert.ToBase64String(item.Img)
                 };
-
-                /*
-                                product.SpecFirst = new List<string>();
-                                foreach(var i in spec.First) {
-                                    product.SpecFirst.Add(i.First.);
-                                }*/
-
+                if (item.GalleryImages != null) {
+                    List<string> img_gallery = new List<string>();
+                    foreach (var image in item.GalleryImages) {
+                        img_gallery.Add(Convert.ToBase64String(image.Img));
+                    }
+                    product.GalleryImages = img_gallery;
+                }
                 return View(product);
             }
 

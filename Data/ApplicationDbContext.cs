@@ -18,6 +18,8 @@ namespace semenarna_id2.Data {
         public DbSet<Product> Products { get; set; }
         public DbSet<CartProduct> CartProducts { get; set; }
         public DbSet<Spec> Specs { get; set; }
+        public DbSet<Image> Images { get; set; }
+        public DbSet<Variation> Variations { get; set; }
     }
     
 }

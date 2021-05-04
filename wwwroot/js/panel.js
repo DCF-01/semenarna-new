@@ -56,16 +56,7 @@ function removeSpecRow() {
     }
     else {
         //toast
-        let alert_exists = document.querySelector('.alert');
-        if (alert_exists != null) {
-            clearTimeout(alert_timeout);
-            createAlert('Action canceled: There must be at least 2 rows.');
-            alert_timeout = setTimeout(closeAlert, 4000);
-        }
-        else {
-            createAlert('Action canceled: There must be at least 2 rows.');
-            alert_timeout = setTimeout(closeAlert, 4000);
-        }
+        createAlert('Action canceled: There must be at least 2 rows.');
     }
 
 
@@ -81,16 +72,7 @@ function removeSpecCol() {
     }
     else {
         //toast
-        let alert_exists = document.querySelector('.alert');
-        if (alert_exists != null) {
-            clearTimeout(alert_timeout);
-            createAlert('Action canceled: There must be at least 2 columns.');
-            alert_timeout = setTimeout(closeAlert, 4000);
-        }
-        else {
-            createAlert('Action canceled: There must be at least 2 columns.');
-            alert_timeout = setTimeout(closeAlert, 4000);
-        }
+        createAlert('Action canceled: There must be at least 2 columns.');
     }
 }
 
@@ -187,6 +169,8 @@ function addListener(element = null) {
 
 }
 function createAlert(message_str = 'An error has occured.') {
+
+    let alert_exists = document.querySelector('.alert');
     let code = `<div class="alert alert-danger alert-dismissible fade show" role = "alert" >
             <strong>${message_str}</strong>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -194,7 +178,23 @@ function createAlert(message_str = 'An error has occured.') {
             </button>
         </div>`;
 
-    alert_container.innerHTML += code;
+    if (alert_exists != null) {
+        clearTimeout(alert_timeout);
+        alert_timeout = setTimeout(closeAlert, 4000);
+        alert_container.innerHTML = code;
+    }
+    else {
+        alert_timeout = setTimeout(closeAlert, 4000);
+
+        alert_container.innerHTML += code;
+        let close = alert_container.querySelector('.close');
+
+        close.addEventListener('click', (e) => {
+            clearTimeout(alert_timeout);
+        });
+    }
+
+
 
 }
 
@@ -204,4 +204,89 @@ function closeAlert() {
 
 
 //exec once on js load
-addListener();
+if (add_row_btn) {
+    addListener();
+}
+
+/* VARIATIONS CONTROL */
+let add_option_btn = document.querySelector('.add-option-btn');
+
+if (add_option_btn != null) {
+    let remove_option_btn = document.querySelector('.remove-option-btn');
+    let add_variation_btn = document.querySelector('.add-variation-btn');
+    let remove_variation_btn = document.querySelector('.remove-variation-btn');
+
+    /*addVariationListener(add_variation_btn, remove_variation_btn);*/
+    addOptionListener(add_option_btn, remove_option_btn);
+}
+function addOptionListener(element_add = null, element_remove = null) {
+
+    if (element_remove !== null) {
+        element_remove.addEventListener('click', (e) => {
+            console.log('clicked');
+            let parent_container = e.target.parentNode.parentNode;
+            let parent_el = e.target.parentNode;
+            if (parent_container.childElementCount > 3) {
+                parent_el.previousElementSibling.remove();
+                console.log(parent_el.previousElementSibling);
+            }
+            else {
+                //toast
+                createAlert('There must be at least 1 option.');
+            }
+        });
+    }
+    if (element_add !== null) {
+        element_add.addEventListener('click', (e) => {
+            let parent_container = element_add.parentNode.parentNode;
+            let ref_el = element_add.parentNode;
+            let new_option_el = document.createElement('div');
+            new_option_el.innerHTML = `<div>
+                <input type="text" class="form-control" name="Options[]" placeholder="Option value" required>
+            </div>`;
+            parent_container.insertBefore(new_option_el, ref_el);
+
+        });
+    }
+}
+function addVariationListener(element_add = null, element_remove = null,) {
+    if (element_add !== null) {
+        element_add.addEventListener('click', (e) => {
+            let parent_container = element_add.parentNode.parentNode;
+            let ref_element = element_add.parentNode;
+
+            let new_el = document.createElement('div');
+            new_el.innerHTML = `<label>Variation</label>
+            <div>
+                <input type="text" class="form-control" name="VariationNames[]" placeholder="Variation name">
+            </div>
+            <div>
+                <input type="text" class="form-control" name="VariationValues[]" placeholder="Option value">
+            </div>
+            <div class="option-control">
+                <button type="button" class="btn btn-secondary add-option-btn"><i class="fas fa-plus pr-2"></i>Add option</button>
+                <button type="button" class="btn btn-secondary remove-option-btn"><i class="fas fa-plus pr-2"></i>Remove option</button>
+            </div>`;
+
+            parent_container.insertBefore(new_el, ref_element);
+
+            let add_btn = new_el.querySelector('.add-option-btn');
+            let remove_btn = new_el.querySelector('.remove-option-btn');
+
+            addOptionListener(add_btn, remove_btn);
+
+        });
+    }
+    if (element_remove !== null) {
+        element_remove.addEventListener('click', (e) => {
+            let container_count = e.target.parentNode.parentNode.childElementCount;
+            if (container_count > 5) {
+                let parent_el = e.target.parentNode;
+                parent_el.previousElementSibling.remove();
+            }
+            else {
+                createAlert('There must be at least 1 variation.');
+            }
+        });
+    }
+}

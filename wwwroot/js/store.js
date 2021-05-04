@@ -87,7 +87,7 @@ if (store_search_box !== null) {
             let query;
             let check_active_category = document.querySelector('#active-category');
 
-            if(check_active_category != null) {
+            if (check_active_category != null) {
                 query_url
             }
 
@@ -509,8 +509,25 @@ function clearInput() {
     custom_input.value = '';
 }
 
-custom_input_clear.addEventListener('click', (e) => {
-    clearInput()
-})
+if (custom_input_clear != null) {
+    custom_input_clear.addEventListener('click', (e) => {
+        clearInput();
+    })
+}
 
-/*https://localhost:44380/Store/Query/Single?id=47*/
+//single product gallery images
+let gallery_images = document.querySelectorAll('.gallery-image');
+
+if (gallery_images != null) {
+    gallery_images.forEach(img => {
+        console.log('clicked');
+        img.addEventListener('click', (e) => {
+            changeProductImage(e.target.src);
+        });
+    })
+}
+
+function changeProductImage(value) {
+    let product_image = document.getElementById('product-image');
+    product_image.src = value;
+}

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using semenarna_id2.Data;
@@ -9,9 +10,10 @@ using semenarna_id2.Data;
 namespace semenarna_id2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210504150531_fixProduct")]
+    partial class fixProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -375,29 +377,6 @@ namespace semenarna_id2.Migrations
                     b.ToTable("Specs");
                 });
 
-            modelBuilder.Entity("semenarna_id2.Models.Variation", b =>
-                {
-                    b.Property<int>("VariationId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string[]>("Options")
-                        .HasColumnType("text[]");
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("VariationId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Variations");
-                });
-
             modelBuilder.Entity("CategoryProduct", b =>
                 {
                     b.HasOne("semenarna_id2.Models.Category", null)
@@ -506,13 +485,6 @@ namespace semenarna_id2.Migrations
                     b.Navigation("Spec");
                 });
 
-            modelBuilder.Entity("semenarna_id2.Models.Variation", b =>
-                {
-                    b.HasOne("semenarna_id2.Models.Product", null)
-                        .WithMany("Variations")
-                        .HasForeignKey("ProductId");
-                });
-
             modelBuilder.Entity("semenarna_id2.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Cart");
@@ -526,8 +498,6 @@ namespace semenarna_id2.Migrations
             modelBuilder.Entity("semenarna_id2.Models.Product", b =>
                 {
                     b.Navigation("GalleryImages");
-
-                    b.Navigation("Variations");
                 });
 #pragma warning restore 612, 618
         }
