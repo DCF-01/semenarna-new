@@ -40,7 +40,8 @@ namespace semenarna_id2 {
                     var adminUser = new ApplicationUser {
                         UserName = "admin",
                         Email = "admin@paralax.mk",
-                        Cart = new Cart()
+                        Cart = new Cart(),
+                        Orders = new List<Order>()
                     };
 
                     var result = userMgr.CreateAsync(adminUser, "radant098").GetAwaiter().GetResult();

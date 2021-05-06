@@ -24,24 +24,24 @@
                     <h4>Biiling Details</h4>
                     <div class="row">
                         <div class="col-lg-6">
-                            <label for="fir">First Name<span>*</span></label>
-                            <input type="text" id="first">
+                            <label for="first">First Name<span>*</span></label>
+                            <input type="text" id="first" required>
                         </div>
                         <div class="col-lg-6">
                             <label for="last">Last Name<span>*</span></label>
-                            <input type="text" id="last">
+                            <input type="text" id="last" required>
                         </div>
                         <div class="col-lg-12">
-                            <label for="cun-name">Company Name</label>
+                            <label for="co-name">Company Name</label>
                             <input type="text" id="co-name">
                         </div>
                         <div class="col-lg-12">
-                            <label for="cun">Country<span>*</span></label>
+                            <label for="country">Country<span></span></label>
                             <input type="text" id="country">
                         </div>
                         <div class="col-lg-12">
-                            <label for="street">Street Address<span>*</span></label>
-                            <input type="text" id="address" class="street-first">
+                            <label for="address">Street Address<span>*</span></label>
+                            <input type="text" id="address" class="street-first" required>
                             <input type="text">
                         </div>
                         <div class="col-lg-12">
@@ -49,16 +49,16 @@
                             <input type="text" id="zip">
                         </div>
                         <div class="col-lg-12">
-                            <label for="town">Town / City<span>*</span></label>
-                            <input type="text" id="city">
+                            <label for="city">Town / City<span>*</span></label>
+                            <input type="text" id="city" required>
                         </div>
                         <div class="col-lg-6">
                             <label for="email">Email Address<span>*</span></label>
-                            <input type="text" id="email">
+                            <input type="text" id="email" required>
                         </div>
                         <div class="col-lg-6">
                             <label for="phone">Phone<span>*</span></label>
-                            <input type="text" id="phone">
+                            <input type="text" id="phone" required>
                         </div>
                         <div class="col-lg-12">
                             <div class="create-item">
@@ -77,30 +77,46 @@
                             <ul class="order-table">
                                 <li>Product <span>Total</span></li>
                                 @*<li class="fw-normal">Combination x 1 <span>$60.00</span></li>
-                                <li class="fw-normal">Combination x 1 <span>$60.00</span></li>
-                                <li class="fw-normal">Combination x 1 <span>$120.00</span></li>
-                                <li class="fw-normal">Subtotal <span>$240.00</span></li>
-                                <li class="total-price">Total <span>$240.00</span></li>*@
+            <li class="fw-normal">Combination x 1 <span>$60.00</span></li>
+            <li class="fw-normal">Combination x 1 <span>$120.00</span></li>
+            <li class="fw-normal">Subtotal <span>$240.00</span></li>
+            <li class="total-price">Total <span>$240.00</span></li>*@
                             </ul>
                             <div class="payment-check">
                                 <div class="pc-item">
                                     <label for="pc-check">
                                         Карго
-                                        <input type="checkbox" class="order-checkmark" id="pc-check">
+                                        <input type="checkbox" class="order-checkmark delivery-method" id="pc-check" name="delivery_method" value="карго">
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
                                 <div class="pc-item">
                                     <label for="pc-paypal">
                                         Подигнување од локал
-                                        <input type="checkbox" class="order-checkmark" id="pc-paypal">
+                                        <input type="checkbox" class="order-checkmark delivery-method" id="pc-paypal" name="delivery_method" value="во локал">
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
                                 <div class="pc-item">
                                     <label for="pc-drone">
                                         Дрон
-                                        <input type="checkbox" class="order-checkmark" id="pc-drone">
+                                        <input type="checkbox" class="order-checkmark delivery-method" id="pc-drone" name="delivery_method" value="дрон">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="payment-check">
+                                <div class="pc-item">
+                                    <label for="pc-online">
+                                        Online
+                                        <input type="checkbox" class="order-checkmark payment-method" id="pc-online" name="payment_method" value="online">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="pc-item">
+                                    <label for="pc-cod">
+                                        На достава
+                                        <input type="checkbox" class="order-checkmark payment-method" id="pc-cod" name="payment_method" value="на достава">
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
