@@ -1,0 +1,19 @@
+﻿@model ResultViewModel
+
+
+<div class="container-fluid">
+    @if (bool.Parse(Model.OrderStatus)) {
+        <ul>
+            <li>@Model.OrderId</li>
+            <li>@Model.Message</li>
+            <li>@Model.EmailSent</li>
+            <li>@Model.OrderStatus</li>
+        </ul>
+    }
+    else {
+        <ul>
+            <li>@Model.OrderStatus</li>
+            <li>@Model.Message</li>
+        </ul>
+    }
+</div>

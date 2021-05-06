@@ -61,7 +61,7 @@ let alert_container = document.getElementById('alert-container');
 let add_to_cart_btn = document.querySelector('#add-to-cart');
 let payment_checkmarks = document.querySelectorAll('.payment-method');
 let delivery_checkmarks = document.querySelectorAll('.delivery-method');
-
+let order_submit_btn = document.getElementById('checkout-submit-btn');
 
 let timeout_toast;
 
@@ -323,14 +323,17 @@ function submitOrder(order) {
         redirect: 'follow',
         body: JSON.stringify(new_order)
     }).then(res => {
-        if (res.ok) {
-            createAlert('Your order has been placed successfully');
+        if (res.redirected) {
+            window.location.href = res.url;
+            
         }
-        else if (res.status === '') {
-            //error
-            createAlert('Your order has not been placed', 'danger');
+        else {
+            createAlert('Your order has NOT been placed. Please check your billing details and try again.', 'danger');
         }
-    });
+    })
+        .catch((err) => {
+            console.info(err);
+        });
 
 }
 
@@ -796,19 +799,17 @@ function changeProductImage(value) {
     product_image.src = value;
 }
 
-var prev_checkbox_payment;
-var prev_checkbox_delivery;
+var prev_checkbox_payment = null;
+var prev_checkbox_delivery = null;
 
 if (payment_checkmarks !== null) {
     payment_checkmarks.forEach(el => {
         el.addEventListener('click', (e) => {
-            if (prev_checkbox_payment === undefined) {
+            if (prev_checkbox_payment === null) {
                 prev_checkbox_payment = e.target;
-                console.log(prev_checkbox_payment);
             }
             else if (prev_checkbox_payment !== e.target) {
-                let toggle = prev_checkbox_payment.checked;
-                prev_checkbox_payment.checked = !toggle;
+                prev_checkbox_payment.checked = !e.target.checked;
                 prev_checkbox_payment.dispatchEvent(new Event('change'));
                 prev_checkbox_payment = e.target;
                 /*prev_checkbox.click();*/
@@ -820,13 +821,11 @@ if (payment_checkmarks !== null) {
 if (delivery_checkmarks !== null) {
     delivery_checkmarks.forEach(el => {
         el.addEventListener('click', (e) => {
-            if (prev_checkbox_delivery === undefined) {
+            if (prev_checkbox_delivery === null) {
                 prev_checkbox_delivery = e.target;
-                console.log(prev_checkbox_delivery);
             }
             else if (prev_checkbox_delivery !== e.target) {
-                let toggle = prev_checkbox_delivery.checked;
-                prev_checkbox_delivery.checked = !toggle;
+                prev_checkbox_delivery.checked = !e.target.checked;
                 prev_checkbox_delivery.dispatchEvent(new Event('change'));
                 prev_checkbox_delivery = e.target;
                 /*prev_checkbox.click();*/
@@ -834,3 +833,7 @@ if (delivery_checkmarks !== null) {
         });
     });
 }
+
+order_submit_btn.addEventListener('click', (e) => {
+    submitOrder(e);
+});

@@ -302,3 +302,9 @@ p {
 .quantity-text {
     padding-right: 15px;
 }
+
+/*CHECKOUT*/
+
+.payment-check label {
+    user-select: none;
+}

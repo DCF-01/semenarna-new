@@ -41,20 +41,40 @@ namespace semenarna_id2.Areas.Cart.Controllers {
                     PaymentMethod = orderViewModel.PaymentMethod,
                     DeliveryMethod = orderViewModel.DeliveryMethod,
                     DateTime = DateTime.UtcNow
-                    
+
                 };
                 await _ctx.Orders.AddAsync(order);
+                await _ctx.SaveChangesAsync();
+                int id = order.OrderId;
 
-                if(user != null) {
+                if (user != null) {
                     user.Orders.Add(order);
+                    await _ctx.SaveChangesAsync();
                 }
 
-                return Ok();
+                var success_message = $"Your order has been placed successfully. An email containing your order's details has been sent to {order.Email}.";
+
+                return RedirectToAction("Result", new ResultViewModel { OrderId = id.ToString(), EmailSent = order.Email, Message = success_message, OrderStatus = "true" });
             }
             else {
-                return BadRequest(ModelState);
+                var error_message = $"Your order has not been been placed. Please review your contact information and try again.";
+                return BadRequest();
             }
-            
+
         }
+        [HttpGet]
+        public IActionResult Result([FromRoute] string OrderId, string EmailSent, string Message, string OrderStatus) {
+
+            var result = new ResultViewModel {
+                OrderId = OrderId,
+                EmailSent = EmailSent,
+                Message = Message,
+                OrderStatus = OrderStatus
+            };
+
+
+            return View(result);
+        }
+
     }
 }
