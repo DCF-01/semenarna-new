@@ -308,3 +308,17 @@ p {
 .payment-check label {
     user-select: none;
 }
+
+/* ORDER RESULT PAGE*/
+.order-success-box {
+    width: 65%;
+    border: 2px solid teal;
+    box-shadow: 15px -10px teal;
+    border-radius: 2px;
+    min-height: 400px;
+    margin: 5rem 0px;
+}
+
+.order-success-box-inner {
+    padding: 3rem 2.5rem;
+}

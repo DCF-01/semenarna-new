@@ -51,8 +51,7 @@ namespace semenarna_id2.Areas.Cart.Controllers {
                     user.Orders.Add(order);
                     await _ctx.SaveChangesAsync();
                 }
-
-                var success_message = $"Your order has been placed successfully. An email containing your order's details has been sent to {order.Email}.";
+                var success_message = $"Your order has been placed successfully. An email containing your order's details has been sent to";
 
                 return RedirectToAction("Result", new ResultViewModel { OrderId = id.ToString(), EmailSent = order.Email, Message = success_message, OrderStatus = "true" });
             }
