@@ -56,7 +56,7 @@ function removeSpecRow() {
     }
     else {
         //toast
-        createAlert('Action canceled: There must be at least 2 rows.');
+        createAlert('Action canceled: There must be at least 2 rows.', 'danger');
     }
 
 
@@ -72,7 +72,7 @@ function removeSpecCol() {
     }
     else {
         //toast
-        createAlert('Action canceled: There must be at least 2 columns.');
+        createAlert('Action canceled: There must be at least 2 columns.', 'danger');
     }
 }
 
@@ -168,35 +168,6 @@ function addListener(element = null) {
     }
 
 }
-function createAlert(message_str = 'An error has occured.') {
-
-    let alert_exists = document.querySelector('.alert');
-    let code = `<div class="alert alert-danger alert-dismissible fade show" role = "alert" >
-            <strong>${message_str}</strong>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>`;
-
-    if (alert_exists != null) {
-        clearTimeout(alert_timeout);
-        alert_timeout = setTimeout(closeAlert, 4000);
-        alert_container.innerHTML = code;
-    }
-    else {
-        alert_timeout = setTimeout(closeAlert, 4000);
-
-        alert_container.innerHTML += code;
-        let close = alert_container.querySelector('.close');
-
-        close.addEventListener('click', (e) => {
-            clearTimeout(alert_timeout);
-        });
-    }
-
-
-
-}
 
 function closeAlert() {
     $('.alert').alert('close');
@@ -232,7 +203,7 @@ function addOptionListener(element_add = null, element_remove = null) {
             }
             else {
                 //toast
-                createAlert('There must be at least 1 option.');
+                createAlert('There must be at least 1 option.', 'danger');
             }
         });
     }
@@ -285,7 +256,7 @@ function addVariationListener(element_add = null, element_remove = null,) {
                 parent_el.previousElementSibling.remove();
             }
             else {
-                createAlert('There must be at least 1 variation.');
+                createAlert('There must be at least 1 variation.', 'danger');
             }
         });
     }

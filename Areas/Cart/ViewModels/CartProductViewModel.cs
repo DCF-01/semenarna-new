@@ -10,6 +10,7 @@ namespace semenarna_id2.Areas.Cart.ViewModels {
         public string Price { get; set; }
         public int Quantity { get; set; }
         public string Img { get; set; }
+        public string[] Variations { get; set; }
         
     }
 }

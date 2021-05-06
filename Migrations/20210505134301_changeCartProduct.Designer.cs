@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using semenarna_id2.Data;
@@ -9,9 +10,10 @@ using semenarna_id2.Data;
 namespace semenarna_id2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210505134301_changeCartProduct")]
+    partial class changeCartProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -313,50 +315,6 @@ namespace semenarna_id2.Migrations
                     b.ToTable("Images");
                 });
 
-            modelBuilder.Entity("semenarna_id2.Models.Order", b =>
-                {
-                    b.Property<int>("OrderId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Address")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("City")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CompanyName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Country")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ZipCode")
-                        .HasColumnType("text");
-
-                    b.HasKey("OrderId");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.ToTable("Orders");
-                });
-
             modelBuilder.Entity("semenarna_id2.Models.Product", b =>
                 {
                     b.Property<int>("ProductId")
@@ -544,13 +502,6 @@ namespace semenarna_id2.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("semenarna_id2.Models.Order", b =>
-                {
-                    b.HasOne("semenarna_id2.Models.ApplicationUser", null)
-                        .WithMany("Orders")
-                        .HasForeignKey("ApplicationUserId");
-                });
-
             modelBuilder.Entity("semenarna_id2.Models.Product", b =>
                 {
                     b.HasOne("semenarna_id2.Models.Spec", "Spec")
@@ -570,8 +521,6 @@ namespace semenarna_id2.Migrations
             modelBuilder.Entity("semenarna_id2.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Cart");
-
-                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("semenarna_id2.Models.Cart", b =>

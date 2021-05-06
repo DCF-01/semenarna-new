@@ -49,13 +49,14 @@ namespace semenarna_id2.Areas.Cart.Controllers {
                     var product = new CartProductViewModel {
                         Id = item.Product.ProductId,
                         Price = item.Product.Price,
-                        Img = Convert.ToBase64String(item.Product.Img),
+                        Img = "data:image/jpeg;base64, " + Convert.ToBase64String(item.Product.Img),
                         Name = item.Product.Name,
-                        Quantity = item.Quantity
+                        Quantity = item.Quantity,
+                        Variations = item.Variations
                     };
                     list.Add(product);
                 }
-                json_cart.items = list.ToArray();
+                json_cart.Items = list.ToArray();
 
                 return Ok(json_cart);
             }
@@ -64,10 +65,10 @@ namespace semenarna_id2.Areas.Cart.Controllers {
         [HttpPost]
         public async Task<IActionResult> Update([FromBody] CartViewModel cartViewModel) {
 
-            if (cartViewModel.items != null) {
+            if (cartViewModel.Items != null) {
                 //check client side no id doubles
                 var checked_items = new List<CartProductViewModel>();
-                foreach (var item in checked_items) {
+                foreach (var item in cartViewModel.Items) {
                     if (!checked_items.Contains(item)) {
                         checked_items.Add(item);
                     }
@@ -79,14 +80,21 @@ namespace semenarna_id2.Areas.Cart.Controllers {
                 var user = _ctx.Users.Include(user => user.Cart).ThenInclude(cart => cart.CartProducts)
                                     .Where(user => user.Id == user_id).FirstOrDefault();
 
+                
+
+
                 var cart_product_list = new List<CartProduct>();
-                foreach (var item in cartViewModel.items) {
+                foreach (var item in checked_items) {
                     var product_entity = _ctx.Products.Find(item.Id);
 
                     var cart_product = new CartProduct {
                         Product = product_entity,
-                        Quantity = item.Quantity
+                        Quantity = item.Quantity,
                     };
+                    if(item.Variations != null) {
+                        cart_product.Variations = item.Variations;
+                    }
+
                     /*_ctx.CartProducts.Add(cart_product);
                     _ctx.SaveChanges();*/
                     cart_product_list.Add(cart_product);
@@ -103,6 +111,11 @@ namespace semenarna_id2.Areas.Cart.Controllers {
 
 
 
+        }
+        public IActionResult Checkout() {
+            
+            
+            return View();
         }
     }
 }

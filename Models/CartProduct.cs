@@ -9,6 +9,7 @@ namespace semenarna_id2.Models {
         public int ProductId { get; set; }
         public Product Product { get; set; }
         public int Quantity { get; set; }
+        public string[] Variations { get; set; }
         
     }
 }

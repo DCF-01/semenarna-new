@@ -4,8 +4,8 @@ let query_url = 'https://localhost:44380/Store/Query/Find';
 let query_string;
 let table_body = document.getElementById('table-body');
 let alert_container = document.getElementById('alert-container');
+let add_to_cart_btn = document.querySelector('#add-to-cart');
 
-let add_to_cart_btns = document.querySelectorAll('.add-to-cart-btn');
 
 let timeout_toast;
 
@@ -123,6 +123,10 @@ if (store_search_box !== null) {
     })
 }
 
+function compareArray(arr_one, arr_two) {
+    return arr_one.length === arr_two.length && arr_one.every((value, index) => value === arr_two[index]);
+}
+
 
 /* CART */
 // cart objects
@@ -132,16 +136,18 @@ let cart_obj;
 
 
 //helper var / check if element exists
-let cart_table_exists
+let cart_table_exists;
+let order_table_exists;
 
 
 class Product {
-    constructor(id, name, price, quantity, img) {
+    constructor(id, name, price, quantity, img, variations) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
         this.img = img;
+        this.variations = variations;
     }
 }
 
@@ -156,8 +162,8 @@ class Cart {
         let length = this.items.length;
         if (length > 0) {
             for (let i = 0; i < length; i++) {
-                if (this.items[i].id === item.id) {
-                    this.items[i].quantity += 1;
+                if (parseInt(this.items[i].id) === parseInt(item.id) && compareArray(this.items[i].variations, item.variations)) {
+                    this.items[i].quantity += parseInt(item.quantity);
                     return true;
                 }
                 /*if (i === length - 1){
@@ -183,11 +189,11 @@ class Cart {
         });
     }
 
-    remove(id) {
+    remove(id, variations) {
         let temp = this.items;
         this.items = [];
-        this.temp.foreach(item => {
-            if (item.id !== id) {
+        temp.forEach(item => {
+            if (!(parseInt(id) === parseInt(item.id) && compareArray(item.variations, variations))) {
                 this.items.push(item);
             }
         })
@@ -195,6 +201,55 @@ class Cart {
 
 }
 
+class Order {
+    constructor(first_name, last_name, company_name, country, address, zip_code, city, email, phone, payment_method, delivery_method) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.company_name = company_name;
+        this.country = country;
+        this.address = address;
+        this.zip_code = zip_code;
+        this.city = city;
+        this.email = email;
+        this.phone = phone;
+        this.payment_method = payment_method;
+        this.delivery_method = delivery_method;
+        this.cart = localStorage.getItem('cart');
+    }
+}
+
+function submitOrder(order) {
+    let first_name = document.getElementById('first');
+    let last_name = document.getElementById('last');
+    let company_name = document.getElementById('co-name');
+    let country = document.getElementById('country');
+    let address = document.getElementById('address');
+    let zip_code = document.getElementById('zip');
+    let city = document.getElementById('city');
+    let email = document.getElementById('email');
+    let phone = document.getElementById('phone');
+
+    let order = new Order(first_name, last_name, company_name, country, address, zip_code, city, email, phone, 'payment', 'transport');
+
+    fetch(query, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        redirect: 'follow',
+        body: JSON.stringify(order)
+    }).then(res => {
+        if (res.ok) {
+            createAlert('Your order has been placed successfully');
+        }
+        else if (res.status === '') {
+            //error
+            createAlert('Your order has not been placed', 'danger');
+        }
+    })
+
+}
 
 function checkUserLogin(callback) {
     let query = 'https://localhost:44380/Auth/CheckLogin';
@@ -260,6 +315,9 @@ function displayProducts(loggedStatus) {
         if (cart_table_exists !== null) {
             listCartItems(cart);
         }
+        else if (checkout_table_exists !== null) {
+            listCheckoutItems(cart);
+        }
     }
 
 }
@@ -272,7 +330,8 @@ window.onload = (event) => {
     cart_obj = JSON.parse(cart_str);
 
     //helper variable
-    cart_table_exists = document.querySelector('#cart-table');
+    cart_table_exists = document.querySelector('.cart-table');
+    checkout_table_exists = document.querySelector('.order-table');
 
     //if logged in, executes the callback (1st arg);
     checkUserLogin(displayProducts)
@@ -287,6 +346,7 @@ function initCart() {
     }
     else {
         cart = new Cart([], null);
+        localStorage.setItem('cart', JSON.stringify(cart));
     }
 }
 
@@ -297,66 +357,73 @@ function checkCart() {
     return false;
 }
 
-function createAlert() {
-    let code = `<div class="alert alert-success alert-dismissible fade show" role = "alert" >
-            <strong>Производот е додаден во вашата кошничка</strong>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>`;
-
-    alert_container.innerHTML += code;
-
-}
-
 function closeAlert() {
     $('.alert').alert('close');
 }
 
-add_to_cart_btns.forEach(el => {
-    el.addEventListener('click', (e) => {
-
-        let element = e.target;
-        let id = element.querySelector('.item-id').textContent;
-
-        let query = 'https://localhost:44380/Store/Query/Single/' + id;
-
-        fetch(query, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'text/plain;charset=UTF-8'
-            },
-            credentials: 'include',
-            redirect: 'follow',
-        }).then(res => {
-            if (res.ok) {
-                res.json()
-                    .then(data => {
-                        let product = new Product(data.productId, data.name, data.price, 1, data.img);
-
-                        cart.add(product);
-                        console.log(cart);
-
-                        window.localStorage.setItem('cart', JSON.stringify(cart));
-
-                        checkUserLogin(addCartToDb);
-
-                        //create alert product added
-                        createAlert();
-
-                        timeout_toast = setTimeout(closeAlert, 4000);
+/* SINGLE PRODUCT ADD TO CART*/
 
 
-                    });
-            }
+if (add_to_cart_btn !== null) {
+
+    add_to_cart_btn.addEventListener('click', (e) => {
+        console.log('clicked');
+        let item_id = document.getElementById('item-id').textContent;
+        let item_name = document.getElementById('item-name').textContent;
+        let item_price = document.getElementById('item-price').textContent
+        let item_quantity = document.getElementById('item-quantity').value;
+        let item_image = document.getElementById('item-image').src;
+
+
+        var all_variations = document.querySelectorAll('.variation-select');
+        let item_variations = [];
+
+
+        all_variations.forEach(el => {
+            item_variations.push(el.value);
         });
+
+        let product = new Product(item_id, item_name, item_price, parseInt(item_quantity), item_image, item_variations);
+
+        //get current cart from localstorage
+        let cart_str = localStorage.getItem('cart');
+        let current_cart = JSON.parse(cart_str);
+
+        //set cart.items to current items
+        let cart = new Cart();
+        cart.items = current_cart.items;
+
+
+
+        cart.add(product);
+        console.log(cart);
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+
+        checkUserLogin(addCartToDb);
+
+        //create alert product added
+        createAlert('Item added to cart.');
+
     });
-});
+
+}
+function removeFromCart(id, variations) {
+    if (cart.items !== null) {
+
+        cart.remove(id, variations);
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+        checkUserLogin(addCartToDb);
+    }
+}
+
+
 //update client cart then check login and update back-end if logged in
-function updateCartQuantity(id, quantity) {
+function updateCartQuantity(id, quantity, variations) {
     if (cart.items !== null) {
         cart.items.forEach(item => {
-            if (item.id === parseInt(id)) {
+            if (item.id === parseInt(id) && compareArray(item.variations, variations)) {
                 let int_quantity = parseInt(quantity);
                 //only update if !== 
                 if (int_quantity !== item.quantity) {
@@ -382,7 +449,7 @@ function addCartToDb(loggedStatus) {
 
 
         temp.items.forEach(i => {
-            let p = new Product(i.id, null, null, i.quantity, null);
+            let p = new Product(i.id, null, null, parseInt(i.quantity), null, i.variations);
             array_products.push(p);
         });
 
@@ -415,38 +482,70 @@ function listCartItems(cart) {
             let tr = document.createElement('tr');
 
             //table heading
-            let th = document.createElement('th');
+            /*let th = document.createElement('th');
             count += 1;
-            th.textContent = count;
-            th.scope = 'row';
+            th.inn
+            th.scope = 'row';*/
 
             let td_1 = document.createElement('td');
             td_1.textContent = item.id
             td_1.style.display = 'none';
 
             let td_2 = document.createElement('td');
-            td_2.textContent = item.name
+            td_2.innerHTML = `<img src="${item.img}" alt="" style="max-width: 48px;">`;
+            td_2.className = 'cart-pic';
 
             let td_3 = document.createElement('td');
-            td_3.textContent = item.price
+            td_3.innerHTML = `<h5>${item.name}</h5>`;
+            td_3.className = 'cart-title';
+
 
             let td_4 = document.createElement('td');
-            let current_quantity = item.quantity;
-            td_4.innerHTML = `<span class='quantity-text'>${current_quantity}</span> <a href='#' class='cart-edit-quantity'>Edit</a>`;
+            td_4.textContent = `${item.price}`;
+            td_4.className = 'p-price';
 
             let td_5 = document.createElement('td');
-            let img = document.createElement('img');
-            img.width = 48;
-            img.src = 'data:image/jpeg;base64, ' + item.img;
-            td_5.appendChild(img);
+            let current_quantity = item.quantity;
+            td_5.innerHTML = `<span class='quantity-text'>${current_quantity}</span> <a href='#' class='cart-edit-quantity'>Edit</a>`;
+
+            let td_6 = document.createElement('td');
+            for (let i = 0; i < item.variations.length; i++) {
+                if (i === item.variations.length - 1) {
+                    td_6.innerHTML += `<span class="cart-variation">${item.variations[i]}</span>`;
+                }
+                else {
+                    td_6.innerHTML += `<span class="cart-variation">${item.variations[i]},&nbsp</span>`;
+                }
+            }
 
 
-            tr.appendChild(th);
+            let td_7 = document.createElement('td');
+            td_7.textContent = parseInt(item.price) * parseInt(item.quantity);
+            td_7.className = 'total-price';
+
+
+            let td_8 = document.createElement('td');
+            td_8.innerHTML = ` <i class="ti-close cart-remove-item"></i>`;
+            td_8.className = 'close-td';
+
+
+            /*
+                        let td_7 = document.createElement('td');
+                        let img = document.createElement('img');
+                        img.width = 48;
+                        img.src = 'data:image/jpeg;base64, ' + item.img;
+                        td_7.appendChild(img);*/
+
+
+
             tr.appendChild(td_1);
             tr.appendChild(td_2);
             tr.appendChild(td_3);
             tr.appendChild(td_4);
             tr.appendChild(td_5);
+            tr.appendChild(td_6);
+            tr.appendChild(td_7);
+            tr.appendChild(td_8);
 
             table_body.appendChild(tr);
 
@@ -459,10 +558,72 @@ function listCartItems(cart) {
         cart_edit_nodes.forEach(i => {
             i.addEventListener('click', (e) => {
                 openInputBox(e);
-            })
-        })
+            });
+        });
+
+        let cart_remove_nodes = document.querySelectorAll('.cart-remove-item');
+        cart_remove_nodes.forEach(el => {
+            el.addEventListener('click', (e) => {
+                console.log('removed');
+                let parent_container = e.target.parentNode.parentNode;
+                let item_id = parent_container.querySelector('td').textContent;
+
+                let item_variation_el = parent_container.querySelectorAll('.cart-variation');
+                let item_variations = [];
+
+                item_variation_el.forEach(el => {
+                    item_variations.push(el.textContent);
+                });
+
+                removeFromCart(item_id, item_variations);
+
+                parent_container.remove();
+            });
+        });
     }
 }
+
+function listCheckoutItems(cart) {
+    if (checkCart() && checkout_table_exists !== null) {
+        let table = checkout_table_exists;
+
+        let total = 0;
+        cart.items.forEach(item => {
+
+            //table heading
+            /*let th = document.createElement('th');
+            count += 1;
+            th.inn
+            th.scope = 'row';*/
+
+            let li_1 = document.createElement('li');
+            li_1.className = 'fw-normal';
+
+            li_1.innerHTML += `${item.name}:&nbsp`;
+            item.variations.forEach(v => {
+                li_1.innerHTML += `${v}&nbsp`;
+            });
+            let product_total = parseInt(item.quantity) * parseInt(item.price);
+            li_1.innerHTML += `x ${item.quantity}&nbsp <span>${product_total}&nbspМКД</span>`;
+
+            total += product_total;
+
+            table.appendChild(li_1);
+        });
+
+        let li_total = document.createElement('li');
+        li_total.className = 'total-price';
+        li_total.innerHTML = `Total <span>${total}&nbspМКД</span>`;
+
+        table.appendChild(li_total);
+        
+        
+    }
+}
+
+
+
+
 
 function openInputBox(event) {
     let parent = event.target.parentNode;
@@ -470,7 +631,7 @@ function openInputBox(event) {
 
     let current_quantity = parent.querySelector('.quantity-text').textContent;
 
-    parent.innerHTML = `<input type="number" class="quantity-input" name="quantity" min="1" value=${current_quantity}> <a href='#' class='cart-update-quantity'>Update</a>`;
+    parent.innerHTML = `<input type="number" class="quantity-input" name="quantity" min="1" value=${current_quantity} style="width: 80px;"> <a href='#' class='cart-update-quantity'>Update</a>`;
 
     //input box element
     let input_value_el = parent.querySelector('.quantity-input');
@@ -479,6 +640,9 @@ function openInputBox(event) {
     let cart_update_quantity = document.querySelector('.cart-update-quantity');
 
     cart_update_quantity.addEventListener('click', (e) => {
+        //get update btn parent-parent
+        let parent_container = e.target.parentNode.parentNode;
+
         //parent node (td)
         let parent = e.target.parentNode;
         console.log(e.target.parentNode);
@@ -489,11 +653,28 @@ function openInputBox(event) {
         let quantity_text = parent.querySelector('.quantity-text');
         quantity_text.textContent = current_quantity;
 
+
+        //change product total field
+        let price = parent_container.querySelector('.p-price').textContent;
+        let quantity = current_quantity;
+
+        let total_field = parent_container.querySelector('.total-price');
+        total_field.textContent = parseInt(quantity) * parseInt(price);
+
+
         //update js cart quantity
         let td_id = parent.parentNode.querySelector('td');
         let item_id = td_id.textContent;
 
-        updateCartQuantity(item_id, current_quantity);
+        let item_variation_el = parent.parentNode.querySelectorAll('.cart-variation');
+        let item_variations = [];
+
+        item_variation_el.forEach(el => {
+            item_variations.push(el.textContent);
+        });
+
+
+        updateCartQuantity(item_id, current_quantity, item_variations);
 
         let cart_edit_quantity = parent.querySelector('.cart-edit-quantity');
         cart_edit_quantity.addEventListener('click', (e) => {
