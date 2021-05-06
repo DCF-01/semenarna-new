@@ -5,6 +5,7 @@ let query_string;
 let table_body = document.getElementById('table-body');
 let alert_container = document.getElementById('alert-container');
 let add_to_cart_btn = document.querySelector('#add-to-cart');
+let order_checkmarks = document.querySelectorAll('.order-checkmark');
 
 
 let timeout_toast;
@@ -229,7 +230,7 @@ function submitOrder(order) {
     let email = document.getElementById('email');
     let phone = document.getElementById('phone');
 
-    let order = new Order(first_name, last_name, company_name, country, address, zip_code, city, email, phone, 'payment', 'transport');
+    let new_order = new Order(first_name, last_name, company_name, country, address, zip_code, city, email, phone, 'payment', 'transport');
 
     fetch(query, {
         method: 'POST',
@@ -238,7 +239,7 @@ function submitOrder(order) {
         },
         credentials: 'include',
         redirect: 'follow',
-        body: JSON.stringify(order)
+        body: JSON.stringify(new_order)
     }).then(res => {
         if (res.ok) {
             createAlert('Your order has been placed successfully');
@@ -616,8 +617,8 @@ function listCheckoutItems(cart) {
         li_total.innerHTML = `Total <span>${total}&nbspМКД</span>`;
 
         table.appendChild(li_total);
-        
-        
+
+
     }
 }
 
@@ -711,4 +712,24 @@ if (gallery_images != null) {
 function changeProductImage(value) {
     let product_image = document.getElementById('product-image');
     product_image.src = value;
+}
+
+var prev_checkbox;
+
+if (order_checkmarks !== null) {
+    order_checkmarks.forEach(el => {
+        el.addEventListener('click', (e) => {
+            if (prev_checkbox === undefined) {
+                prev_checkbox = e.target;
+                console.log(prev_checkbox);
+            }
+            else if (prev_checkbox !== e.target) {
+                let toggle = prev_checkbox.checked;
+                prev_checkbox.checked = !toggle;
+                prev_checkbox.dispatchEvent(new Event('change'));
+                prev_checkbox = e.target;
+                /*prev_checkbox.click();*/
+            }
+        });
+    });
 }
