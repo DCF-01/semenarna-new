@@ -13,5 +13,7 @@ namespace semenarna_id2.Areas.Store.ViewModels {
         public string Link { get; set; }
         public int Page_number { get; set; }
         public int Number_of_pages { get; set; }
+        public int AllProductsCount { get; set; }
+        public int ProductsShowingCount { get; set; }
     }
 }

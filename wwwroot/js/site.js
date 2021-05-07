@@ -21,7 +21,7 @@ var check = function () {
 
 function createAlert(message_str = 'An error has occured.', alert_type = 'success') {
 
-    
+
 
     let alert_exists = document.querySelector('.alert');
     let code = `<div class="alert alert-${alert_type} alert-dismissible fade show" role = "alert" >
@@ -62,6 +62,7 @@ let add_to_cart_btn = document.querySelector('#add-to-cart');
 let payment_checkmarks = document.querySelectorAll('.payment-method');
 let delivery_checkmarks = document.querySelectorAll('.delivery-method');
 let order_submit_btn = document.getElementById('checkout-submit-btn');
+let select_lists = document.querySelector('.list');
 
 let timeout_toast;
 
@@ -72,6 +73,40 @@ function displayQuerySearch(data, url_param) {
     if (data.length < 5) {
         max = data.length;
     }
+
+    /*CREATE SEARCH HEADER*/
+    //list item
+    const new_node = document.createElement('li');
+    new_node.className = 'list-group-item';
+    /*new_node.textContent = data[i].name;*/
+
+    //div row d-flex align-items-center
+    let div = document.createElement('div');
+    div.className = 'd-flex align-items-center justify-content-between';
+
+    //p element (name)
+    let name = document.createElement('p');
+    name.textContent = 'Име';
+    name.className = 'm-0 p-2';
+
+    //p element (description)
+    let price = document.createElement('p');
+    price.textContent = 'Цена';
+    price.className = 'm-0 p-2';
+
+    //img element (image)
+    let image = document.createElement('p');
+    image.textContent = 'Производ';
+    image.className = 'm-0 p-2';
+
+    div.appendChild(name);
+    div.appendChild(price);
+    div.appendChild(image);
+
+    new_node.appendChild(div);
+
+    search_suggestions_box.appendChild(new_node);
+
 
     console.log(data);
     for (let i = 0; i < max; i++) {
@@ -91,7 +126,7 @@ function displayQuerySearch(data, url_param) {
 
         //p element (description)
         let price = document.createElement('p');
-        price.textContent = data[i].price;
+        price.textContent = `${data[i].price} ден`;
         price.className = 'm-0 p-2';
 
         //img element (image)
@@ -132,6 +167,13 @@ function isNumeric(str) {
 function clearSearchBox() {
     search_suggestions_box.innerHTML = '';
 }
+
+document.addEventListener('click', (e) => {
+    let li_element = search_suggestions_box.querySelector('li');
+    if (!search_suggestions_box.contains(e.target) && li_element !== null) {
+        clearSearchBox();
+    }
+})
 
 if (store_search_box !== null) {
     store_search_box.addEventListener('keyup', () => {
@@ -325,7 +367,7 @@ function submitOrder(order) {
     }).then(res => {
         if (res.redirected) {
             window.location.href = res.url;
-            
+
         }
         else {
             createAlert('Your order has NOT been placed. Please check your billing details and try again.', 'danger');
@@ -424,6 +466,30 @@ window.onload = (event) => {
 
 }
 
+function getCartTotal() {
+    let cart_str = localStorage.getItem('cart');
+    let cart = JSON.parse(cart_str);
+    let total = 0;
+
+    cart.items.forEach(el => {
+        let item_price = parseInt(el.price) * parseInt(el.quantity);
+        total += item_price;
+    });
+
+    return total;
+
+
+}
+
+function updateCartTotal() {
+    let total_element = document.querySelector('.cart-total');
+    if (total_element !== null) {
+
+        let total = getCartTotal();
+        total_element.innerHTML = `Total <span>${total} МКД</span>`;
+    }
+}
+
 
 //use existing or create new cart
 function initCart() {
@@ -469,7 +535,10 @@ if (add_to_cart_btn !== null) {
             item_variations.push(el.value);
         });
 
-        let product = new Product(item_id, item_name, item_price, parseInt(item_quantity), item_image, item_variations);
+        let regex = /\d{1,}/gm;
+        let price_str = regex.exec(item_price);
+
+        let product = new Product(item_id, item_name, parseInt(price_str[0]), parseInt(item_quantity), item_image, item_variations);
 
         //get current cart from localstorage
         let cart_str = localStorage.getItem('cart');
@@ -509,7 +578,7 @@ function removeFromCart(id, variations) {
 function updateCartQuantity(id, quantity, variations) {
     if (cart.items !== null) {
         cart.items.forEach(item => {
-            if (item.id === parseInt(id) && compareArray(item.variations, variations)) {
+            if (parseInt(item.id) === parseInt(id) && compareArray(item.variations, variations)) {
                 let int_quantity = parseInt(quantity);
                 //only update if !== 
                 if (int_quantity !== item.quantity) {
@@ -587,7 +656,7 @@ function listCartItems(cart) {
 
 
             let td_4 = document.createElement('td');
-            td_4.textContent = `${item.price}`;
+            td_4.textContent = `${item.price} ден`;
             td_4.className = 'p-price';
 
             let td_5 = document.createElement('td');
@@ -606,7 +675,8 @@ function listCartItems(cart) {
 
 
             let td_7 = document.createElement('td');
-            td_7.textContent = parseInt(item.price) * parseInt(item.quantity);
+            let price_total = parseInt(item.price) * parseInt(item.quantity);
+            td_7.textContent = `${price_total} ден`;
             td_7.className = 'total-price';
 
 
@@ -646,6 +716,8 @@ function listCartItems(cart) {
                 openInputBox(e);
             });
         });
+        //update total after listing
+        updateCartTotal();
 
         let cart_remove_nodes = document.querySelectorAll('.cart-remove-item');
         cart_remove_nodes.forEach(el => {
@@ -658,10 +730,15 @@ function listCartItems(cart) {
                 let item_variations = [];
 
                 item_variation_el.forEach(el => {
-                    item_variations.push(el.textContent);
+                    let regex = /[\wа-я]+/ig;
+                    let variation_string = regex.exec(el.textContent);
+                    
+                    item_variations.push(variation_string[0]);
                 });
 
                 removeFromCart(item_id, item_variations);
+                //update dom if exists
+                updateCartTotal();
 
                 parent_container.remove();
             });
@@ -690,7 +767,7 @@ function listCheckoutItems(cart) {
                 li_1.innerHTML += `${v}&nbsp`;
             });
             let product_total = parseInt(item.quantity) * parseInt(item.price);
-            li_1.innerHTML += `x ${item.quantity}&nbsp <span>${product_total}&nbspМКД</span>`;
+            li_1.innerHTML += `x ${item.quantity}&nbsp <span>${product_total} ден</span>`;
 
             total += product_total;
 
@@ -699,7 +776,7 @@ function listCheckoutItems(cart) {
 
         let li_total = document.createElement('li');
         li_total.className = 'total-price';
-        li_total.innerHTML = `Total <span>${total}&nbspМКД</span>`;
+        li_total.innerHTML = `Total <span>${total} ден</span>`;
 
         table.appendChild(li_total);
 
@@ -756,11 +833,16 @@ function openInputBox(event) {
         let item_variations = [];
 
         item_variation_el.forEach(el => {
-            item_variations.push(el.textContent);
+            let regex = /[\wа-я]+/ig;
+            /*let regex = /\w{1,}/gm;*/
+            let variation_string = regex.exec(el.textContent);
+            item_variations.push(variation_string[0]);
         });
 
 
         updateCartQuantity(item_id, current_quantity, item_variations);
+        //update DOM if exists
+        updateCartTotal();
 
         let cart_edit_quantity = parent.querySelector('.cart-edit-quantity');
         cart_edit_quantity.addEventListener('click', (e) => {
@@ -783,7 +865,7 @@ if (custom_input_clear != null) {
 }
 
 //single product gallery images
-let gallery_images = document.querySelectorAll('.gallery-image');
+/*let gallery_images = document.querySelectorAll('.gallery-image');
 
 if (gallery_images != null) {
     gallery_images.forEach(img => {
@@ -792,7 +874,7 @@ if (gallery_images != null) {
             changeProductImage(e.target.src);
         });
     })
-}
+}*/
 
 function changeProductImage(value) {
     let product_image = document.getElementById('product-image');
@@ -833,7 +915,24 @@ if (delivery_checkmarks !== null) {
         });
     });
 }
+if (order_submit_btn !== null) {
+    order_submit_btn.addEventListener('click', (e) => {
+        submitOrder(e);
+    });
+}
 
-order_submit_btn.addEventListener('click', (e) => {
-    submitOrder(e);
-});
+/*if (show_product_number !== null) {
+    let child_elements = Array.from(show_product_number.children);
+
+    for (let i = 0; i < child_elements.length) {
+
+    }
+
+    child_elements.forEach(el => {
+        el.addEventListener('click', (e) => {
+            let value = e.target.dataset.value;
+            let current_url = window.location.href;
+            window.location.url = `${current_url}?products_on_page=${value}`;
+        })
+    });
+}*/

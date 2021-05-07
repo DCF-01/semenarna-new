@@ -20,5 +20,6 @@ namespace semenarna_id2.Areas.Store.ViewModels {
         public string Img { get; set; }
         public List<string> GalleryImages { get; set; }
         public  List<Variation> Variations { get; set; }
+        public Product[] RelatedProducts { get; set; }
     }
 }

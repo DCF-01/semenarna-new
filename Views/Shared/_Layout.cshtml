@@ -7,18 +7,19 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@ViewData["Title"] - semenarna</title>
 
+    <!-- lib css -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
           integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
           crossorigin="anonymous" />
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/site.css" />
+
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-    <!-- Css Styles -->
+    <!-- Css Styles internal lib -->
     <link rel="stylesheet" href="~/tp-lib/css/themify-icons.css" type="text/css">
     <link rel="stylesheet" href="~/tp-lib/css/elegant-icons.css" type="text/css">
     <link rel="stylesheet" href="~/tp-lib/css/owl.carousel.min.css" type="text/css">
@@ -27,6 +28,9 @@
     <link rel="stylesheet" href="~/tp-lib/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="~/tp-lib/css/style.css" type="text/css">
     <link rel="stylesheet" href="~/tp-lib/css/nice-select.css" type="text/css">
+
+    <!-- site css -->
+    <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
     <header class="header-section">
@@ -84,8 +88,11 @@
                         <div class="advanced-search">
                             <button type="button" class="category-btn" style="opacity: 0;">All Categories</button>
                             <div class="input-group">
-                                <input type="text" placeholder="What do you need?">
+                                <input type="text" placeholder="What do you need?" id="store-search">
                                 <button type="button"><i class="ti-search"></i></button>
+                                @*<button class="m-0" id="custom-input-clear">X</button>*@
+                            <ul class="list-group" id="search-suggestions">
+                            </ul>
                             </div>
                         </div>
                     </div>
@@ -317,7 +324,6 @@
     <script src="/tp-lib/js/owl.carousel.min.js"></script>
     <script src="/tp-lib/js/main.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/store.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -2002,17 +2002,18 @@ ol {
 }
 
 .product-show-option .select-option .p-show.nice-select {
-	padding-right: 105px;
+	padding-right: 50px;
 }
 
-.product-show-option .select-option .p-show.nice-select:before {
+/*.product-show-option .select-option .p-show.nice-select:before {
 	position: absolute;
 	right: 48px;
 	top: 0;
-	content: "09";
+	content: "12";
 	font-size: 16px;
 	color: #252525;
-}
+}*/
+
 
 .product-show-option p {
 	margin-bottom: 0;

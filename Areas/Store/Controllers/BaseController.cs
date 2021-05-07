@@ -16,7 +16,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
             _ctx = ctx;
         }
         // returns 24 products (size of page) of page number (id) 
-        public StoreViewModel GetProductList(int id, Product[] all) {
+        public StoreViewModel GetProductList(int id, Product[] all, int products_on_page = 24) {
 
             int page_number;
 
@@ -29,14 +29,14 @@ namespace semenarna_id2.Areas.Store.Controllers {
 
 
             //max page number
-            int number_of_pages = (all.Length + 24 - 1) / 24;
+            int number_of_pages = (all.Length + products_on_page - 1) / products_on_page;
 
             //products that will return to view
             List<Product> product_list = new List<Product>();
 
             //start, end, max at
-            int start = (page_number - 1) * 24;
-            int end = start + 24;
+            int start = (page_number - 1) * products_on_page;
+            int end = start + products_on_page;
             int max;
             if (all.Length < end) {
                 max = all.Length;
@@ -78,16 +78,25 @@ namespace semenarna_id2.Areas.Store.Controllers {
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int id) {
+        public async Task<IActionResult> All([FromQuery] string products_on_page = "24", int id = 0) {
             // all products
             var all_products = await _ctx.Products.ToArrayAsync();
             var categories = await _ctx.Categories.ToListAsync();
 
-            //return 24 product of selected page(id)
-            StoreViewModel model = GetProductList(id, all_products);
+            //return # product of selected page(id)
+            var available_numbers = new[] { 12, 24, 48 };
+            StoreViewModel model;
+
+            if (available_numbers.Contains(int.Parse(products_on_page))) {
+                model = GetProductList(id, all_products, int.Parse(products_on_page));
+            }
+            else {
+                model = GetProductList(id, all_products);
+            }
+
             model.Categories = categories;
 
-            return View(model);
+            return View("Index", model);
         }
         [HttpGet]
         public async Task<IActionResult> Find([FromQuery] string name = "", [FromQuery] string product_id = "") {
@@ -123,22 +132,37 @@ namespace semenarna_id2.Areas.Store.Controllers {
         }
 
         [HttpGet]
-        public async Task<IActionResult> Category(int id, [FromQuery] string name = "", [FromQuery] string product_id = "") {
-            if (id == null) {
-                return NotFound();
-            }
-            else {
+        public async Task<IActionResult> Category([FromQuery] string products_on_page = "24", int id = 0, [FromQuery] string name = "", [FromQuery] string product_id = "") {
+            
+            try {
+                var available_numbers = new[] { 12, 24, 48 };
+
+                
+
                 var category = await _ctx.Categories.FindAsync(id);
 
                 var all_products = _ctx.Products
                                 .Select(p => p)
                                 .ToArray();
 
-                var model = GetProductList(0, all_products);
+                StoreViewModel model;
+
+                if (available_numbers.Contains(int.Parse(products_on_page))) {
+                    model = GetProductList(0, all_products, int.Parse(products_on_page));
+                }
+                else {
+                    model = GetProductList(0, all_products);
+                }
+
+                 
                 model.Categories = await _ctx.Categories.ToListAsync();
                 model.CurrentCategory = category.Name;
 
                 return View("Index", model); ;
+            }
+            catch(Exception e) {
+                Console.WriteLine(e.Message);
+                return BadRequest();
             }
         }
     }
