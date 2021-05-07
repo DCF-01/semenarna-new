@@ -56,7 +56,7 @@ namespace semenarna_id2.Controllers {
             
 
 
-            return View(new LoginViewModel());
+            return View();
         }
 
         [HttpPost]

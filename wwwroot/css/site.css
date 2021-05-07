@@ -325,6 +325,12 @@ p {
     user-select: none;
 }
 
+#checkout-submit-btn:hover {
+    background-color: white;
+    color: black;
+
+}
+
 /* ORDER RESULT PAGE*/
 .order-success-box {
     width: 65%;

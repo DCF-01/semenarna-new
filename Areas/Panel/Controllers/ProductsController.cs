@@ -69,7 +69,9 @@ namespace semenarna_id2.Controllers {
 
                 var product = new Product {
                     Name = product_data.Name,
+                    SKU = product_data.SKU,
                     Description = product_data.Description,
+                    ShortDescription = product_data.ShortDescription,
                     Price = product_data.Price,
                     SalePrice = product_data.SalePrice,
                     OnSale = sale_state,
@@ -177,7 +179,9 @@ namespace semenarna_id2.Controllers {
 
                 var item = new ProductViewModel {
                     Name = product.Name,
+                    SKU = product.SKU,
                     Description = product.Description,
+                    ShortDescription = product.ShortDescription,
                     Price = product.Price,
                     SalePrice = product.SalePrice,
                     OnSale = product.OnSale.ToString(),
@@ -270,6 +274,8 @@ namespace semenarna_id2.Controllers {
                 };
 
                 entity.Name = productViewModel.Name;
+                entity.SKU = productViewModel.SKU
+                entity.ShortDescription = productViewModel.ShortDescription;
                 entity.Description = productViewModel.Description;
                 entity.Price = productViewModel.Price;
                 entity.SalePrice = productViewModel.SalePrice;

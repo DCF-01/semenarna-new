@@ -78,9 +78,11 @@ namespace semenarna_id2.Areas.Store.Controllers {
         }
 
         [HttpGet]
-        public async Task<IActionResult> All([FromQuery] string products_on_page = "24", int id = 0) {
+        public async Task<IActionResult> Index([FromQuery] string products_on_page = "24", int id = 0) {
             // all products
-            var all_products = await _ctx.Products.ToArrayAsync();
+            var all_products = await _ctx.Products
+                                        .Include(item => item.Categories)
+                                        .ToArrayAsync();
             var categories = await _ctx.Categories.ToListAsync();
 
             //return # product of selected page(id)

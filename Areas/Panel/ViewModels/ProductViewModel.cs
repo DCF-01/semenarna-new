@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 namespace semenarna_id2.Areas.Panel.ViewModels {
     public class ProductViewModel {
         public string Name { get; set; }
+        public string SKU { get; set; }
         public string Description { get; set; }
+        public string ShortDescription { get; set; }
         public string Price { get; set; }
         public string SalePrice { get; set; }
         public string OnSale { get; set; }

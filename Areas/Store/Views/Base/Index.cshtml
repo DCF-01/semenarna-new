@@ -42,11 +42,8 @@
                                 }
                             }
                         }
-                        <li><a href="#">Men</a></li>
-                        <li><a href="#">Women</a></li>
-                        <li><a href="#">Kids</a></li>
                     </ul>
-                    <a href="#" class="filter-btn">Filter</a>
+                    <button href="#" class="filter-btn">Filter</button>
                 </div>
             </div>
             <div class="col-lg-9 order-1 order-lg-2">
@@ -55,8 +52,8 @@
                         <div class="col-lg-7 col-md-7">
                             <div class="select-option">
                                 <select class="sorting">
-                                    <option value="">Order by price</option>
-                                    <option value="">Order by name</option>
+                                    <option value="price_descending" class="option-one">Order by price</option>
+                                    <option value="name_descending" class="option-two">Order by name</option>
                                 </select>
                                 <select class="p-show" id="show-product-number">
                                     <option value="12" class="option-one">Show: 12</option>
@@ -77,7 +74,7 @@
                             <div class="col-lg-4 col-sm-6">
                                 <div class="product-item">
                                     <div class="pi-pic">
-                                        <img src="data:image/png;base64, @product.Img" alt="">
+                                        <a asp-area="Store" asp-controller="Product" asp-action="Single" asp-route-id="@product.ProductId"><img src="data:image/png;base64, @product.Img" alt=""></a>
                                         @if (product.OnSale) {
                                              
                                             double temp_number = ((double)product.SalePrice - (double)product.Price) / (double)product.Price;
@@ -90,14 +87,12 @@
                                             @*<i class="icon_heart_alt"></i>*@
                                         </div>
                                         <ul>
-                                            <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                            <li class="quick-view"><a href="#">+ View</a></li>
-                                            <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
+                                            <li class="quick-view"><a asp-area="Store" asp-controller="Product" asp-action="Single" asp-route-id="@product.ProductId">+ View</a></li>
                                         </ul>
                                     </div>
                                     <div class="pi-text">
-                                        <div class="catagory-name">@*@product.Categories.FirstOrDefault()*@</div>
-                                        <a href="#">
+                                        <div class="catagory-name">@product.Categories.FirstOrDefault().Name</div>
+                                        <a asp-area="Store" asp-controller="Product" asp-action="Single" asp-route-id="@product.ProductId">
                                             <h5>@product.Name</h5>
                                         </a>
                                         @if (product.OnSale) {

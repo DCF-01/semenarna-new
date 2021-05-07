@@ -300,7 +300,7 @@ class Cart {
 }
 
 class Order {
-    constructor(first_name, last_name, company_name, country, address, zip_code, city, email, phone, payment_method, delivery_method) {
+    constructor(first_name, last_name, company_name, country, address, zip_code, city, email, phone, payment_method, delivery_method, cart) {
         this.FirstName = first_name;
         this.LastName = last_name;
         this.CompanyName = company_name;
@@ -312,7 +312,7 @@ class Order {
         this.Phone = phone;
         this.PaymentMethod = payment_method;
         this.DeliveryMethod = delivery_method;
-        this.Cart = localStorage.getItem('cart');
+        this.Cart = cart;
     }
 }
 
@@ -351,8 +351,16 @@ function submitOrder(order) {
         return;
     }
 
+    let cart_str = localStorage.getItem('cart');
+    let cart = JSON.parse(cart_str);
 
-    let new_order = new Order(first_name, last_name, company_name, country, address, zip_code, city, email, phone, payment_method, delivery_method);
+    cart.items.forEach(el => {
+        el.img = null;
+    });
+
+
+
+    let new_order = new Order(first_name, last_name, company_name, country, address, zip_code, city, email, phone, payment_method, delivery_method, cart);
 
     let url = 'https://localhost:44380/Cart/Order/Process'
     console.log(new_order);
@@ -366,8 +374,9 @@ function submitOrder(order) {
         body: JSON.stringify(new_order)
     }).then(res => {
         if (res.redirected) {
+            cart = new Cart([], null);
+            localStorage.setItem('cart', JSON.stringify(cart));
             window.location.href = res.url;
-
         }
         else {
             createAlert('Your order has NOT been placed. Please check your billing details and try again.', 'danger');
@@ -389,7 +398,7 @@ function checkUserLogin(callback) {
         credentials: 'include', // omit, include
         redirect: 'follow', // manual, error
     }).then((response) => {
-        if (response.ok) {
+        if (response.ok || response.redirected) {
             response.json().then((data) => {
                 //true or false (login status)
                 let result = JSON.parse(data);
@@ -421,11 +430,11 @@ function getUserCart(callback) {
                 res.json()
                     .then(data => {
                         /*let product = new Product(data.id, data.name, data.price, 1, data.img);*/
-
                         if (data !== null) {
                             cart = new Cart(data.items, null);
                         }
                         localStorage.setItem('cart', JSON.stringify(cart));
+                        updateCartTotalDOM();
                         callback(cart);
                     });
             }
@@ -439,15 +448,15 @@ function displayProducts(loggedStatus) {
         getUserCart(listCartItems);
     }
     else {
-        initCart()
+        initCart();
         if (cart_table_exists !== null) {
             listCartItems(cart);
         }
         else if (checkout_table_exists !== null) {
             listCheckoutItems(cart);
         }
+        updateCartTotalDOM();
     }
-
 }
 
 //init cart on window load
@@ -464,6 +473,21 @@ window.onload = (event) => {
     //if logged in, executes the callback (1st arg);
     checkUserLogin(displayProducts)
 
+    
+}
+
+function getCartQuantity() {
+    let cart_str = localStorage.getItem('cart');
+    let cart = JSON.parse(cart_str);
+    let quantity = 0;
+
+    if (cart.items !== null) {
+        cart.items.forEach(el => {
+            quantity += 1;
+        });
+    }
+
+    return quantity;
 }
 
 function getCartTotal() {
@@ -471,22 +495,34 @@ function getCartTotal() {
     let cart = JSON.parse(cart_str);
     let total = 0;
 
-    cart.items.forEach(el => {
-        let item_price = parseInt(el.price) * parseInt(el.quantity);
-        total += item_price;
-    });
+    if (cart.items !== null) {
+        cart.items.forEach(el => {
+            let item_price = parseInt(el.price) * parseInt(el.quantity);
+            total += item_price;
+        });
+    }
 
     return total;
 
 
 }
+//update cart total on page, total on hover, quantity on hover'
+function updateCartTotalDOM() {
+    let total = getCartTotal();
 
-function updateCartTotal() {
     let total_element = document.querySelector('.cart-total');
     if (total_element !== null) {
+        total_element.innerHTML = `Total <span>${total} ДЕН</span>`;
+    }
 
-        let total = getCartTotal();
-        total_element.innerHTML = `Total <span>${total} МКД</span>`;
+    let cart_quantity_hover = document.getElementById('cart-quantity-hover');
+
+    if (cart_quantity_hover !== null ) {
+        cart_quantity_hover.textContent = getCartQuantity();
+        cart_quantity_hover.style.opacity = '1';
+    }
+    else {
+
     }
 }
 
@@ -554,7 +590,8 @@ if (add_to_cart_btn !== null) {
         console.log(cart);
 
         localStorage.setItem('cart', JSON.stringify(cart));
-
+        //update total and quantity top bar + total on page if on cart
+        updateCartTotalDOM();
         checkUserLogin(addCartToDb);
 
         //create alert product added
@@ -717,7 +754,7 @@ function listCartItems(cart) {
             });
         });
         //update total after listing
-        updateCartTotal();
+        updateCartTotalDOM();
 
         let cart_remove_nodes = document.querySelectorAll('.cart-remove-item');
         cart_remove_nodes.forEach(el => {
@@ -732,13 +769,13 @@ function listCartItems(cart) {
                 item_variation_el.forEach(el => {
                     let regex = /[\wа-я]+/ig;
                     let variation_string = regex.exec(el.textContent);
-                    
+
                     item_variations.push(variation_string[0]);
                 });
 
                 removeFromCart(item_id, item_variations);
                 //update dom if exists
-                updateCartTotal();
+                updateCartTotalDOM();
 
                 parent_container.remove();
             });
@@ -841,8 +878,8 @@ function openInputBox(event) {
 
 
         updateCartQuantity(item_id, current_quantity, item_variations);
-        //update DOM if exists
-        updateCartTotal();
+        //update for total on cart page
+        updateCartTotalDOM();
 
         let cart_edit_quantity = parent.querySelector('.cart-edit-quantity');
         cart_edit_quantity.addEventListener('click', (e) => {
@@ -921,18 +958,34 @@ if (order_submit_btn !== null) {
     });
 }
 
-/*if (show_product_number !== null) {
-    let child_elements = Array.from(show_product_number.children);
 
-    for (let i = 0; i < child_elements.length) {
+//filter products query on click via url params GET request
+let filter_products_btn = document.querySelector('.filter-btn');
+if (filter_products_btn !== null) {
 
-    }
+    
 
-    child_elements.forEach(el => {
-        el.addEventListener('click', (e) => {
-            let value = e.target.dataset.value;
-            let current_url = window.location.href;
-            window.location.url = `${current_url}?products_on_page=${value}`;
-        })
+    filter_products_btn.addEventListener('click', (e) => {
+        let product_show_number = document.querySelector('.p-show .selected');
+        let order_by = document.querySelector('.sorting .selected')
+
+        let number = product_show_number.dataset.value;
+        let order = order_by.dataset.value
+
+        let current_url = new URL(window.location.href);
+
+        let params = new URLSearchParams(current_url.search);
+
+        params.set('products_on_page', number);
+        params.set('order', order);
+
+        console.log(params.toString());
+
+        let base = location.protocol + '//' + location.host + location.pathname;
+        let new_url = `${base}?${params.toString()}`;
+
+        window.location.href = new_url;
+
     });
-}*/
+}
+

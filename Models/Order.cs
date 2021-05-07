@@ -17,6 +17,7 @@ namespace semenarna_id2.Models {
         public string Phone { get; set; }
         public string PaymentMethod { get; set; }
         public string DeliveryMethod { get; set; }
+        public ICollection<CartProduct> CartProducts { get; set; }
         public DateTime DateTime { get; set; }
     }
 }

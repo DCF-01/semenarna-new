@@ -7,19 +7,27 @@
     <form asp-controller="Products" asp-action="Create" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label>Name</label>
-            <input type="text" id="productNameInput" class="form-control" asp-for="Name">
+            <input type="text" class="form-control" asp-for="Name">
+        </div>
+        <div class="form-group">
+            <label>SKU</label>
+            <input type="text"  class="form-control" asp-for="SKU">
         </div>
         <div class="form-group">
             <label>Description</label>
-            <input type="text" id="productDescriptionInput" class="form-control" asp-for="Description">
+            <input type="text" class="form-control" asp-for="Description">
+        </div>
+        <div class="form-group">
+            <label>Short Description</label>
+            <input type="text" class="form-control" asp-for="ShortDescription">
         </div>
         <div class="form-group">
             <label>Price</label>
-            <input type="text" id="productDescriptionInput" class="form-control" asp-for="Price">
+            <input type="text" class="form-control" asp-for="Price">
         </div>
         <div class="form-group">
             <label>SalePrice</label>
-            <input type="text" id="productDescriptionInput" class="form-control" asp-for="SalePrice">
+            <input type="text" class="form-control" asp-for="SalePrice">
         </div>
         <div class="form-group">
             <label>On Sale</label>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using semenarna_id2.Models;
 
 namespace semenarna_id2.Areas.Cart.ViewModels {
     public class OrderViewModel {
@@ -25,6 +26,7 @@ namespace semenarna_id2.Areas.Cart.ViewModels {
         public string PaymentMethod { get; set; }
         [Required]
         public string DeliveryMethod { get; set; }
+        public CartViewModel Cart { get; set; }
 
     }
 }
