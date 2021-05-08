@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 namespace semenarna_id2.Areas.Store.ViewModels {
     public class ProductViewModel {
         public int ProductId { get; set; }
-        public string[] SKUS { get; set; }
+        public string SKU { get; set; }
         public string Name { get; set; }
+        public string ShortDescription { get; set; }
         public string Description { get; set; }
         public int Price { get; set; }
         public int SalePrice { get; set; }

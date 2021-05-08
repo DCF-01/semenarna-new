@@ -17,8 +17,8 @@ namespace semenarna_id2.Controllers {
     [Authorize(Roles = "Admin")]
     [Area("Panel")]
     public class ProductsController : Controller {
-        private ApplicationDbContext _ctx;
-        private UserManager<ApplicationUser> _userManager;
+        readonly ApplicationDbContext _ctx;
+        readonly UserManager<ApplicationUser> _userManager;
 
         public ProductsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager) {
             _ctx = context;
@@ -274,7 +274,7 @@ namespace semenarna_id2.Controllers {
                 };
 
                 entity.Name = productViewModel.Name;
-                entity.SKU = productViewModel.SKU
+                entity.SKU = productViewModel.SKU;
                 entity.ShortDescription = productViewModel.ShortDescription;
                 entity.Description = productViewModel.Description;
                 entity.Price = productViewModel.Price;

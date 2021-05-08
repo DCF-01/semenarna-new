@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Google.Rpc;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using semenarna_id2.Data;
 using semenarna_id2.Models;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace semenarna_id2.Controllers {
     public class AuthController : Controller {
@@ -44,7 +46,7 @@ namespace semenarna_id2.Controllers {
                 await _userManager.AddToRoleAsync(usr, "User");
 
                 if (res.Succeeded) {
-                  
+
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -53,7 +55,7 @@ namespace semenarna_id2.Controllers {
 
         [HttpGet]
         public IActionResult Login() {
-            
+
 
 
             return View();
@@ -68,11 +70,11 @@ namespace semenarna_id2.Controllers {
 
             /*var f = user.ToArray();*/
 
-           /* var cart = new UserCartModel {
-                UserId = f.Id,
-                User = (ApplicationUserModel) f,
-                TestProducts = new List<TestProductModel> { }
-            };*/
+            /* var cart = new UserCartModel {
+                 UserId = f.Id,
+                 User = (ApplicationUserModel) f,
+                 TestProducts = new List<TestProductModel> { }
+             };*/
 
             return RedirectToAction("Index", "Home");
         }
@@ -100,5 +102,80 @@ namespace semenarna_id2.Controllers {
                 return Ok(result);
             }
         }
+
+        [HttpGet]
+        public IActionResult ResetPassword(string user_id, string token) {
+
+            var model = new ResetPasswordViewModel {
+                UserId = user_id,
+                ResetToken = token
+            };
+
+            return View(model);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel resetPasswordViewModel) {
+
+           
+            ResetPasswordViewModel resetPasswordView = new ResetPasswordViewModel();
+
+            var user = await _userManager.FindByIdAsync(resetPasswordViewModel.UserId);
+
+
+            var result = await _userManager.ResetPasswordAsync(user, resetPasswordViewModel.ResetToken, resetPasswordViewModel.NewPassword);
+
+            if (result.Succeeded) {
+                var message_model = new ResetPasswordViewModel {
+                    Message = "Your password has been reset successfully"
+                };
+                return View(message_model);
+            }
+            else {
+                var message_model = new ResetPasswordViewModel {
+                    Message = "There was an error, your password has not been reset."
+                };
+
+                return View(message_model);
+            }
+        }
+
+
+        //request password reset
+        [HttpPost]
+        public async Task<IActionResult> RequestReset(RequestResetViewModel requestResetViewModel) {
+
+            var user = await _userManager.FindByEmailAsync(requestResetViewModel.Email);
+            string reset_url = "";
+            string token = "";
+            if (user != null) {
+                token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+               /* reset_url += "https://localhost:44380/Auth/ResetPassword" + $"?reset_token={reset_token}&user_id={user.Id}";*/
+            }
+
+            var callbackUrl = Url.Action("ResetPassword", "Auth",
+            new { user_id = user.Id, token = token}, protocol: Request.Scheme);
+
+            var message_model = new RequestResetViewModel {
+                Message = callbackUrl
+            };
+
+
+
+            return View(message_model);
+        }
+
+        [HttpGet]
+        public IActionResult RequestReset() {
+
+            var message_model = new RequestResetViewModel() {
+                Message = "If an account is associated with your email, you will receive a password reset link"
+            };
+
+            return View(new RequestResetViewModel());
+        }
+
     }
 }

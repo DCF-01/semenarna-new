@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using semenarna_id2.Data;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,9 +16,45 @@ namespace semenarna_id2.Areas.Panel.Controllers {
         public OrdersController(ApplicationDbContext applicationDbContext) {
             _ctx = applicationDbContext;
         }
-        
-        public IActionResult Index() {
-            return View();
+
+        [HttpGet]
+        public async Task<IActionResult> Index() {
+            var result = await _ctx.Orders
+                        .Include(order => order.CartProducts)
+                        .ThenInclude(order => order.Product)
+                        .ToListAsync();
+
+            return View(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Manage(int id) {
+            var order = await _ctx.Orders
+                                .Include(order => order.CartProducts)
+                                .ThenInclude(order => order.Product)
+                                .Where(order => order.OrderId == id).FirstOrDefaultAsync();
+
+            return View(order);
+        }
+
+        [HttpDelete]
+        public IActionResult Delete([FromRoute] int id) {
+            try {
+                //delete product
+                var order = _ctx.Orders.Find(id);
+
+                if (order != null) {
+                    _ctx.Orders.Remove(order);
+                    _ctx.SaveChanges();
+                    return Ok();
+                }
+                else {
+                    return StatusCode(500);
+                }
+            }
+            catch (Exception e) {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

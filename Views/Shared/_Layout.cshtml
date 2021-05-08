@@ -39,19 +39,19 @@
                 <div class="ht-left">
                     <div class="mail-service">
                         <i class=" fa fa-envelope"></i>
-                        hello.colorlib@gmail.com
+                        semenarna@gmail.mk
                     </div>
                     <div class="phone-service">
                         <i class=" fa fa-phone"></i>
-                        +65 11.188.888
+                        389 684 698
                     </div>
                 </div>
                 <div class="ht-right">
                     @if (User.Identity.IsAuthenticated) {
-                        <a href="/Auth/Logout" class="login-panel"><i class="fa fa-user"></i>Logout</a>
+                        <a asp-area="" asp-controller="Auth" asp-action="Logout" class="login-panel"><i class="fa fa-user"></i>Logout</a>
                     }
                     else {
-                        <a href="/Auth/Login" class="login-panel"><i class="fa fa-user"></i>Login</a>
+                        <a asp-area="" asp-controller="Auth" asp-action="Login" class="login-panel"><i class="fa fa-user"></i>Login</a>
                     }
                     <div class="lan-selector">
                         <select class="language_drop" name="countries" id="countries" style="width:300px;">
@@ -79,7 +79,7 @@
                 <div class="row">
                     <div class="col-lg-2 col-md-2">
                         <div class="logo">
-                            <a href="./index.html">
+                            <a asp-controller="Home" asp-action="Index">
                                 <img src="~/tp-lib/img/logo.png" alt="">
                             </a>
                         </div>
@@ -99,7 +99,7 @@
                     <div class="col-lg-3 text-right col-md-3">
                         <ul class="nav-right">
                             <li class="cart-icon">
-                                <a href="#">
+                                <a asp-area="Cart" asp-controller="Base" asp-action="Index">
                                     <i class="icon_bag_alt"></i>
                                     <span id="cart-quantity-hover" style="opacity: 0;">0</span>
                                 </a>
@@ -158,9 +158,9 @@
                                 <li><a href="./blog-details.html">Blog Details</a></li>
                                 <li><a asp-area="Cart" asp-controller="Base" asp-action="Index">Shopping Cart</a></li>
                                 <li><a asp-area="Cart" asp-controller="Base" asp-action="Checkout">Checkout</a></li>
-                                <li><a href="./faq.html">Faq</a></li>
-                                <li><a href="./Auth/Register">Register</a></li>
-                                <li><a href="/Auth/Login">Login</a></li>
+                                <li><a asp-area="" asp-controller="Home" asp-action="Faq">Faq</a></li>
+                                <li><a asp-area="" asp-controller="Auth" asp-action="Register">Register</a></li>
+                                <li><a asp-area="" asp-controller="Auth" asp-action="Login">Login</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -217,9 +217,9 @@
                             <a href="#"><img src="~/tp-lib/img/footer-logo.png" alt=""></a>
                         </div>
                         <ul>
-                            <li>Address: 60-49 Road 11378 New York</li>
-                            <li>Phone: +65 11.188.888</li>
-                            <li>Email: hello.colorlib@gmail.com</li>
+                            <li>Address: Улица Србија бр. 1</li>
+                            <li>Phone: +322 496 56</li>
+                            <li>Email: semenarna@gmail.mk</li>
                         </ul>
                         <div class="footer-social">
                             <a href="#"><i class="fa fa-facebook"></i></a>

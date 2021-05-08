@@ -63,7 +63,7 @@
                                 </div>*@
                             <div class="pd-desc">
                                 <p>
-                                    @Model.Description
+                                    @Model.ShortDescription
                                 </p>
                                 @if (Model.OnSale) {
                                     <h4 id="item-price">@Model.SalePrice ДЕН<span>@Model.Price ДЕН</span></h4>
@@ -147,20 +147,11 @@
                                 <div class="product-content">
                                     <div class="row">
                                         <div class="col-lg-7">
-                                            <h5>Introduction</h5>
+                                            <h5>Description</h5>
                                             <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                                                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-                                                ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                                aliquip ex ea commodo consequat. Duis aute irure dolor in
+                                                @Model.Description
                                             </p>
-                                            <h5>Features</h5>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                                                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-                                                ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                                aliquip ex ea commodo consequat. Duis aute irure dolor in
-                                            </p>
+                                            
                                         </div>
                                         <div class="col-lg-5">
                                             <img src="img/product-single/tab-desc.jpg" alt="">
@@ -347,7 +338,7 @@
                     <div class="product-item">
                         <div class="pi-pic">
                             @{ var img = Convert.ToBase64String(@Model.RelatedProducts[i].Img);} 
-                            <a asp-area="Store" asp-controller="Single" asp-route-id="@Model.RelatedProducts[i].ProductId">content</a><img src="data:image/png;base64, @img" alt="">
+                            <a asp-area="Store" asp-controller="Single" asp-route-id="@Model.RelatedProducts[i].ProductId"><img src="data:image/png;base64, @img" alt=""></a>
                             @if (Model.RelatedProducts[i].OnSale) {
                                 <div class="sale">Sale</div>
                             }

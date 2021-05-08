@@ -49,8 +49,10 @@ namespace semenarna_id2.Areas.Store.Controllers {
 
                     var product = new ProductViewModel {
                         ProductId = item.ProductId,
+                        SKU = item.SKU,
                         Name = item.Name,
                         Description = item.Description,
+                        ShortDescription = item.ShortDescription,
                         Price = int.Parse(item.Price),
                         SalePrice = int.Parse(item.SalePrice),
                         OnSale = item.OnSale,

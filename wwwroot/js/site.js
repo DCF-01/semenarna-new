@@ -168,12 +168,14 @@ function clearSearchBox() {
     search_suggestions_box.innerHTML = '';
 }
 
-document.addEventListener('click', (e) => {
-    let li_element = search_suggestions_box.querySelector('li');
-    if (!search_suggestions_box.contains(e.target) && li_element !== null) {
-        clearSearchBox();
-    }
-})
+if (search_suggestions_box !== null) {
+    document.addEventListener('click', (e) => {
+        let li_element = search_suggestions_box.querySelector('li');
+        if (!search_suggestions_box.contains(e.target) && li_element !== null) {
+            clearSearchBox();
+        }
+    });
+}
 
 if (store_search_box !== null) {
     store_search_box.addEventListener('keyup', () => {
@@ -473,7 +475,7 @@ window.onload = (event) => {
     //if logged in, executes the callback (1st arg);
     checkUserLogin(displayProducts)
 
-    
+
 }
 
 function getCartQuantity() {
@@ -517,7 +519,7 @@ function updateCartTotalDOM() {
 
     let cart_quantity_hover = document.getElementById('cart-quantity-hover');
 
-    if (cart_quantity_hover !== null ) {
+    if (cart_quantity_hover !== null) {
         cart_quantity_hover.textContent = getCartQuantity();
         cart_quantity_hover.style.opacity = '1';
     }
@@ -658,7 +660,7 @@ function addCartToDb(loggedStatus) {
             body: JSON.stringify(cart_to_server)
         }).then((response) => {
             if (response.ok) {
-                console.log('CartDb updated');
+                /*console.log('CartDb updated');*/
             }
             else {
                 console.log(response.status, 'error');
@@ -827,7 +829,6 @@ function listCheckoutItems(cart) {
 
 function openInputBox(event) {
     let parent = event.target.parentNode;
-    console.log(parent);
 
     let current_quantity = parent.querySelector('.quantity-text').textContent;
 
@@ -845,7 +846,6 @@ function openInputBox(event) {
 
         //parent node (td)
         let parent = e.target.parentNode;
-        console.log(e.target.parentNode);
 
         //update current html quantity from input box value
         current_quantity = input_value_el.value;
@@ -963,7 +963,7 @@ if (order_submit_btn !== null) {
 let filter_products_btn = document.querySelector('.filter-btn');
 if (filter_products_btn !== null) {
 
-    
+
 
     filter_products_btn.addEventListener('click', (e) => {
         let product_show_number = document.querySelector('.p-show .selected');

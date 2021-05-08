@@ -1,7 +1,5 @@
 ﻿const delete_user_btn = document.querySelectorAll('.delete-item-btn');
 const current_url = window.location.href;
-let alert_container = document.getElementById('alert-container-panel');
-var alert_timeout;
 
 delete_user_btn.forEach(element => {
     element.addEventListener('click', (e) => {

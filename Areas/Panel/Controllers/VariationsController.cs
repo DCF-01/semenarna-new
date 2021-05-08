@@ -48,5 +48,25 @@ namespace semenarna_id2.Areas.Panel.Controllers {
         }
 
 
+        [HttpDelete]
+        public IActionResult Delete([FromRoute] int id) {
+            try {
+                //delete product
+                var variation = _ctx.Variations.Find(id);
+
+                if (variation != null) {
+                    _ctx.Variations.Remove(variation);
+                    _ctx.SaveChanges();
+                    return Ok();
+                }
+                else {
+                    return StatusCode(500);
+                }
+            }
+            catch (Exception e) {
+                return BadRequest(e.Message);
+            }
+        }
+
     }
 }

@@ -259,6 +259,24 @@
                                         <p>Create Spec</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a asp-controller="Variations" asp-action="Index" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>All variations</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-controller="Variations" asp-action="Create" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Create variation</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-controller="Orders" asp-action="Index" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Orders</p>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                         <li class="nav-item">
@@ -475,7 +493,7 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <div id="alert-container-panel">
+                    <div id="alert-container">
                     </div>
                     @RenderBody()
                 </div>

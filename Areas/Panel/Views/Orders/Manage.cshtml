@@ -1,83 +1,118 @@
 ﻿@model Order
-
+@{ int all_total = 0; }
 <div class="container-lg pt-3">
     <form action="" method="post" enctype="multipart/form-data">
-        <div class="form-group">
-            <label>Order ID</label>
-            <input class="form-control" type="text" placeholder="@Model.OrderId" readonly>
-        </div>
-        <div class="form-group">
-            <label>Date</label>
-            <input class="form-control" type="text" placeholder="@Model.DateTime" readonly>
-        </div>
-        <div class="form-group">
-            <label>First Name</label>
-            <input class="form-control" type="text" placeholder="@Model.FirstName" readonly>
-        </div>
-        <div class="form-group">
-            <label>Last Name</label>
-            <input class="form-control" type="text" placeholder="@Model.LastName" readonly>
-        </div>
-        <div class="form-group">
-            <label>Company Name</label>
-            <input class="form-control" type="text" placeholder="@Model.CompanyName" readonly>
-        </div>
-        <div class="form-group">
-            <label>Country</label>
-            <input class="form-control" type="text" placeholder="@Model.Country" readonly>
-        </div>
-        <div class="form-group">
-            <label>Address</label>
-            <input class="form-control" type="text" placeholder="@Model.Address" readonly>
-        </div>
-        <div class="form-group">
-            <label>Zip Code</label>
-            <input class="form-control" type="text" placeholder="@Model.ZipCode" readonly>
-        </div>
-        <div class="form-group">
-            <label>City</label>
-            <input class="form-control" type="text" placeholder="@Model.City" readonly>
-        </div>
-        <div class="form-group">
-            <label>Email</label>
-            <input class="form-control" type="text" placeholder="@Model.Email" readonly>
-        </div>
-        <div class="form-group">
-            <label>Phone</label>
-            <input class="form-control" type="text" placeholder="@Model.Phone" readonly>
-        </div>
-        <div class="form-group">
-            <label>Payment Method</label>
-            <input class="form-control" type="text" placeholder="@Model.PaymentMethod" readonly>
-        </div>
-        <div class="form-group">
-            <label>Payment Method</label>
-            <input class="form-control" type="text" placeholder="@Model.PaymentMethod" readonly>
-        </div>
-        <div class="form-group">
-            <label>Delivery Method</label>
-            <input class="form-control" type="text" placeholder="@Model.DeliveryMethod" readonly>
-        </div>
-        @foreach (var item in Model.CartProducts) {
-            @{var total = item.Price * item.Quantity}
-
-            <div class="form-group">
-                <label>Производ: </label>
-                <input class="form-control" type="text" placeholder="@item.Product.Name" readonly>
-                <label>Цена: </label>
-                <input class="form-control" type="text" placeholder="@item.Price" readonly>
-                <label>Количина: </label>
-                <input class="form-control" type="text" placeholder="@item.Quantity" readonly>
-                <label>Опции: </label>
-                <input class="form-control" type="text" placeholder="@item.Variations" readonly>
-                <label>Вкупно: </label>
-                <input class="form-control" type="text" placeholder="@total" readonly>
+        <div class="form-group row">
+            <div class="col">
+                <label>Order ID</label>
+                <input class="form-control" type="text" placeholder="@Model.OrderId" readonly>
             </div>
+            <div class="col">
+                <label>Date</label>
+                <input class="form-control" type="text" placeholder="@Model.DateTime.ToString(new CultureInfo("en-GB"))" readonly>
+            </div>
+            <div class="col">
+                <label>First Name</label>
+                <input class="form-control" type="text" placeholder="@Model.FirstName" readonly>
+            </div>
+            <div class="col">
+                <label>Last Name</label>
+                <input class="form-control" type="text" placeholder="@Model.LastName" readonly>
+            </div>
+
+        </div>
+
+        <div class="form-group row">
+            <div class="col">
+                <label>Company Name</label>
+                <input class="form-control" type="text" placeholder="@Model.CompanyName" readonly>
+            </div>
+            <div class="col">
+                <label>Country</label>
+                <input class="form-control" type="text" placeholder="@Model.Country" readonly>
+            </div>
+            <div class="col">
+                <label>Address</label>
+                <input class="form-control" type="text" placeholder="@Model.Address" readonly>
+            </div>
+            <div class="col">
+                <label>Zip Code</label>
+                <input class="form-control" type="text" placeholder="@Model.ZipCode" readonly>
+            </div>
+
+        </div>
+        <div class="form-group row">
+            <div class="col">
+                <label>City</label>
+                <input class="form-control" type="text" placeholder="@Model.City" readonly>
+            </div>
+            <div class="col">
+                <label>Email</label>
+                <input class="form-control" type="text" placeholder="@Model.Email" readonly>
+            </div>
+            <div class="col">
+                <label>Phone</label>
+                <input class="form-control" type="text" placeholder="@Model.Phone" readonly>
+            </div>
+            <div class="col">
+                <label>Payment Method</label>
+                <input class="form-control" type="text" placeholder="@Model.PaymentMethod" readonly>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col">
+                <label>Payment Method</label>
+                <input class="form-control" type="text" placeholder="@Model.PaymentMethod" readonly>
+            </div>
+            <div class="col">
+                <label>Delivery Method</label>
+                <input class="form-control" type="text" placeholder="@Model.DeliveryMethod" readonly>
+            </div>
+        </div>
+
+        @{
+            foreach (var item in Model.CartProducts) {
+                string variations_string = "";
+
+                foreach (var v in item.Variations) {
+                    variations_string += $"{v} ";
+                }
+
+                int product_total = item.Price * item.Quantity;
+                all_total += product_total;
+
+                <div class="form-group row">
+                    <div class="col">
+                        <label>Производ: </label>
+                        <input class="form-control" type="text" placeholder="@item.Product.Name" readonly>
+                    </div>
+                    <div class="col">
+                        <label>Цена: </label>
+                        <input class="form-control" type="text" placeholder="@item.Price" readonly>
+                    </div>
+                    <div class="col">
+                        <label>Количина: </label>
+                        <input class="form-control" type="text" placeholder="@item.Quantity" readonly>
+                    </div>
+                    <div class="col">
+                        <label>Опции: </label>
+                        <input class="form-control" type="text" placeholder="@variations_string" readonly>
+                    </div>
+                    <div class="col">
+                        <label>Вкупно: </label>
+                        <input class="form-control" type="text" placeholder="@product_total" readonly>
+                    </div>
+                </div>
+            }
         }
-
-
+        <div class="form-group row">
+            <div class="col-3">
+                <label>Вкупно (Цела нарачка): </label>
+                <input class="form-control" type="text" placeholder="@all_total" readonly>
+            </div>
+        </div>
         <div class="form-group">
-            <input type="submit" value="Update" class="btn btn-default" />
+            <input type="submit" value="Delete" class="btn btn-default" />
         </div>
     </form>
 </div>
