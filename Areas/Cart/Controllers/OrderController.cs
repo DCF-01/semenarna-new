@@ -13,6 +13,7 @@ using RazorLight;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json;
 
 
 
@@ -66,7 +67,7 @@ namespace semenarna_id2.Areas.Cart.Controllers {
         }
 
         [HttpPost]
-        public async Task<IActionResult> Process([FromBody] OrderViewModel orderViewModel) {
+        public async Task<IActionResult> Process(OrderViewModel orderViewModel) {
             
             try {
 

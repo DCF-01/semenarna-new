@@ -369,9 +369,8 @@ function submitOrder(order) {
     fetch(url, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json charset=utf-8'
         },
-        credentials: 'include',
         redirect: 'follow',
         body: JSON.stringify(new_order)
     }).then(res => {

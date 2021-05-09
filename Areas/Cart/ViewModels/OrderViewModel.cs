@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using semenarna_id2.Models;
 
 namespace semenarna_id2.Areas.Cart.ViewModels {
