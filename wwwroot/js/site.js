@@ -242,10 +242,10 @@ let order_table_exists;
 
 class Product {
     constructor(id, name, price, quantity, img, variations) {
-        this.id = id;
+        this.id =  parseInt(id);
         this.name = name;
-        this.price = price;
-        this.quantity = quantity;
+        this.price = price.toString();
+        this.quantity = parseInt(quantity);
         this.img = img;
         this.variations = variations;
     }

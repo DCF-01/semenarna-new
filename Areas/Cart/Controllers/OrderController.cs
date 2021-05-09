@@ -14,8 +14,8 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
-
-
+using System.IO;
+using System.Text;
 
 namespace semenarna_id2.Areas.Cart.Controllers {
     [Area("Cart")]
@@ -67,8 +67,19 @@ namespace semenarna_id2.Areas.Cart.Controllers {
         }
 
         [HttpPost]
-        public async Task<IActionResult> Process(OrderViewModel orderViewModel) {
+        public async Task<string> Test() {
+            using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8)) {
+                return await reader.ReadToEndAsync();
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Process([FromBody] OrderViewModel orderViewModel) {
             
+            
+            
+
             try {
 
                 ApplicationUser user = null;
@@ -123,8 +134,15 @@ namespace semenarna_id2.Areas.Cart.Controllers {
                         order_id = order.OrderId.ToString();
                     }
 
+                    int totalAll = 0;
+                    foreach(var item in validatedProducts) {
+                        var totalProduct = item.Quantity * item.Price;
+                        totalAll += totalProduct;
+                    }
+
                     //viewmodel for email order confirmation
-                    var viewModel = new OrderViewModel {
+                    var viewModel = new OrderEmailViewModel {
+                        OrderId = order_id,
                         FirstName = order.FirstName,
                         LastName = order.LastName,
                         CompanyName = order.CompanyName,
@@ -136,6 +154,8 @@ namespace semenarna_id2.Areas.Cart.Controllers {
                         Phone = order.Phone,
                         PaymentMethod = order.PaymentMethod,
                         DeliveryMethod = order.DeliveryMethod,
+                        Date = order.DateTime.ToString(new CultureInfo("en-GB")),
+                        Total = totalAll.ToString()
                     };
 
                     var engine = new RazorLightEngineBuilder()

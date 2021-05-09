@@ -49,7 +49,6 @@
     <Folder Include="Areas\Store\Models\" />
     <Folder Include="Areas\Store\Views\Shared\" />
     <Folder Include="Migrations\" />
-    <Folder Include="Utils\ViewModels\" />
     <Folder Include="wwwroot\lib\" />
   </ItemGroup>
 
