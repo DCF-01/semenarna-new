@@ -26,7 +26,7 @@
                             <input type="email" id="email" placeholder="Enter email" asp-for="Email">
                         </div>
                         @if (Model.Message != null) {
-                            <input type="text" id="email" placeholder="Enter email" asp-for="Email" value="@Model.Message">
+                            <p>@Model.Message</p>
                         }
                         <button type="submit" class="site-btn login-btn">Send reset link</button>
                     </form>

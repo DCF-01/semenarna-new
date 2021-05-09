@@ -1,6 +1,7 @@
 ﻿using Google.Rpc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using RazorLight;
 using semenarna_id2.Data;
 using semenarna_id2.Models;
 using semenarna_id2.ViewModels;
@@ -118,7 +119,7 @@ namespace semenarna_id2.Controllers {
         [HttpPost]
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel resetPasswordViewModel) {
 
-           
+
             ResetPasswordViewModel resetPasswordView = new ResetPasswordViewModel();
 
             var user = await _userManager.FindByIdAsync(resetPasswordViewModel.UserId);
@@ -147,24 +148,63 @@ namespace semenarna_id2.Controllers {
         public async Task<IActionResult> RequestReset(RequestResetViewModel requestResetViewModel) {
 
             var user = await _userManager.FindByEmailAsync(requestResetViewModel.Email);
-            string reset_url = "";
             string token = "";
             if (user != null) {
                 token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-               /* reset_url += "https://localhost:44380/Auth/ResetPassword" + $"?reset_token={reset_token}&user_id={user.Id}";*/
+                /* reset_url += "https://localhost:44380/Auth/ResetPassword" + $"?reset_token={reset_token}&user_id={user.Id}";*/
+                var callbackUrl = Url.Action("ResetPassword", "Auth",
+                new { user_id = user.Id, token = token }, protocol: Request.Scheme);
+
+                var message_model_success = new RequestResetViewModel {
+                    Message = "We've sent a reset link to your email address."
+                };
+
+                var engine = new RazorLightEngineBuilder()
+                // required to have a default RazorLightProject type,
+                // but not required to create a template from string.
+                .UseEmbeddedResourcesProject(typeof(RequestResetViewModel))
+                .SetOperatingAssembly(typeof(RequestResetViewModel).Assembly)
+                .UseMemoryCachingProvider()
+                .Build();
+
+                var cacheResult = engine.Handler.Cache.RetrieveTemplate("resetPasswordTemplateKey");
+                if (cacheResult.Success) {
+                    var email_reset_model = new RequestResetViewModel {
+                        ResetUrl = callbackUrl
+                    };
+
+                    var templatePage = cacheResult.Template.TemplatePageFactory();
+                    string processedHtml = await engine.RenderTemplateAsync(templatePage, email_reset_model);
+
+                    var mailer = new Mailer("admin@paralax.mk", user.Email, processedHtml);
+                    mailer.Send();
+                }
+                else {
+                    var email_reset_model = new RequestResetViewModel {
+                        ResetUrl = callbackUrl
+                    };
+
+                    string htmlString = System.IO.File.ReadAllText("C:/Users/rzver/source/repos/semenarna-web/Utils/Views/ResetPasswordEmail.cshtml");
+                    string processedHtml = await engine.CompileRenderStringAsync("resetPasswordTemplateKey", htmlString, email_reset_model);
+
+                    //create and send email
+                    var mailer = new Mailer("admin@paralax.mk", user.Email, processedHtml);
+                    mailer.Send();
+                }
+
+                var message_model_ok = new RequestResetViewModel {
+                    Message = "We've sent a reset link to your email address."
+                };
+
+                return View(message_model_ok);
             }
-
-            var callbackUrl = Url.Action("ResetPassword", "Auth",
-            new { user_id = user.Id, token = token}, protocol: Request.Scheme);
-
-            var message_model = new RequestResetViewModel {
-                Message = callbackUrl
-            };
-
-
-
-            return View(message_model);
+            else {
+                var message_model_ok = new RequestResetViewModel {
+                    Message = "We've sent a reset link to your email address."
+                };
+                return View(message_model_ok);
+            }
         }
 
         [HttpGet]

@@ -54,7 +54,7 @@ function createAlert(message_str = 'An error has occured.', alert_type = 'succes
 
 const store_search_box = document.getElementById('store-search');
 const search_suggestions_box = document.getElementById('search-suggestions');
-let query_url = 'https://localhost:44380/Store/Query/Find';
+let query_url = location.protocol + '//' + location.host + '/Store/Query/Find';
 let query_string;
 let table_body = document.getElementById('table-body');
 let alert_container = document.getElementById('alert-container');
@@ -149,7 +149,7 @@ function displayQuerySearch(data, url_param) {
 
         const link_all = document.createElement('a');
         link_all.textContent = 'View All';
-        link_all.href = 'https://localhost:44380/Store/Base/Find' + url_param + query_string;
+        link_all.href = location.protocol + '//' + location.host + '/Store/Base/Find' + url_param + query_string;
         new_node.appendChild(link_all);
 
         search_suggestions_box.appendChild(new_node);
@@ -364,7 +364,7 @@ function submitOrder(order) {
 
     let new_order = new Order(first_name, last_name, company_name, country, address, zip_code, city, email, phone, payment_method, delivery_method, cart);
 
-    let url = 'https://localhost:44380/Cart/Order/Process'
+    let url = location.protocol + '//' + location.host + '/Cart/Order/Process';
     console.log(new_order);
     fetch(url, {
         method: 'POST',
@@ -391,7 +391,7 @@ function submitOrder(order) {
 }
 
 function checkUserLogin(callback) {
-    let query = 'https://localhost:44380/Auth/CheckLogin';
+    let query = location.protocol + '//' + location.host + '/Auth/CheckLogin';
     return fetch(query, {
         method: 'GET', // POST, PUT, DELETE, etc.
         headers: {
@@ -416,7 +416,7 @@ function checkUserLogin(callback) {
 
 
 function getUserCart(callback) {
-    let query = 'https://localhost:44380/Cart/Base/Get';
+    let query = location.protocol + '//' + location.host + '/Cart/Base/Get';
     cart = new Cart([], null);
 
     let userCart = fetch(query, {
@@ -649,7 +649,7 @@ function addCartToDb(loggedStatus) {
 
         let cart_to_server = new Cart(array_products, null);
 
-        let query = 'https://localhost:44380/Cart/Base/Update'
+        let query = location.protocol + '//' + location.host + '/Cart/Base/Update';
         fetch(query, {
             method: 'POST',
             headers: {

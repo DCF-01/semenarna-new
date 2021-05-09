@@ -18,14 +18,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AWSSDK.Core" Version="3.7.0.18" />
+    <PackageReference Include="AWSSDK.SimpleEmail" Version="3.7.0.17" />
     <PackageReference Include="Google.Api.CommonProtos" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Primitives" Version="5.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.5.1" />
+    <PackageReference Include="RazorLight.NetCore3" Version="3.0.2" />
     <PackageReference Include="System.Runtime" Version="4.3.1" />
   </ItemGroup>
 
@@ -44,6 +49,7 @@
     <Folder Include="Areas\Store\Models\" />
     <Folder Include="Areas\Store\Views\Shared\" />
     <Folder Include="Migrations\" />
+    <Folder Include="Utils\ViewModels\" />
     <Folder Include="wwwroot\lib\" />
   </ItemGroup>
 
