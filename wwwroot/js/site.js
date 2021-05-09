@@ -642,7 +642,7 @@ function addCartToDb(loggedStatus) {
 
 
         temp.items.forEach(i => {
-            let p = new Product(i.id, null, null, parseInt(i.quantity), null, i.variations);
+            let p = new Product(i.id, i.name, i.price, parseInt(i.quantity), null, i.variations);
             array_products.push(p);
         });
 

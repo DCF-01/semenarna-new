@@ -66,13 +66,6 @@ namespace semenarna_id2.Areas.Cart.Controllers {
             return validatedProducts;
         }
 
-        [HttpPost]
-        public async Task<string> Test() {
-            using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8)) {
-                return await reader.ReadToEndAsync();
-            }
-        }
-
 
         [HttpPost]
         public async Task<IActionResult> Process([FromBody] OrderViewModel orderViewModel) {
