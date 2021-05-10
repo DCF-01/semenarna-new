@@ -38,12 +38,15 @@ namespace semenarna_id2.Controllers {
                 .Select(c => c.Name).ToListAsync();
             var specs = await _ctx.Specs
                 .Select(spec => spec.Name).ToListAsync();
+            var variations = await _ctx.Variations
+                            .Select(v => v.Name).ToListAsync();
 
 
             var productViewModel = new ProductViewModel {
                 GetCategories = categories,
                 GetSpecs = specs,
-                CurrentSpec = ""
+                CurrentSpec = "",
+                GetVariations = variations
             };
 
             return View(productViewModel);
