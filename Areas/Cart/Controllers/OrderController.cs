@@ -160,7 +160,7 @@ namespace semenarna_id2.Areas.Cart.Controllers {
                     .Build();
 
 
-                    string cshtml = System.IO.File.ReadAllText("C:/Users/rzver/source/repos/semenarna-web/Utils/Views/OrderConfirmationEmail.cshtml");
+                    string cshtml = System.IO.File.ReadAllText("/home/ubuntu/projects/semenarna/Utils/Views/OrderConfirmationEmail.cshtml");
 
 
                     string result = await engine.CompileRenderStringAsync("templateKey", cshtml, viewModel);

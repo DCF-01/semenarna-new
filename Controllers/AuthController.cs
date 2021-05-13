@@ -185,7 +185,7 @@ namespace semenarna_id2.Controllers {
                         ResetUrl = callbackUrl
                     };
 
-                    string htmlString = System.IO.File.ReadAllText("C:/Users/rzver/source/repos/semenarna-web/Utils/Views/ResetPasswordEmail.cshtml");
+                    string htmlString = System.IO.File.ReadAllText("/home/ubuntu/projects/semenarna/Utils/Views/ResetPasswordEmail.cshtml");
                     string processedHtml = await engine.CompileRenderStringAsync("resetPasswordTemplateKey", htmlString, email_reset_model);
 
                     //create and send email
