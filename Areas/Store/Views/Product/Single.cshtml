@@ -30,8 +30,8 @@
                         <div class="product-pic-zoom">
                             <img class="product-big-img" src="data:image/png;base64, @Model.Img" id="item-image" alt="">
                             @*<div class="zoom-icon">
-                                <i class="fa fa-search-plus"></i>
-                            </div>*@
+                                    <i class="fa fa-search-plus"></i>
+                                </div>*@
                         </div>
                         <div class="product-thumbs">
                             <div class="product-thumbs-track ps-slider owl-carousel">
@@ -40,7 +40,7 @@
                                 </div>
                                 @foreach (var item in Model.GalleryImages) {
                                     <div class="pt " data-imgbigurl="data:image/png;base64, @item" style="width: 96px;">
-                                        <img src="data:image/png;base64, @item" alt=""  />
+                                        <img src="data:image/png;base64, @item" alt="" />
                                     </div>
                                 }
                             </div>
@@ -69,7 +69,7 @@
                                     <h4 id="item-price">@Model.SalePrice ДЕН<span>@Model.Price ДЕН</span></h4>
                                 }
                                 else {
-                            <h4 id="item-price">@Model.Price ДЕН</h4>
+                                    <h4 id="item-price">@Model.Price ДЕН</h4>
                                 }
                             </div>
                             @*<div class="pd-color">
@@ -90,16 +90,27 @@
                                     </div>
                                 </div>*@
                             <div class="pd-size-choose">
-                                @foreach (var item in Model.Variations) {
-                                    <div class="form-group">
-                                        <label for="select-@item.Name">@item.Name</label>
-                                        <select class="form-control variation-select" id="select-@item.Name">
-                                            @foreach (var option in item.Options) {
-                                                <option value="@option">@option</option>
-                                            }
+                                @if (Model.Variations.FirstOrDefault().Name == "нема") {
 
+                                    <div class="form-group" style="opacity: 0; pointer-events: none;">
+                                        <label for="select-@Model.Variations.FirstOrDefault().Name">@Model.Variations.FirstOrDefault().Name</label>
+                                        <select class="form-control variation-select" id="select-@Model.Variations.FirstOrDefault().Name">
+                                            <option value="нема">нема</option>
                                         </select>
                                     </div>
+                                }
+                                else {
+                                    @foreach (var item in Model.Variations) {
+                                        <div class="form-group">
+                                            <label for="select-@item.Name">@item.Name</label>
+                                            <select class="form-control variation-select" id="select-@item.Name">
+                                                @foreach (var option in item.Options) {
+                                                    <option value="@option">@option</option>
+                                                }
+
+                                            </select>
+                                        </div>
+                                    }
                                 }
                             </div>
                             <div class="quantity">
@@ -151,7 +162,7 @@
                                             <p>
                                                 @Model.Description
                                             </p>
-                                            
+
                                         </div>
                                         <div class="col-lg-5">
                                             <img src="img/product-single/tab-desc.jpg" alt="">
@@ -337,7 +348,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="product-item">
                         <div class="pi-pic">
-                            @{ var img = Convert.ToBase64String(@Model.RelatedProducts[i].Img);} 
+                            @{ var img = Convert.ToBase64String(@Model.RelatedProducts[i].Img);}
                             <a asp-area="Store" asp-controller="Single" asp-route-id="@Model.RelatedProducts[i].ProductId"><img src="data:image/png;base64, @img" alt=""></a>
                             @if (Model.RelatedProducts[i].OnSale) {
                                 <div class="sale">Sale</div>
@@ -346,7 +357,7 @@
                                 <i class="icon_heart_alt"></i>
                             </div>
                             <ul>
-                                <li class="w-icon active"><a asp-area="Store" asp-controller="Product" asp-action="Single" asp-route-id="@Model.RelatedProducts[i].ProductId" ><i class="icon_bag_alt"></i></a></li>
+                                <li class="w-icon active"><a asp-area="Store" asp-controller="Product" asp-action="Single" asp-route-id="@Model.RelatedProducts[i].ProductId"><i class="icon_bag_alt"></i></a></li>
                                 <li class="quick-view"><a asp-area="Store" asp-controller="Product" asp-action="Single" asp-route-id="@Model.RelatedProducts[i].ProductId">+ View</a></li>
                                 <li class="w-icon"><a asp-area="Store" asp-controller="Product" asp-action="Single" asp-route-id="@Model.RelatedProducts[i].ProductId"><i class="fa fa-random"></i></a></li>
                             </ul>
