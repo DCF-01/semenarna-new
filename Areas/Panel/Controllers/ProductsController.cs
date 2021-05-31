@@ -76,12 +76,19 @@ namespace semenarna_id2.Controllers {
                     Description = product_data.Description,
                     ShortDescription = product_data.ShortDescription,
                     Price = product_data.Price,
-                    SalePrice = product_data.SalePrice,
                     OnSale = sale_state,
                     InStock = stock_state,
                     Spec = spec,
                     Variations = variations
                 };
+                if(product_data.SalePrice == null) {
+                    product.SalePrice = "0";
+                }
+                else {
+                    product.SalePrice = product_data.SalePrice;
+                }
+
+
                 product.Categories = new List<Category>();
 
                 foreach (var item in categories) {
