@@ -48,6 +48,7 @@ function createAlert(message_str = 'An error has occured.', alert_type = 'succes
     }
 }
 
+
 /* STORE JS */
 
 
@@ -242,7 +243,7 @@ let order_table_exists;
 
 class Product {
     constructor(id, name, price, quantity, img, variations) {
-        this.id =  parseInt(id);
+        this.id = parseInt(id);
         this.name = name;
         this.price = price.toString();
         this.quantity = parseInt(quantity);
@@ -473,7 +474,6 @@ window.onload = (event) => {
 
     //if logged in, executes the callback (1st arg);
     checkUserLogin(displayProducts)
-
 
 }
 
@@ -988,3 +988,146 @@ if (filter_products_btn !== null) {
     });
 }
 
+/* home page carousels*/
+function GetCarousel(parent_element, category) {
+    let url = location.protocol + '//' + location.host + '/Store/Query/GetCarousel?category=' + category;
+
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'text/plain;charset=UTF-8'
+        },
+        credentials: 'include',
+        redirect: 'follow',
+    }).then(res => {
+        if (res.ok) {
+            res.json().then(result => {
+                populateCarousel(parent_element, result);
+            });
+        }
+        else {
+            console.log(res.status);
+        }
+    });
+}
+
+let carousel_control_items = document.querySelectorAll('.control-item');
+if (carousel_control_items[0] !== null) {
+    carousel_control_items.forEach(el => {
+        el.addEventListener('click', (e) => {
+            let parent = e.target.parentNode.parentNode.parentNode;
+            let product_slider = parent.querySelector('.owl-carousel');
+
+
+
+            GetCarousel(product_slider, e.target.dataset.value);
+        });
+    })
+}
+
+function populateCarousel(parent_element, data) {
+    console.log(data);
+
+    $('.product-slider-one').owlCarousel('destroy');
+/*parent_element.innerHTML = '';*/
+    parent_element.className = 'product-slider-one owl-carousel';
+    console.log(parent_element.className);
+
+
+    while (parent_element.firstChild) {
+        parent_element.removeChild(parent_element.lastChild)
+    }
+
+
+    for (let item of data) {
+        let product_item = document.createElement('div');
+        product_item.className = 'product-item';
+
+        console.log(item);
+        if (true) {
+            product_item.innerHTML =
+                `
+                    <div class="pi-pic">
+                        <img src="data:image/png;base64, ${item.img}" alt="">
+                        <div class="sale">Sale</div>
+                        <div class="icon">
+                            <i class="icon_heart_alt"></i>
+                        </div>
+                        <ul>
+                            <li class="w-icon active"><a href="/Store/Product/Single/${item.id}"><i class="fas fa-shopping-bag"></i></a></li>
+                            <li class="quick-view"><a href="/Store/Product/Single/${item.id}">+ Quick View</a></li>
+                            <li class="w-icon"><a href="#"><i class="fas fa-random"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="pi-text">
+                        <div class="catagory-name">${item.category}</div>
+                        <a href="/Store/Product/Single/${item.id}">
+                            <h5>${data[0].name}</h5>
+                        </a>
+                        <div class="product-price">
+                            \$${item.price}
+                            <span>\$${item.salePrice}</span>
+                        </div>
+                    </div>
+                `;
+                parent_element.appendChild(product_item);
+        }
+        else {
+            product_item.innerHTML =
+                `
+                    <div class="pi-pic">
+                        <img src="data:image/png;base64, ${item.img}" alt="">
+                        <div class="icon">
+                            <i class="icon_heart_alt"></i>
+                        </div>
+                        <ul>
+                            <li class="w-icon active"><a href="/Store/Product/Single/${item.id}"><i class="fas fa-shopping-bag"></i></a></li>
+                            <li class="quick-view"><a href="/Store/Product/Single/${item.id}">+ Quick View</a></li>
+                            <li class="w-icon"><a href="#"><i class="fas fa-random"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="pi-text">
+                        <div class="catagory-name">${item.category}</div>
+                        <a href="/Store/Product/Single/${item.id}">
+                            <h5>${item.name}</h5>
+                        </a>
+                        <div class="product-price">
+                            <span>\$${item.price}</span>
+                        </div>
+                    </div>
+                `;
+            item.appendChild(product_item);
+        }
+    };
+
+    
+
+    $('.product-slider-one').owlCarousel({
+        loop: true,
+        margin: 25,
+        nav: true,
+        items: 3,
+        dots: true,
+        navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
+        smartSpeed: 1200,
+        autoHeight: false,
+        autoplay: true,
+        responsive: {
+            0: {
+                items: 1,
+            },
+            576: {
+                items: 2,
+            },
+            992: {
+                items: 2,
+            },
+            1200: {
+                items: 3,
+            }
+        }
+    });
+    
+    
+
+}

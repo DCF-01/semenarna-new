@@ -56,7 +56,7 @@
             <label>Variations</label>
             @foreach (var item in Model.GetVariations) {
                 <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="@item" name="Categories[]" value="@item">
+                    <input type="checkbox" class="custom-control-input" id="@item" name="Variations[]" value="@item">
                     <label class="custom-control-label" for="@item">@item</label>
                 </div>
             }

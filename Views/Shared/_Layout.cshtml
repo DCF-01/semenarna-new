@@ -39,7 +39,7 @@
                 <div class="ht-left">
                     <div class="mail-service">
                         <i class=" fa fa-envelope"></i>
-                        semenarna@gmail.mk
+                        info@semenarna.mk
                     </div>
                     <div class="phone-service">
                         <i class=" fa fa-phone"></i>
@@ -62,7 +62,7 @@
                         </select>
                     </div>
                     <div class="top-social">
-                        <a href="#"><i class="ti-facebook"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
                     </div>
                 </div>
             </div>
@@ -82,7 +82,7 @@
                             <button type="button" class="category-btn" style="opacity: 0;">All Categories</button>
                             <div class="input-group">
                                 <input type="text" placeholder="What do you need?" id="store-search">
-                                <button type="button"><i class="ti-search"></i></button>
+                                <button type="button"><i class="fas fa-search"></i></button>
                                 @*<button class="m-0" id="custom-input-clear">X</button>*@
                             <ul class="list-group" id="search-suggestions">
                             </ul>
@@ -93,7 +93,7 @@
                         <ul class="nav-right">
                             <li class="cart-icon">
                                 <a asp-area="Cart" asp-controller="Base" asp-action="Index">
-                                    <i class="icon_bag_alt"></i>
+                                    <i class="fas fa-shopping-bag"></i>
                                     <span id="cart-quantity-hover" style="opacity: 0;">0</span>
                                 </a>
                                 @*<div class="cart-hover">
@@ -117,7 +117,7 @@
             <div class="container">
                 <div class="nav-depart">
                     <div class="depart-btn">
-                        <i class="ti-menu"></i>
+                        <i class="fas fa-bars"></i>
                         <span>Категории</span>
                         <ul class="depart-hover">
                             <li class="active"><a href="#">Women’s Clothing</a></li>
@@ -135,9 +135,8 @@
                     <ul>
                         <li class="active"><a asp-area="" asp-controller="Home" asp-action="Index">Почетна</a></li>
                         <li><a asp-area="Store" asp-controller="Base" asp-action="Index">Продавница</a></li>
-                        <li><a href="./blog.html">За нас</a></li>
-                        <li><a href="./contact.html">ЧПП</a></li>
-                        <li><a href="#">Контакт</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Faq">ЧПП</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Контакт</a></li>
                     </ul>
                 </nav>
                 <div id="mobile-menu-wrap"></div>
@@ -192,9 +191,9 @@
                             <a href="#"><img src="~/tp-lib/img/footer-logo.png" alt=""></a>
                         </div>
                         <ul>
-                            <li>Address: Улица Србија бр. 1</li>
-                            <li>Phone: +322 496 56</li>
-                            <li>Email: semenarna@gmail.mk</li>
+                            <li>Адреса: Бул. Србија бр. 3, 1000 Скопје</li>
+                            <li>Телефон: +389 (0)2 2783 225</li>
+                            <li>Email: info@semenarna.mk</li>
                         </ul>
                         <div class="footer-social">
                             <a href="#"><i class="fa fa-facebook"></i></a>
@@ -206,34 +205,22 @@
                 </div>
                 <div class="col-lg-2 offset-lg-1">
                     <div class="footer-widget">
-                        <h5>Information</h5>
+                        <h5>Информации</h5>
                         <ul>
-                            <li><a href="#">About Us</a></li>
-                            <li><a asp-area="Cart" asp-controller="Base" asp-action="Checkout">Checkout</a></li>
-                            <li><a href="#">Contact</a></li>
-                            <li><a href="#">Serivius</a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="About">За нас</a></li>
+                            <li><a asp-area="Cart" asp-controller="Base" asp-action="Checkout">Наплата</a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="Contact">Контакт</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-2">
                     <div class="footer-widget">
-                        <h5>My Account</h5>
+                        <h5>Профил</h5>
                         <ul>
-                            <li><a href="#">My Account</a></li>
-                            <li><a href="/Home/Contact">Contact</a></li>
-                            <li><a href="/Cart">Shopping Cart</a></li>
-                            <li><a href="/Store">Shop</a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="Contact">Контакт</a></li>
+                            <li><a asp-area="Cart" asp-controller="Base" asp-action="Index">Кошничка</a></li>
+                            <li><a asp-area="Store" asp-controller="Base" asp-action="Index">Продавница</a></li>
                         </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="newslatter-item">
-                        <h5>Join Our Newsletter Now</h5>
-                        <p>Get E-mail updates about our latest shop and special offers.</p>
-                        <form action="#" class="subscribe-form">
-                            <input type="text" placeholder="Enter Your Mail">
-                            <button type="button">Subscribe</button>
-                        </form>
                     </div>
                 </div>
             </div>

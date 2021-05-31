@@ -336,7 +336,6 @@ p {
 #checkout-submit-btn:hover {
     background-color: white;
     color: black;
-
 }
 
 /* ORDER RESULT PAGE*/
@@ -351,4 +350,19 @@ p {
 
 .order-success-box-inner {
     padding: 3rem 2.5rem;
+}
+
+/* left sidebar categories links*/
+.filter-categories {
+    list-style: none;
+    padding: 15px 0px; 
+}
+
+.filter-categories li a {
+    color: black;
+    padding: 2px 5px;
+}
+
+.filter-categories li a:hover {
+    color: #e7ab3c;
 }

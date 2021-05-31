@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using semenarna_id2.Areas.Store.Controllers;
 using Microsoft.EntityFrameworkCore;
+using semenarna_id2.Areas.Store.ViewModels;
 
 namespace semenarna_id2.Areas.Store.Controllers {
     [Area("Store")]
@@ -63,6 +64,39 @@ namespace semenarna_id2.Areas.Store.Controllers {
             }
 
 
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetCarousel([FromQuery] string category = "") {
+
+            if (category == "") {
+                return NotFound();
+            }
+            else {
+                var products = await _ctx.Categories.Include(c => c.Products)
+                                                .Where(c => c.Name == category)
+                                                .Select(c => c.Products)
+                                                .FirstOrDefaultAsync();
+
+
+                List<CarouselProductViewModel> product_list = new List<CarouselProductViewModel>();
+
+                foreach (var item in products) {
+                    var p = new CarouselProductViewModel {
+                        Id = item.ProductId,
+                        Name = item.Name,
+                        Price = item.Price,
+                        Img = Convert.ToBase64String(item.Img),
+                        Category = category,
+                        OnSale = item.OnSale
+                    };
+                    if (item.OnSale) {
+                        p.SalePrice = item.SalePrice;
+                    }
+
+                    product_list.Add(p);
+                }
+                return Ok(product_list);
+            }
         }
     }
 }

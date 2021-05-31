@@ -144,6 +144,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
                 var category = await _ctx.Categories.FindAsync(id);
 
                 var all_products = _ctx.Products
+                                .Include(p => p.Categories)
                                 .Select(p => p)
                                 .ToArray();
 

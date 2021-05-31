@@ -52,7 +52,7 @@
         nav: true,
         items: 4,
         dots: true,
-        navText: ['<i class="ti-angle-left"></i>', '<i class="ti-angle-right"></i>'],
+       navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
         smartSpeed: 1200,
         autoHeight: false,
         autoplay: true,

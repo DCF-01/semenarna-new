@@ -72,7 +72,7 @@ h5 {
 }
 
 h6 {
-	font-size: 16px;
+	font-size: 14px;
 }
 
 p {
@@ -679,7 +679,7 @@ ol {
 	color: #ffffff;
 	right: 20px;
 	top: 13px;
-	content: "";
+	content: "";
 	font-family: FontAwesome;
 	font-size: 18px;
 }
@@ -1693,15 +1693,15 @@ ol {
 	position: relative;
 }
 
-.breadcrumb-text a:after {
-	position: absolute;
-	right: -18px;
-	top: 0px;
-	content: "";
-	font-family: "FontAwesome";
-	font-size: 16px;
-	color: #b2b2b2;
-}
+	.breadcrumb-text a:after {
+		position: absolute;
+		right: -18px;
+		top: 0px;
+		content: "\2794";
+		font-family: "FontAwesome";
+		font-size: 16px;
+		color: #b2b2b2;
+	}
 
 .breadcrumb-text span {
 	display: inline-block;
@@ -3728,9 +3728,9 @@ ol {
 }
 
 .faq-accordin .card-heading a:after,
-.faq-accordin .card-heading>a.active[aria-expanded=false]:after {
-	content: "";
-	font-family: "FontAwesome";
+.faq-accordin .card-heading > a.active[aria-expanded=false]:after {
+	content: "\f067";
+	font-family: "Font Awesome 5 Free";
 	font-size: 14px;
 	color: #404040;
 	height: 25px;
@@ -3745,9 +3745,9 @@ ol {
 }
 
 .faq-accordin .card-heading a[aria-expanded=true]:after,
-.faq-accordin .card-heading>a.active:after {
-	content: "";
-	font-family: "FontAwesome";
+.faq-accordin .card-heading > a.active:after {
+	content: "\f068";
+	font-family: "Font Awesome 5 Free";
 	float: left;
 	font-size: 13px;
 	color: #ffffff;
