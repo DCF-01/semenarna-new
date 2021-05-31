@@ -288,10 +288,17 @@ namespace semenarna_id2.Controllers {
                 entity.ShortDescription = productViewModel.ShortDescription;
                 entity.Description = productViewModel.Description;
                 entity.Price = productViewModel.Price;
-                entity.SalePrice = productViewModel.SalePrice;
                 entity.OnSale = sale_state;
                 entity.InStock = stock_state;
                 entity.Spec = spec;
+
+
+                if(productViewModel.SalePrice == null) {
+                    entity.SalePrice = "0";
+                }
+                else {
+                    entity.SalePrice = productViewModel.SalePrice;
+                }
 
 
                 if (Image != null) {
