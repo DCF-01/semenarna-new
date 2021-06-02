@@ -475,6 +475,21 @@ window.onload = (event) => {
     //if logged in, executes the callback (1st arg);
     checkUserLogin(displayProducts)
 
+
+    //get carousels
+    let sliders = document.querySelectorAll('.product-slider');
+    if (sliders[0] !== null) {
+        for (let item of sliders) {
+            GetCarousel(item, getCarouselDefaultValue(item.parentElement))
+        }
+    }
+}
+
+function getCarouselDefaultValue(parent_element){
+    let parent = parent_element.querySelector('.filter-control');
+    let value = parent.firstElementChild.firstElementChild.dataset.value;
+
+    return value;
 }
 
 function getCartQuantity() {
@@ -989,7 +1004,7 @@ if (filter_products_btn !== null) {
 }
 
 /* home page carousels*/
-function GetCarousel(parent_element, category) {
+function GetCarousel(parent_element, category, clicked_element = null) {
     let url = location.protocol + '//' + location.host + '/Store/Query/GetCarousel?category=' + category;
 
     fetch(url, {
@@ -1002,6 +1017,9 @@ function GetCarousel(parent_element, category) {
     }).then(res => {
         if (res.ok) {
             res.json().then(result => {
+                if (clicked_element !== null) {
+                    toggleActiveTab(clicked_element);
+                }
                 populateCarousel(parent_element, result);
             });
         }
@@ -1020,18 +1038,16 @@ if (carousel_control_items[0] !== null) {
 
 
 
-            GetCarousel(product_slider, e.target.dataset.value);
+            GetCarousel(product_slider, e.target.dataset.value, e.target);
         });
     })
 }
 
 function populateCarousel(parent_element, data) {
-    console.log(data);
 
-    $('.product-slider-one').owlCarousel('destroy');
-/*parent_element.innerHTML = '';*/
-    parent_element.className = 'product-slider-one owl-carousel';
-    console.log(parent_element.className);
+    $(parent_element).owlCarousel('destroy');
+    /*parent_element.innerHTML = '';*/
+    parent_element.className = 'product-slider owl-carousel';
 
 
     while (parent_element.firstChild) {
@@ -1043,40 +1059,12 @@ function populateCarousel(parent_element, data) {
         let product_item = document.createElement('div');
         product_item.className = 'product-item';
 
-        console.log(item);
-        if (true) {
+        if (item.onSale === true) {
             product_item.innerHTML =
                 `
                     <div class="pi-pic">
-                        <img src="data:image/png;base64, ${item.img}" alt="">
+                        <a href="/Store/Product/Single/${item.id}"><img src="data:image/png;base64, ${item.img}" alt=""></a>
                         <div class="sale">Sale</div>
-                        <div class="icon">
-                            <i class="icon_heart_alt"></i>
-                        </div>
-                        <ul>
-                            <li class="w-icon active"><a href="/Store/Product/Single/${item.id}"><i class="fas fa-shopping-bag"></i></a></li>
-                            <li class="quick-view"><a href="/Store/Product/Single/${item.id}">+ Quick View</a></li>
-                            <li class="w-icon"><a href="#"><i class="fas fa-random"></i></a></li>
-                        </ul>
-                    </div>
-                    <div class="pi-text">
-                        <div class="catagory-name">${item.category}</div>
-                        <a href="/Store/Product/Single/${item.id}">
-                            <h5>${data[0].name}</h5>
-                        </a>
-                        <div class="product-price">
-                            \$${item.price}
-                            <span>\$${item.salePrice}</span>
-                        </div>
-                    </div>
-                `;
-                parent_element.appendChild(product_item);
-        }
-        else {
-            product_item.innerHTML =
-                `
-                    <div class="pi-pic">
-                        <img src="data:image/png;base64, ${item.img}" alt="">
                         <div class="icon">
                             <i class="icon_heart_alt"></i>
                         </div>
@@ -1092,21 +1080,48 @@ function populateCarousel(parent_element, data) {
                             <h5>${item.name}</h5>
                         </a>
                         <div class="product-price">
-                            <span>\$${item.price}</span>
+                            \$${item.price}
+                            <span>\$${item.salePrice}</span>
                         </div>
                     </div>
                 `;
-            item.appendChild(product_item);
+            parent_element.appendChild(product_item);
+        }
+        else {
+            product_item.innerHTML =
+                `
+                    <div class="pi-pic">
+                        <a href="/Store/Product/Single/${item.id}"><img src="data:image/png;base64, ${item.img}" alt=""></a>
+                        <div class="icon">
+                            <i class="icon_heart_alt"></i>
+                        </div>
+                        <ul>
+                            <li class="w-icon active"><a href="/Store/Product/Single/${item.id}"><i class="fas fa-shopping-bag"></i></a></li>
+                            <li class="quick-view"><a href="/Store/Product/Single/${item.id}">+ Quick View</a></li>
+                            <li class="w-icon"><a href="#"><i class="fas fa-random"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="pi-text">
+                        <div class="catagory-name">${item.category}</div>
+                        <a href="/Store/Product/Single/${item.id}">
+                            <h5>${item.name}</h5>
+                        </a>
+                        <div class="product-price">
+                            \$${item.price}
+                        </div>
+                    </div>
+                `;
+            parent_element.appendChild(product_item);
         }
     };
 
-    
 
-    $('.product-slider-one').owlCarousel({
+
+    $(parent_element).owlCarousel({
         loop: true,
         margin: 25,
         nav: true,
-        items: 3,
+        items: 4,
         dots: true,
         navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
         smartSpeed: 1200,
@@ -1127,7 +1142,19 @@ function populateCarousel(parent_element, data) {
             }
         }
     });
-    
-    
 
+
+
+}
+
+//toggle active tab slider
+function toggleActiveTab(clicked_element) {
+
+    let child_elements = clicked_element.parentNode.children;
+
+    for (let item of child_elements) {
+        item.className = 'control-item';
+    }
+
+    clicked_element.className = 'active control-item';
 }

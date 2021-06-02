@@ -139,12 +139,15 @@ namespace semenarna_id2.Areas.Store.Controllers {
             try {
                 var available_numbers = new[] { 12, 24, 48 };
 
-                
 
-                var category = await _ctx.Categories.FindAsync(id);
+
+                var category = await _ctx.Categories
+                                        .Where(c => c.Name == name)
+                                        .FirstOrDefaultAsync();
 
                 var all_products = _ctx.Products
                                 .Include(p => p.Categories)
+                                .Where(p => p.Categories.Contains(category))
                                 .Select(p => p)
                                 .ToArray();
 

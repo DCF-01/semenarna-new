@@ -34,10 +34,10 @@
                             else {
                                 foreach (var c in Model.Categories) {
                                     if (c.Name == Model.CurrentCategory) {
-                                        <li><a asp-controller="Base" asp-action="Category" asp-route-id="@c.CategoryId" id="active-category">@c.Name</a></li>
+                                        <li><a asp-controller="Base" asp-action="Category" asp-route-id="@c.CategoryId" asp-route-name="@c.Name" id="active-category">@c.Name</a></li>
                                     }
                                     else {
-                                        <li><a asp-controller="Base" asp-action="Category" asp-route-id="@c.CategoryId">@c.Name</a></li>
+                                        <li><a asp-controller="Base" asp-action="Category" asp-route-id="@c.CategoryId" asp-route-name="@c.Name">@c.Name</a></li>
                                     }
                                 }
                             }

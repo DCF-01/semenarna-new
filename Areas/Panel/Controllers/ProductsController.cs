@@ -255,6 +255,8 @@ namespace semenarna_id2.Controllers {
                 //product to update
                 var entity = await _ctx.Products
                     .Include(product => product.Categories)
+                    .Include(product => product.Variations)
+                    .Include(product => product.Spec)
                     .FirstOrDefaultAsync(item => item.ProductId == id);
 
                 bool sale_state = (productViewModel.OnSale != null) || false;

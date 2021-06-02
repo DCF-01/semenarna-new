@@ -76,7 +76,9 @@ namespace semenarna_id2.Areas.Store.Controllers {
                                                 .Where(c => c.Name == category)
                                                 .Select(c => c.Products)
                                                 .FirstOrDefaultAsync();
-
+                if(products == null) {
+                    return NotFound();
+                }
 
                 List<CarouselProductViewModel> product_list = new List<CarouselProductViewModel>();
 
