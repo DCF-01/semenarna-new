@@ -47,6 +47,9 @@
                     </div>
                 </div>
                 <div class="ht-right">
+                    @if (User.IsInRole("Admin")) {
+                        <a asp-area="Panel" asp-controller="Base" asp-action="Index" class="login-panel"><i class="fas fa-user-shield"></i>Admin Panel</a>
+                    }
                     @if (User.Identity.IsAuthenticated) {
                         <a asp-area="" asp-controller="Auth" asp-action="Logout" class="login-panel"><i class="fa fa-user"></i>Logout</a>
                     }
