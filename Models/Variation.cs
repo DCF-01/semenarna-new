@@ -8,5 +8,6 @@ namespace semenarna_id2.Models {
         public int VariationId { get; set; }
         public string Name { get; set; }
         public string[] Options { get; set; }
+        public ICollection<Product> Products { get; set; }
      }
 }

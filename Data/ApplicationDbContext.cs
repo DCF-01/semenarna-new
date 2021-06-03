@@ -11,7 +11,6 @@ namespace semenarna_id2.Data {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) {
         }
-       
 
         public DbSet<Cart> Carts { get; set; }
         public DbSet<Category> Categories { get; set; }

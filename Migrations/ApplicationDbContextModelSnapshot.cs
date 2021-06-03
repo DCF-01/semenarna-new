@@ -168,6 +168,21 @@ namespace semenarna_id2.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("ProductVariation", b =>
+                {
+                    b.Property<int>("ProductsProductId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("VariationsVariationId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ProductsProductId", "VariationsVariationId");
+
+                    b.HasIndex("VariationsVariationId");
+
+                    b.ToTable("ProductVariation");
+                });
+
             modelBuilder.Entity("semenarna_id2.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -455,12 +470,7 @@ namespace semenarna_id2.Migrations
                     b.Property<string[]>("Options")
                         .HasColumnType("text[]");
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("integer");
-
                     b.HasKey("VariationId");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("Variations");
                 });
@@ -531,6 +541,21 @@ namespace semenarna_id2.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ProductVariation", b =>
+                {
+                    b.HasOne("semenarna_id2.Models.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("semenarna_id2.Models.Variation", null)
+                        .WithMany()
+                        .HasForeignKey("VariationsVariationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("semenarna_id2.Models.Cart", b =>
                 {
                     b.HasOne("semenarna_id2.Models.ApplicationUser", "User")
@@ -584,13 +609,6 @@ namespace semenarna_id2.Migrations
                     b.Navigation("Spec");
                 });
 
-            modelBuilder.Entity("semenarna_id2.Models.Variation", b =>
-                {
-                    b.HasOne("semenarna_id2.Models.Product", null)
-                        .WithMany("Variations")
-                        .HasForeignKey("ProductId");
-                });
-
             modelBuilder.Entity("semenarna_id2.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Cart");
@@ -611,8 +629,6 @@ namespace semenarna_id2.Migrations
             modelBuilder.Entity("semenarna_id2.Models.Product", b =>
                 {
                     b.Navigation("GalleryImages");
-
-                    b.Navigation("Variations");
                 });
 #pragma warning restore 612, 618
         }

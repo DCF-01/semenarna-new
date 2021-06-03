@@ -144,11 +144,11 @@ namespace semenarna_id2.Controllers {
 
 
         [HttpDelete]
-        public IActionResult Delete([FromRoute] int id) {
+        public async Task<IActionResult> Delete([FromRoute] int id) {
             try {
-                //delete product
-                var product = _ctx.Products.Find(id);
+                var product = await _ctx.Products.FindAsync(id);
 
+                //remove product and range of related cartproducts
                 if (product != null) {
                     _ctx.Products.Remove(product);
                     _ctx.SaveChanges();
