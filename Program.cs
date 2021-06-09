@@ -67,6 +67,21 @@ namespace semenarna_id2 {
                     ctx.Specs.AddAsync(spec).GetAwaiter().GetResult();
                     ctx.SaveChangesAsync().GetAwaiter().GetResult();
                 }
+                if (!ctx.Categories.Any()) {
+                    var uncategorized = new Category {
+                        Name = "uncategorized"
+                    };
+                    ctx.Categories.AddAsync(uncategorized).GetAwaiter().GetResult();
+                    ctx.SaveChangesAsync().GetAwaiter().GetResult();
+                }
+                if (!ctx.Variations.Any()) {
+                    var none = new Variation {
+                        Name = "none"
+                    };
+                    none.Options = new []{ "optionOne" };
+                    ctx.Variations.AddAsync(none).GetAwaiter().GetResult();
+                    ctx.SaveChangesAsync().GetAwaiter().GetResult();
+                };
             }
             catch (Exception e) {
                 Console.WriteLine(e.Message);

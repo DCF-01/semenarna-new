@@ -54,21 +54,22 @@ namespace semenarna_id2.Controllers {
         [HttpPost]
         public async Task<IActionResult> Create(ProductViewModel product_data) {
             try {
+                if (product_data.Name == null) {
+                    throw new Exception("The product must have a name");
+                }
+                if (product_data.Description == null) {
+                    throw new Exception("The product must have a description");
+                }
+                if (product_data.ShortDescription == null) {
+                    throw new Exception("The product must have a short description");
+                }
+                if (product_data.Price == null) {
+                    throw new Exception("Price required");
+                }
+
                 bool sale_state = (product_data.OnSale != null) || false;
                 bool stock_state = (product_data.InStock != null) || false;
 
-                var categories = from c in _ctx.Categories
-                                 where product_data.Categories.Contains(c.Name)
-                                 select c;
-
-                var variations = await _ctx.Variations
-                                .Where(item => product_data.Variations.Contains(item.Name))
-                                .Select(item => item).ToListAsync();
-
-
-                var spec = _ctx.Specs
-                .Where(s => s.Name == product_data.CurrentSpec)
-                .Select(s => s).FirstOrDefault();
 
                 var product = new Product {
                     Name = product_data.Name,
@@ -78,22 +79,64 @@ namespace semenarna_id2.Controllers {
                     Price = product_data.Price,
                     OnSale = sale_state,
                     InStock = stock_state,
-                    Spec = spec,
-                    Variations = variations
                 };
                 if(product_data.SalePrice == null) {
-                    product.SalePrice = "0";
+                    product.SalePrice = product_data.Price;
                 }
                 else {
                     product.SalePrice = product_data.SalePrice;
                 }
 
+                //set variations if null provided by user
+                if (product_data.Variations == null) {
+                    var default_variation = await _ctx.Variations
+                                        .Where(v => v.Name == "нема")
+                                        .Select(v => v)
+                                        .ToListAsync();
 
-                product.Categories = new List<Category>();
+                    product.Variations = default_variation;
+                }
+                else {
+                    var new_variations = await _ctx.Variations
+                                    .Where(item => product_data.Variations.Contains(item.Name))
+                                    .Select(item => item)
+                                    .ToListAsync();
 
-                foreach (var item in categories) {
-                    product.Categories.Add(item);
-                };
+                    product.Variations = new_variations;
+                }
+                //set categories if null provided by user
+                if(product_data.Categories == null) {
+                    var default_category = await _ctx.Categories
+                                                .Where(c => c.Name == "uncategorized")
+                                                .Select(c => c)
+                                                .ToListAsync();
+                    product.Categories = default_category;
+                }
+                else {
+                    var new_categories = await _ctx.Categories
+                                                    .Where(c => product_data.Categories.Contains(c.Name))
+                                                    .Select(c => c)
+                                                    .ToListAsync();
+                    product.Categories = new_categories;
+                }
+                //set spec if null provided by user
+                if (product_data.CurrentSpec == null) {
+                    var default_spec = await _ctx.Specs
+                                                 .Where(s => s.Name == "Empty")
+                                                 .Select(s => s)
+                                                 .FirstOrDefaultAsync();
+                    product.Spec = default_spec;
+                }
+                else {
+                    var new_spec = _ctx.Specs
+                    .Where(s => s.Name == product_data.CurrentSpec)
+                    .Select(s => s).FirstOrDefault();
+
+                    product.Spec = new_spec;
+                }
+
+
+
 
 
 
@@ -226,22 +269,18 @@ namespace semenarna_id2.Controllers {
         public async Task<IActionResult> Manage(int id, ProductViewModel productViewModel) {
             try {
 
-                if (productViewModel.Categories == null) {
-                    throw new Exception("A product must have at least 1 category");
-                }
                 if (productViewModel.Name == null) {
                     throw new Exception("The product must have a name");
                 }
                 if (productViewModel.Description == null) {
                     throw new Exception("The product must have a description");
                 }
-                if (productViewModel.CurrentSpec == null) {
-                    throw new Exception("Spec required");
+                if (productViewModel.ShortDescription == null) {
+                    throw new Exception("The product must have a short description");
                 }
-
-                var spec = _ctx.Specs
-                    .Where(s => s.Name == productViewModel.CurrentSpec)
-                    .Select(s => s).FirstOrDefault();
+                if (productViewModel.Price == null) {
+                    throw new Exception("Price required");
+                }
 
                 // Product Img
                 IFormFile Image;
@@ -262,29 +301,6 @@ namespace semenarna_id2.Controllers {
                 bool sale_state = (productViewModel.OnSale != null) || false;
                 bool stock_state = (productViewModel.InStock != null) || false;
 
-
-
-                var categories = from c in _ctx.Categories
-                                 where productViewModel.Categories.Contains(c.Name)
-                                 select c;
-
-                var variations = await _ctx.Variations
-                                    .Where(item => productViewModel.Variations.Contains(item.Name))
-                                    .Select(item => item).ToListAsync();
-
-                //remove all from product categories field
-                entity.Categories = new List<Category>();
-                entity.Variations = new List<Variation>();
-
-
-                foreach (var item in categories) {
-                    entity.Categories.Add(item);
-                };
-
-                foreach(var item in variations) {
-                    entity.Variations.Add(item);
-                };
-
                 entity.Name = productViewModel.Name;
                 entity.SKU = productViewModel.SKU;
                 entity.ShortDescription = productViewModel.ShortDescription;
@@ -292,14 +308,61 @@ namespace semenarna_id2.Controllers {
                 entity.Price = productViewModel.Price;
                 entity.OnSale = sale_state;
                 entity.InStock = stock_state;
-                entity.Spec = spec;
-
 
                 if(productViewModel.SalePrice == null) {
-                    entity.SalePrice = "0";
+                    entity.SalePrice = productViewModel.Price;
                 }
                 else {
                     entity.SalePrice = productViewModel.SalePrice;
+                }
+
+                //set variations if null provided by user
+                if (productViewModel.Variations == null) {
+                    var default_variation = await _ctx.Variations
+                                        .Where(v => v.Name == "нема")
+                                        .Select(v => v)
+                                        .ToListAsync();
+
+                    entity.Variations = default_variation;
+                }
+                else {
+                    var new_variations = await _ctx.Variations
+                                    .Where(item => productViewModel.Variations.Contains(item.Name))
+                                    .Select(item => item)
+                                    .ToListAsync();
+
+                    entity.Variations = new_variations;
+                }
+
+                //set categories if null provided by user
+                if (productViewModel.Categories == null) {
+                    var default_category = await _ctx.Categories
+                                                .Where(c => c.Name == "uncategorized")
+                                                .Select(c => c)
+                                                .ToListAsync();
+                    entity.Categories = default_category;
+                }
+                else {
+                    var new_categories = await _ctx.Categories
+                                                    .Where(c => productViewModel.Categories.Contains(c.Name))
+                                                    .Select(c => c)
+                                                    .ToListAsync();
+                    entity.Categories = new_categories;
+                }
+                //set spec if null provided by user
+                if(productViewModel.CurrentSpec == null) {
+                    var default_spec = await _ctx.Specs
+                                                 .Where(s => s.Name == "Empty")
+                                                 .Select(s => s)
+                                                 .FirstOrDefaultAsync();
+                    entity.Spec = default_spec;
+                }
+                else {
+                    var new_spec = _ctx.Specs
+                    .Where(s => s.Name == productViewModel.CurrentSpec)
+                    .Select(s => s).FirstOrDefault();
+
+                    entity.Spec = new_spec;
                 }
 
 

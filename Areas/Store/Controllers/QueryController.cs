@@ -32,7 +32,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
             return Ok(product);
         }
 
-        public IActionResult Find([FromQuery] string name = "", [FromQuery] string product_id = "") {
+        public IActionResult Find([FromQuery] string name = "", [FromQuery] string SKU = "") {
 
             try {
                 if (Request.Query.ContainsKey("name")) {
@@ -44,9 +44,9 @@ namespace semenarna_id2.Areas.Store.Controllers {
 
                     return Ok(products);
                 }
-                else if (Request.Query.ContainsKey("product_id")) {
+                else if (Request.Query.ContainsKey("SKU")) {
                     var products = _ctx.Products
-                                    .Where(p => EF.Functions.ILike(p.ProductId.ToString(), $"%{product_id}%"))
+                                    .Where(p => EF.Functions.ILike(p.SKU, $"%{SKU}%"))
                                     .Select(p => p)
                                     .ToList();
 

@@ -1,7 +1,7 @@
-﻿const delete_user_btn = document.querySelectorAll('.delete-item-btn');
+﻿const delete_item_btn = document.querySelectorAll('.delete-item-btn');
 const current_url = window.location.href;
 
-delete_user_btn.forEach(element => {
+delete_item_btn.forEach(element => {
     element.addEventListener('click', (e) => {
 
         console.log('clicked');
@@ -21,10 +21,14 @@ delete_user_btn.forEach(element => {
         }).then((res) => {
             if (res.ok) {
                 window.location.reload();
-                console.log('item-deleted')
+            }
+            //used only for spec foreign key conflict
+            else if (res.status === 450) {
+                console.log(res.statusText);
+                createAlert('Spec has not been removed. Please detach it from all containing products and try again.', 'danger');
             }
             else {
-                console.log(res.status);
+                createAlert('There was an error. The item has not been removed', 'danger');
             }
 
         });

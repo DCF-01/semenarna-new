@@ -111,9 +111,13 @@ function displayQuerySearch(data, url_param) {
 
     console.log(data);
     for (let i = 0; i < max; i++) {
+        //product view link
+        const product_link = document.createElement('a');
+        product_link.href = location.protocol + '//' + location.host + '/Store/Product/Single/' + data[i].productId;
+
         //list item
         const new_node = document.createElement('li');
-        new_node.className = 'list-group-item';
+        new_node.className = 'list-group-item search-box-list-item';
         /*new_node.textContent = data[i].name;*/
 
         //div row d-flex align-items-center
@@ -139,7 +143,8 @@ function displayQuerySearch(data, url_param) {
         div.appendChild(price);
         div.appendChild(image);
 
-        new_node.appendChild(div);
+        product_link.appendChild(div);
+        new_node.appendChild(product_link);
 
         search_suggestions_box.appendChild(new_node);
     }
@@ -193,11 +198,11 @@ if (store_search_box !== null) {
             }
 
             if (isNumeric(query_string)) {
-                url_param = '?product_id='
+                url_param = '?SKU=';
                 query = query_url + url_param + parseInt(query_string);
             }
             else {
-                url_param = '?name='
+                url_param = '?name=';
                 query = query_url + url_param + query_string;
             }
 

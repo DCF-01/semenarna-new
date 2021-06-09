@@ -128,7 +128,8 @@ namespace semenarna_id2.Areas.Panel.Controllers {
                 }
             }
             catch (Exception e) {
-                return BadRequest(e.Message);
+                //used only for spec foreign key conflict
+                return StatusCode(450);
             }
         }
     }

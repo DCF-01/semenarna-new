@@ -158,6 +158,10 @@ body {
     width: 100%;
 }
 
+.search-box-list-item:hover {
+    background-color: lightgreen;
+    transition: 0.3s;
+} 
 
 .page-item.active .page-link {
     z-index: 3;
