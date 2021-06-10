@@ -16,5 +16,6 @@ namespace semenarna_id2.Areas.Store.ViewModels {
         public int AllProductsCount { get; set; }
         public int ProductsShowingCount { get; set; }
         public string URLParameters { get; set; }
+        public int Products_on_page { get; set; }
     }
 }

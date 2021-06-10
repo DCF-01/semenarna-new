@@ -78,7 +78,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery] string products_on_page = "24", int id = 0) {
+        public async Task<IActionResult> Index([FromQuery] int products_on_page = 24, int id = 0) {
             // all products
             var all_products = await _ctx.Products
                                         .Include(item => item.Categories)
@@ -89,15 +89,17 @@ namespace semenarna_id2.Areas.Store.Controllers {
             var available_numbers = new[] { 12, 24, 48 };
             StoreViewModel model;
 
-            if (available_numbers.Contains(int.Parse(products_on_page))) {
-                model = GetProductList(id, all_products, int.Parse(products_on_page));
+            if (available_numbers.Contains(products_on_page)) {
+                model = GetProductList(id, all_products, products_on_page);
             }
             else {
                 model = GetProductList(id, all_products);
             }
 
             model.Categories = categories;
-
+            model.BaseURL = $"{this.Request.Scheme}://{this.Request.Host}/Store/Base/Index";
+            model.URLParameters = $"products_on_page={products_on_page}";
+            model.Products_on_page = products_on_page;
             return View("Index", model);
         }
         [HttpGet]
@@ -134,7 +136,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
         }
 
         [HttpGet]
-        public async Task<IActionResult> Category([FromQuery] string products_on_page = "24", int id = 0, [FromQuery] int category_id = 0, [FromQuery] int product_id = 0) {
+        public async Task<IActionResult> Category([FromQuery] int products_on_page = 24, int id = 0, [FromQuery] int category_id = 0, [FromQuery] int product_id = 0) {
             
             try {
                 var available_numbers = new[] { 12, 24, 48 };
@@ -153,8 +155,8 @@ namespace semenarna_id2.Areas.Store.Controllers {
 
                 StoreViewModel model;
 
-                if (available_numbers.Contains(int.Parse(products_on_page))) {
-                    model = GetProductList(id, all_products, int.Parse(products_on_page));
+                if (available_numbers.Contains(products_on_page)) {
+                    model = GetProductList(id, all_products, products_on_page);
                 }
                 else {
                     model = GetProductList(id, all_products);
@@ -164,6 +166,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
                 model.CurrentCategory = category.Name;
                 model.BaseURL = $"{this.Request.Scheme}://{this.Request.Host}/Store/Base/Category";
                 model.URLParameters = $"category_id={category_id}&products_on_page={products_on_page}";
+                model.Products_on_page = products_on_page;
 
                 return View("Index", model); ;
             }

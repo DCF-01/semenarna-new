@@ -56,9 +56,29 @@
                                     <option value="name_descending" class="option-two">Order by name</option>
                                 </select>
                                 <select class="p-show" id="show-product-number">
-                                    <option value="12" class="option-one">Show: 12</option>
-                                    <option value="24" class="option-two">Show: 24</option>
-                                    <option value="48" class="option-three">Show: 48</option>
+                                    @switch (@Model.Products_on_page) {
+                                        case 12:
+                                            <option value="12" class="option-one" selected>Show: 12</option>
+                                            <option value="24" class="option-two">Show: 24</option>
+                                            <option value="48" class="option-three">Show: 48</option>
+                                            break;
+                                        case 24:
+                                            <option value="12" class="option-one">Show: 12</option>
+                                            <option value="24" class="option-two" selected>Show: 24</option>
+                                            <option value="48" class="option-three">Show: 48</option>
+                                            break;
+                                        case 48:
+                                            <option value="12" class="option-one">Show: 12</option>
+                                            <option value="24" class="option-two">Show: 24</option>
+                                            <option value="48" class="option-three" selected>Show: 48</option>
+                                            break;
+                                        default:
+                                            <option value="12" class="option-one">Show: 12</option>
+                                            <option value="24" class="option-two" selected>Show: 24</option>
+                                            <option value="48" class="option-three">Show: 48</option>
+                                            break;
+
+                                    }
                                 </select>
                             </div>
                         </div>

@@ -490,7 +490,7 @@ window.onload = (event) => {
     }
 }
 
-function getCarouselDefaultValue(parent_element){
+function getCarouselDefaultValue(parent_element) {
     let parent = parent_element.querySelector('.filter-control');
     let value = parent.firstElementChild.firstElementChild.dataset.value;
 
@@ -1001,9 +1001,11 @@ if (filter_products_btn !== null) {
         console.log(params.toString());
 
         let base = location.protocol + '//' + location.host + location.pathname;
-        //remove page number (id) and set to 1 to avoid 400 errors
-        base = base.slice(0, -1);
-        let new_url = `${base}1?${params.toString()}`;
+        //remove page number (id) and '/' ten set to '/1' to avoid 400 errors
+        if (isNumeric(base.charAt(base.length - 1))) {
+            base = base.slice(0, -2);
+        }
+        let new_url = `${base}/1?${params.toString()}`;
 
         window.location.href = new_url;
 
