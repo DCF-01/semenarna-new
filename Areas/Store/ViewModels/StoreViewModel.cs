@@ -10,10 +10,11 @@ namespace semenarna_id2.Areas.Store.ViewModels {
         public List<ProductViewModel> Products { get; set; }
         public List<Category> Categories { get; set; }
         public string CurrentCategory { get; set; }
-        public string Link { get; set; }
+        public string BaseURL { get; set; }
         public int Page_number { get; set; }
         public int Number_of_pages { get; set; }
         public int AllProductsCount { get; set; }
         public int ProductsShowingCount { get; set; }
+        public string URLParameters { get; set; }
     }
 }

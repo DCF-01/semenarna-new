@@ -1001,7 +1001,9 @@ if (filter_products_btn !== null) {
         console.log(params.toString());
 
         let base = location.protocol + '//' + location.host + location.pathname;
-        let new_url = `${base}?${params.toString()}`;
+        //remove page number (id) and set to 1 to avoid 400 errors
+        base = base.slice(0, -1);
+        let new_url = `${base}1?${params.toString()}`;
 
         window.location.href = new_url;
 

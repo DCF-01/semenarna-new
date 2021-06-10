@@ -1,7 +1,7 @@
 ﻿@model StoreViewModel
 @{
-    var prev = Model.Page_number - 1;
-    var next = Model.Page_number + 1;
+    string prev = $"{@Model.BaseURL}/{Model.Page_number - 1}?{@Model.URLParameters}";
+    string next = $"{@Model.BaseURL}/{Model.Page_number + 1}?{@Model.URLParameters}";
 }
 <div id="alert-container">
 </div>
@@ -34,10 +34,10 @@
                             else {
                                 foreach (var c in Model.Categories) {
                                     if (c.Name == Model.CurrentCategory) {
-                                        <li><a asp-controller="Base" asp-action="Category" asp-route-id="@c.CategoryId" asp-route-name="@c.Name" id="active-category">@c.Name</a></li>
+                                        <li><a asp-controller="Base" asp-action="Category" asp-route-id="1" asp-route-category_id="@c.CategoryId" id="active-category">@c.Name</a></li>
                                     }
                                     else {
-                                        <li><a asp-controller="Base" asp-action="Category" asp-route-id="@c.CategoryId" asp-route-name="@c.Name">@c.Name</a></li>
+                                        <li><a asp-controller="Base" asp-action="Category" asp-route-id="1" asp-route-category_id="@c.CategoryId">@c.Name</a></li>
                                     }
                                 }
                             }
@@ -130,11 +130,11 @@
                     @for (int i = 1; i <= Model.Number_of_pages; i++) {
                         if (i == Model.Page_number) {
                             <li class="page-item active">
-                                <a class="page-link" asp-controller="Base" asp-action="Index" asp-route-id="@i">@i<span class="sr-only">(current)</span></a>
+                                <a class="page-link" href="@Model.BaseURL/@i?@Model.URLParameters">@i<span class="sr-only">(current)</span></a>
                             </li>
                         }
                         else {
-                            <li class="page-item"><a class="page-link" asp-controller="Base" asp-action="Index" asp-route-id="@i">@i</a></li>
+                            <li class="page-item"><a class="page-link" href="@Model.BaseURL/@i?@Model.URLParameters">@i</a></li>
                         }
 
                     }

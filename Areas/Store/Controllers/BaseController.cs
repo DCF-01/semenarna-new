@@ -134,7 +134,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
         }
 
         [HttpGet]
-        public async Task<IActionResult> Category([FromQuery] string products_on_page = "24", int id = 0, [FromQuery] string name = "", [FromQuery] string product_id = "") {
+        public async Task<IActionResult> Category([FromQuery] string products_on_page = "24", int id = 0, [FromQuery] int category_id = 0, [FromQuery] int product_id = 0) {
             
             try {
                 var available_numbers = new[] { 12, 24, 48 };
@@ -142,7 +142,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
 
 
                 var category = await _ctx.Categories
-                                        .Where(c => c.Name == name)
+                                        .Where(c => c.CategoryId == category_id)
                                         .FirstOrDefaultAsync();
 
                 var all_products = _ctx.Products
@@ -154,15 +154,16 @@ namespace semenarna_id2.Areas.Store.Controllers {
                 StoreViewModel model;
 
                 if (available_numbers.Contains(int.Parse(products_on_page))) {
-                    model = GetProductList(0, all_products, int.Parse(products_on_page));
+                    model = GetProductList(id, all_products, int.Parse(products_on_page));
                 }
                 else {
-                    model = GetProductList(0, all_products);
+                    model = GetProductList(id, all_products);
                 }
 
-                 
                 model.Categories = await _ctx.Categories.ToListAsync();
                 model.CurrentCategory = category.Name;
+                model.BaseURL = $"{this.Request.Scheme}://{this.Request.Host}/Store/Base/Category";
+                model.URLParameters = $"category_id={category_id}&products_on_page={products_on_page}";
 
                 return View("Index", model); ;
             }
