@@ -6,7 +6,7 @@
 <div class="container-lg pt-3">
     <form asp-controller="Products" asp-action="Create" method="post" enctype="multipart/form-data">
         <div class="form-group">
-            <label>Name</label>
+            <label>Име на производ</label>
             <input type="text" class="form-control" asp-for="Name">
         </div>
         <div class="form-group">
@@ -14,37 +14,37 @@
             <input type="text"  class="form-control" asp-for="SKU">
         </div>
         <div class="form-group">
-            <label>Description</label>
+            <label>Упатство за употреба</label>
             <input type="text" class="form-control" asp-for="Description">
         </div>
         <div class="form-group">
-            <label>Short Description</label>
+            <label>Опис</label>
             <input type="text" class="form-control" asp-for="ShortDescription">
         </div>
         <div class="form-group">
-            <label>Price</label>
+            <label>Редовна Цена</label>
             <input type="text" class="form-control" asp-for="Price">
         </div>
         <div class="form-group">
-            <label>SalePrice</label>
+            <label>Промотивна цена</label>
             <input type="text" class="form-control" asp-for="SalePrice">
         </div>
         <div class="form-group">
-            <label>On Sale</label>
+            <label>На промоција</label>
             <div class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input" id="OnSale" name="OnSale" value="true">
                 <label class="custom-control-label" for="OnSale">Set sale status</label>
             </div>
         </div>
         <div class="form-group">
-            <label>In Stock</label>
+            <label>На залиха</label>
             <div class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input" id="InStock" name="InStock" value="true">
-                <label class="custom-control-label" for="InStock">Set stock status</label>
+                <label class="custom-control-label" for="InStock">На залиха</label>
             </div>
         </div>
         <div class="form-group">
-            <label>Categories</label>
+            <label>Категории</label>
             @foreach (var item in Model.GetCategories) {
                 <div class="custom-control custom-checkbox">
                     <input type="checkbox" class="custom-control-input" id="@item" name="Categories[]" value="@item">
@@ -53,7 +53,7 @@
             }
         </div>
         <div class="form-group">
-            <label>Variations</label>
+            <label>Варијации</label>
             @foreach (var item in Model.GetVariations) {
                 <div class="custom-control custom-checkbox">
                     <input type="checkbox" class="custom-control-input" id="@item" name="Variations[]" value="@item">
@@ -62,7 +62,7 @@
             }
         </div>
         <div class="form-group">
-            <label>Specs</label>
+            <label>Спецификација</label>
             <select class="form-control" name="CurrentSpec">
                 @foreach (var spec in Model.GetSpecs) {
                     if (spec == Model.CurrentSpec) {
@@ -76,7 +76,7 @@
             </select>
         </div>
         <div class="form-group">
-            <label>Image</label>
+            <label>Слика</label>
             <input type="file" name="Img" id="Imageinput" asp-for="Img">
         </div>
         <div class="form-group">

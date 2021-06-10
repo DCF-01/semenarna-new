@@ -8,7 +8,7 @@
     <img src="data:image/jpeg;base64,@Model.GetImg">
     <form action="" method="post" enctype="multipart/form-data">
         <div class="form-group">
-            <label>Name</label>
+            <label>Име на производ</label>
             <input type="text" class="form-control" value="@Model.Name" asp-for="Name">
         </div>
         <div class="form-group">
@@ -16,23 +16,23 @@
             <input type="text" class="form-control" value="@Model.SKU" asp-for="SKU">
         </div>
         <div class="form-group">
-            <label>Description</label>
+            <label>Упатство за употреба</label>
             <input type="text" class="form-control" value="@Model.Description" asp-for="Description">
         </div>
         <div class="form-group">
-            <label>Short Description</label>
+            <label>Опис</label>
             <input type="text"  class="form-control" value="@Model.ShortDescription" asp-for="ShortDescription">
         </div>
         <div class="form-group">
-            <label>Price</label>
+            <label>Редовна Цена</label>
             <input type="text" class="form-control" value="@Model.Price" asp-for="Price">
         </div>
         <div class="form-group">
-            <label>Sale Price</label>
+            <label>Промотивна цена</label>
             <input type="text" class="form-control" value="@Model.SalePrice" asp-for="SalePrice">
         </div>
         <div class="form-group">
-            <label>On Sale</label>
+            <label>На промоција</label>
             <div class="custom-control custom-checkbox">
                 @if (Model.OnSale == "True") {
                     <input type="checkbox" id="OnSale" class="custom-control-input" name="OnSale" value="@Model.OnSale" checked>
@@ -40,11 +40,11 @@
                 else {
                     <input type="checkbox" id="OnSale" class="custom-control-input" name="OnSale" value="@Model.OnSale">
                 }
-                <label class="custom-control-label" for="OnSale">On Sale</label>
+            <label class="custom-control-label" for="OnSale">На промоција</label>
             </div>
         </div>
         <div class="form-group">
-            <label>In Stock</label>
+            <label>На залиха</label>
             <div class="custom-control custom-checkbox">
                 @if (Model.InStock == "True") {
                     <input type="checkbox" id="InStock" class="custom-control-input" name="InStock" value="@Model.InStock" checked>
@@ -53,11 +53,11 @@
                     <input type="checkbox" id="InStock" class="custom-control-input" name="InStock" value="@Model.InStock">
 
                 }
-                <label class="custom-control-label" for="InStock">In Stock</label>
+                <label class="custom-control-label" for="InStock">На залиха</label>
             </div>
         </div>
         <div class="form-group">
-            <label>Categories</label>
+            <label>Категории</label>
 
             @if (Model.GetCategories.Count() > 0) {
                 foreach (var itemName in Model.Categories) {
@@ -90,7 +90,7 @@
 
         </div>
         <div class="form-group">
-            <label>Variations</label>
+            <label>Варијации</label>
             @foreach (var item in Model.GetVariations) {
                 if (Model.CurrentVariations.Contains(item)) {
                     <div class="custom-control custom-checkbox">
@@ -107,7 +107,7 @@
             }
         </div>
         <div class="form-group">
-            <label>Spec</label>
+            <label>Спецификација</label>
             <select class="form-control" name="CurrentSpec">
                 @foreach (var spec in Model.GetSpecs) {
                     if (spec == Model.CurrentSpec) {
@@ -123,7 +123,7 @@
 
 
         <div class="form-group">
-            <label>Image</label>
+            <label>Слика</label>
             <input type="file" name="Img" id="Imageinput" asp-for="Img">
         </div>
         <div class="form-group">
