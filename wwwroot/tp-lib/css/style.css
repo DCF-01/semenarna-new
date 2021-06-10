@@ -428,6 +428,7 @@ ol {
 .inner-header .advanced-search {
 	height: 50px;
 	border: 1px solid #ebebeb;
+	margin-top: 12px;
 }
 
 .inner-header .advanced-search .category-btn {
@@ -465,7 +466,7 @@ ol {
 }
 
 .inner-header .advanced-search .input-group {
-	max-width: 70%;
+	max-width: 100%;
 	height: 100%;
 }
 
