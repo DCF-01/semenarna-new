@@ -1089,8 +1089,8 @@ function populateCarousel(parent_element, data) {
                             <h5>${item.name}</h5>
                         </a>
                         <div class="product-price">
-                            \$${item.price}
-                            <span>\$${item.salePrice}</span>
+                            ${item.price} ДЕН
+                            <span>${item.salePrice} ДЕН</span>
                         </div>
                     </div>
                 `;
@@ -1116,7 +1116,7 @@ function populateCarousel(parent_element, data) {
                             <h5>${item.name}</h5>
                         </a>
                         <div class="product-price">
-                            \$${item.price}
+                            ${item.price} ДЕН
                         </div>
                     </div>
                 `;

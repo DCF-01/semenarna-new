@@ -1,6 +1,5 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,8 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
 
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+    
 
     <!-- Css Styles internal lib -->
     <link rel="stylesheet" href="~/tp-lib/css/themify-icons.css" type="text/css">
@@ -75,7 +73,7 @@
                 <div class="row">
                     <div class="col-lg-2 col-md-2">
                         <div class="logo">
-                            <a asp-controller="Home" asp-action="Index">
+                            <a href="~/">
                                 <img src="~/tp-lib/img/logo.png" alt="">
                             </a>
                         </div>
@@ -86,7 +84,6 @@
                             <div class="input-group">
                                 <input type="text" placeholder="What do you need?" id="store-search">
                                 <button type="button"><i class="fas fa-search"></i></button>
-                                @*<button class="m-0" id="custom-input-clear">X</button>*@
                             <ul class="list-group" id="search-suggestions">
                             </ul>
                             </div>
@@ -99,53 +96,35 @@
                                     <i class="fas fa-shopping-bag"></i>
                                     <span id="cart-quantity-hover" style="opacity: 0;">0</span>
                                 </a>
-                                @*<div class="cart-hover">
-                                    <div class="select-total">
-                                        <span>total:</span>
-                                        <h5 id="cart-total-hover">0 мкд</h5>
-                                    </div>
-                                    <div class="select-button">
-                                        <a asp-area="Cart" asp-controller="Base" asp-action="Index" class="primary-btn view-card">VIEW CART</a>
-                                        <a asp-area="Cart" asp-controller="Base" asp-action="Checkout" class="primary-btn checkout-btn">CHECK OUT</a>
-                                    </div>
-                                </div>*@
                             </li>
-                            @*<li id="cart-total-hover">0 мкд</li>*@
                         </ul>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="nav-item">
-            <div class="container">
-                <div class="nav-depart">
-                    <div class="depart-btn">
-                        <i class="fas fa-bars"></i>
-                        <span>Категории</span>
-                        <ul class="depart-hover">
-                            <li class="active"><a href="#">Women’s Clothing</a></li>
-                            <li><a href="#">Men’s Clothing</a></li>
-                            <li><a href="#">Underwear</a></li>
-                            <li><a href="#">Kid's Clothing</a></li>
-                            <li><a href="#">Brand Fashion</a></li>
-                            <li><a href="#">Accessories/Shoes</a></li>
-                            <li><a href="#">Luxury Brands</a></li>
-                            <li><a href="#">Brand Outdoor Apparel</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <nav class="nav-menu mobile-menu">
-                    <ul>
-                        <li class="active"><a asp-area="" asp-controller="Home" asp-action="Index">Почетна</a></li>
-                        <li><a href="~/Store/Base/Index">Продавница</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Faq">ЧПП</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Контакт</a></li>
-                    </ul>
-                </nav>
-                <div id="mobile-menu-wrap"></div>
             </div>
         </div>
     </header>
+    <div class="nav-item">
+        <div class="container">
+            <div class="nav-depart">
+                <div class="depart-btn">
+                    <i class="fas fa-bars"></i>
+                    <span>Категории</span>
+                    <ul class="depart-hover">
+                        <li><a href="~/Store/Base/Index/1">Сите</a></li>
+                    </ul>
+                </div>
+            </div>
+            <nav class="nav-menu mobile-menu">
+                <ul>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Почетна</a></li>
+                    <li><a href="~/Store/Base/Index">Продавница</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Faq">ЧПП</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Контакт</a></li>
+                </ul>
+            </nav>
+            <div id="mobile-menu-wrap"></div>
+        </div>
+    </div>
     <!-- Header End -->
     <div class="container-fluid pl-0 pr-0">
         <main role="main" class="pb-3">

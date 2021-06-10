@@ -13,6 +13,13 @@ a {
     color: #0366d6;
 }
 
+a:hover {
+    color: lightblue;
+}
+a:focus {
+    color: lightblue;
+}
+
 .btn-primary {
     color: #fff;
     background-color: #1b6ec2;
@@ -69,10 +76,6 @@ html {
     min-height: 100%;
 }
 
-body {
-    /* Margin bottom by footer height */
-    margin-bottom: 60px;
-}
 
 .footer {
     position: absolute;
