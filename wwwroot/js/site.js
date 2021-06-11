@@ -453,6 +453,7 @@ function getUserCart(callback) {
 function displayProducts(loggedStatus) {
     if (loggedStatus === true) {
         getUserCart(listCartItems);
+        getUserCart(listCheckoutItems);
     }
     else {
         initCart();
