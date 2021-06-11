@@ -185,6 +185,22 @@ html {
     object-fit: scale-down;
 }
 
+
+@media (min-width: 992px) {
+    .filter-categories a {
+        font-size: 10px;
+    }
+    .filter-categories li a {
+        padding: 0;
+    }
+}
+
+@media (min-width: 1200px) {
+    .filter-categories a {
+        font-size: 0.9rem;
+    }
+}
+
 /* SINGLE PRODUCT */
 #product-image {
     max-width: 408px;
