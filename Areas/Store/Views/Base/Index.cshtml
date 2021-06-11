@@ -91,7 +91,7 @@
                     <div class="row">
                         @foreach (var product in Model.Products) {
 
-                            <div class="col-lg-4 col-sm-6">
+                            <div class="col-xl-3 col-lg-4 col-sm-6">
                                 <div class="product-item">
                                     <div class="pi-pic">
                                         <a asp-area="Store" asp-controller="Product" asp-action="Single" asp-route-id="@product.ProductId"><img src="data:image/png;base64, @product.Img" alt=""></a>

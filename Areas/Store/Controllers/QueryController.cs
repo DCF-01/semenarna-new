@@ -39,7 +39,8 @@ namespace semenarna_id2.Areas.Store.Controllers {
                     var products = _ctx.Products
                                     .Where(p => EF.Functions.ILike(p.Name, $"%{name}%"))
                                     .Select(p => p)
-                                    .ToList();
+                                    .Take(5);
+                                    
 
 
                     return Ok(products);
@@ -48,7 +49,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
                     var products = _ctx.Products
                                     .Where(p => EF.Functions.ILike(p.SKU, $"%{SKU}%"))
                                     .Select(p => p)
-                                    .ToList();
+                                    .Take(5);
 
 
                     return Ok(products);
