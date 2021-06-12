@@ -181,15 +181,28 @@
                 </div>
 
                 <!-- SidebarSearch Form -->
-                <div class="form-inline">
-                    <div class="input-group" data-widget="sidebar-search">
-                        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                <div class="form">
+                    <div class="input-group pb-4" data-widget="sidebar-search">
+                        <input class="form-control form-control-sidebar" type="search" placeholder="Пребарај" aria-label="Пребарај" id="panel-search-box">
                         <div class="input-group-append">
                             <button class="btn btn-sidebar">
                                 <i class="fas fa-search fa-fw"></i>
                             </button>
                         </div>
                     </div>
+                    <div class="custom-control custom-radio pb-1">
+                        <input type="radio" value="Name" id="name-radio" name="customRadio" class="custom-control-input" checked>
+                        <label class="custom-control-label" for="name-radio">Име</label>
+                    </div>
+                    <div class="custom-control custom-radio pb-1">
+                        <input type="radio" value="Sku" id="sku-radio" name="customRadio" class="custom-control-input">
+                        <label class="custom-control-label" for="sku-radio">SKU</label>
+                    </div>
+                    <div class="custom-control custom-radio pb-1">
+                        <input type="radio" value="Category" id="category-radio" name="customRadio" class="custom-control-input">
+                        <label class="custom-control-label" for="category-radio">Категорија</label>
+                    </div>
+
                 </div>
 
                 <!-- Sidebar Menu -->

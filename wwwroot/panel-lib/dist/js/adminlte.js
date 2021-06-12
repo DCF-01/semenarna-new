@@ -2110,17 +2110,8 @@
         return;
       }
 
-      if ($__default['default'](SELECTOR_DATA_WIDGET$1).next(SELECTOR_SEARCH_RESULTS).length === 0) {
-        $__default['default'](SELECTOR_DATA_WIDGET$1).after($__default['default']('<div />', {
-          class: CLASS_NAME_SEARCH_RESULTS
-        }));
-      }
 
-      if ($__default['default'](SELECTOR_SEARCH_RESULTS).children(SELECTOR_SEARCH_LIST_GROUP).length === 0) {
-        $__default['default'](SELECTOR_SEARCH_RESULTS).append($__default['default']('<div />', {
-          class: CLASS_NAME_LIST_GROUP
-        }));
-      }
+      
 
       this._addNotFound();
 

@@ -1,5 +1,6 @@
 ﻿const delete_item_btn = document.querySelectorAll('.delete-item-btn');
 const current_url = window.location.href;
+const panel_search_box = document.querySelector('#panel-search-box');
 
 delete_item_btn.forEach(element => {
     element.addEventListener('click', (e) => {
@@ -262,4 +263,92 @@ function addVariationListener(element_add = null, element_remove = null,) {
             }
         });
     }
+}
+
+if (panel_search_box !== null) {
+    let clear_btn = document.querySelector('.btn.btn-sidebar');
+    clear_btn.addEventListener('click', (e) => {
+        panel_search_box.value = '';
+        let key = "None";
+        let value = null;
+        getPanelItems(key, value);
+    });
+
+    panel_search_box.addEventListener('keyup', (e) => {
+        let table = document.querySelector('.content .table');
+        if (table !== null) {
+
+            let key = document.querySelector('input:checked').value;
+            let value = e.target.value;
+            getPanelItems(key, value);
+        }
+
+    });
+}
+
+function getPanelItems(k, v) {
+    let key = k;
+    let value = v;
+    let query = `${location.protocol}//${location.host}/Panel/Query/Products?${key}=${value}`;
+
+    fetch(query, {
+        method: 'GET', // POST, PUT, DELETE, etc.
+        headers: {
+            'Content-Type': 'text/plain;charset=UTF-8'
+        },
+        credentials: 'include', // omit, include
+        redirect: 'follow', // manual, error
+    }).then(res => {
+        res.json().then(data => {
+            displayPanelQuery(data);
+        });
+    });
+}
+
+
+function displayPanelQuery(data) {
+    let table = document.querySelector('.content .table');
+
+    table.removeChild(table.lastElementChild);
+
+    let tbody = document.createElement('tbody');
+
+    let i = 1;
+    data.forEach(el => {
+        let tr = document.createElement('tr');
+
+        let th = document.createElement('th');
+        th.scope = 'row';
+        th.textContent = `${i}`;
+        i += 1;
+
+        let td_1 = document.createElement('td');
+        td_1.innerHTML = `${el.name}`;
+
+        let td_2 = document.createElement('td');
+        td_2.innerHTML = `${el.description}`;
+
+        let td_3 = document.createElement('td');
+        td_3.innerHTML = `<a href="/Panel/Products/Manage/${el.id}">Edit</a>`;
+
+        let td_4 = document.createElement('td');
+        td_4.innerHTML = `
+                    <button type="button" class="close delete-item-btn" aria-label="Close">
+                        <div class="item-id">${el.id}</div>
+                        <span aria-hidden="true">×</span>
+                    </button>`;
+
+        tr.appendChild(th);
+        tr.appendChild(td_1);
+        tr.appendChild(td_2);
+        tr.appendChild(td_3);
+        tr.appendChild(td_4);
+
+
+        tbody.appendChild(tr);
+    });
+
+
+    table.appendChild(tbody);
+
 }
