@@ -68,12 +68,13 @@ let select_lists = document.querySelector('.list');
 let timeout_toast;
 
 function displayQuerySearch(data, url_param) {
+    clearSearchBox();
     query_string = store_search_box.value;
 
-    let max = 5;
+    /*let max = 5;
     if (data.length < 5) {
         max = data.length;
-    }
+    }*/
 
     /*CREATE SEARCH HEADER*/
     //list item
@@ -110,15 +111,15 @@ function displayQuerySearch(data, url_param) {
 
 
     console.log(data);
-    for (let i = 0; i < max; i++) {
+    data.forEach(el => {
         //product view link
         const product_link = document.createElement('a');
-        product_link.href = location.protocol + '//' + location.host + '/Store/Product/Single/' + data[i].productId;
+        product_link.href = location.protocol + '//' + location.host + '/Store/Product/Single/' + el.productId;
 
         //list item
         const new_node = document.createElement('li');
         new_node.className = 'list-group-item search-box-list-item';
-        /*new_node.textContent = data[i].name;*/
+        /*new_node.textContent = el.name;*/
 
         //div row d-flex align-items-center
         let div = document.createElement('div');
@@ -126,17 +127,17 @@ function displayQuerySearch(data, url_param) {
 
         //p element (name)
         let name = document.createElement('p');
-        name.textContent = data[i].name
+        name.textContent = el.name
         name.className = 'm-0 p-2';
 
         //p element (description)
         let price = document.createElement('p');
-        price.textContent = `${data[i].price} ден`;
+        price.textContent = `${el.price} ден`;
         price.className = 'm-0 p-2';
 
         //img element (image)
         let image = document.createElement('img');
-        image.src = 'data:image/png;base64, ' + data[i].img;
+        image.src = 'data:image/png;base64, ' + el.img;
         image.width = 48;
 
         div.appendChild(name);
@@ -147,9 +148,10 @@ function displayQuerySearch(data, url_param) {
         new_node.appendChild(product_link);
 
         search_suggestions_box.appendChild(new_node);
-    }
+    });
+    
 
-    if (max >= 1) {
+    /*if (max >= 1) {
         const new_node = document.createElement('li');
         new_node.className = 'list-group-item';
 
@@ -159,7 +161,7 @@ function displayQuerySearch(data, url_param) {
         new_node.appendChild(link_all);
 
         search_suggestions_box.appendChild(new_node);
-    }
+    }*/
 
 }
 
