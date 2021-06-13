@@ -103,7 +103,7 @@ namespace semenarna_id2.Areas.Cart.Controllers {
                         Phone = orderViewModel.Phone,
                         PaymentMethod = orderViewModel.PaymentMethod,
                         DeliveryMethod = orderViewModel.DeliveryMethod,
-                        DateTime = DateTime.UtcNow,
+                        DateTime = DateTime.Now,
                         CartProducts = validatedProducts
 
                     };
