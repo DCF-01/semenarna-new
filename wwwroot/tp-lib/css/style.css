@@ -1587,6 +1587,11 @@ ol {
 	line-height: 36px;
 	font-size: 16px;
 	color: #b2b2b2;
+	transition-duration: 0.3s;
+}
+
+.footer-widget ul li a:hover {
+	color: #ffffff;
 }
 
 .newslatter-item h5 {

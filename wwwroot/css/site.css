@@ -378,3 +378,15 @@ p {
 .filter-categories li a:hover {
     color: #e7ab3c;
 }
+
+/*Privacy*/
+.privacy-container {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+    padding: 40px;
+    background-color: #e8e8e8;
+}
+
+.privacy-container .privacy-list {
+    padding: 15px 0px 15px 30px;
+}

@@ -37,7 +37,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
             try {
                 if (Request.Query.ContainsKey("name")) {
                     var products = _ctx.Products
-                                    .Where(p => EF.Functions.ILike(p.Name, $"%{name}%"))
+                                    .Where(p => p.Name.ToLower().StartsWith(name.ToLower()))
                                     .Select(p => p)
                                     .Take(5);
                                     
@@ -47,7 +47,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
                 }
                 else if (Request.Query.ContainsKey("SKU")) {
                     var products = _ctx.Products
-                                    .Where(p => EF.Functions.ILike(p.SKU, $"%{SKU}%"))
+                                    .Where(p => p.SKU.ToLower().StartsWith(SKU.ToLower()))
                                     .Select(p => p)
                                     .Take(5);
 
