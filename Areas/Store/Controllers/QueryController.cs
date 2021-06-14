@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using semenarna_id2.Areas.Store.Controllers;
 using Microsoft.EntityFrameworkCore;
 using semenarna_id2.Areas.Store.ViewModels;
+using ImageMagick;
+using System.IO;
 
 namespace semenarna_id2.Areas.Store.Controllers {
     [Area("Store")]
@@ -32,24 +34,52 @@ namespace semenarna_id2.Areas.Store.Controllers {
             return Ok(product);
         }
 
-        public IActionResult Find([FromQuery] string name = "", [FromQuery] string SKU = "") {
+        public async Task<IActionResult> Find([FromQuery] string name = "", [FromQuery] string SKU = "") {
 
             try {
                 if (Request.Query.ContainsKey("name")) {
-                    var products = _ctx.Products
+                    var products = await _ctx.Products
                                     .Where(p => p.Name.ToLower().StartsWith(name.ToLower()))
-                                    .Select(p => p)
-                                    .Take(5);
-                                    
+                                    .Select(p => new QueryProductViewModel {
+                                        ProductId = p.ProductId,
+                                        Name = p.Name,
+                                        UncompressedImg = p.Img,
+                                        Price = p.Price
+                                    })
+                                    .Take(5).ToListAsync();
+
+                    foreach (var item in products) {
+                        using (var stream = new MemoryStream(item.UncompressedImg)) {
+                            var optimizer = new ImageOptimizer();
+                            optimizer.Compress(stream);
+                            item.Img = Convert.ToBase64String(stream.ToArray());
+                            item.UncompressedImg = null;
+                        }
+                    }
 
 
                     return Ok(products);
                 }
                 else if (Request.Query.ContainsKey("SKU")) {
-                    var products = _ctx.Products
-                                    .Where(p => p.SKU.ToLower().StartsWith(SKU.ToLower()))
-                                    .Select(p => p)
-                                    .Take(5);
+                    var products = await _ctx.Products
+                                    .Where(p => p.Name.ToLower().StartsWith(name.ToLower()))
+                                    .Select(p => new QueryProductViewModel {
+                                        ProductId = p.ProductId,
+                                        Name = p.Name,
+                                        UncompressedImg = p.Img,
+                                        Price = p.Price
+                                    })
+                                    .Take(5).ToListAsync();
+
+                    foreach (var item in products) {
+                        using (var stream = new MemoryStream(item.UncompressedImg)) {
+                            var optimizer = new ImageOptimizer();
+                            optimizer.Compress(stream);
+                            item.Img = Convert.ToBase64String(stream.ToArray());
+                            item.UncompressedImg = null;
+                        }
+                    }
+
 
 
                     return Ok(products);
@@ -77,7 +107,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
                                                 .Where(c => c.Name == category)
                                                 .Select(c => c.Products)
                                                 .FirstOrDefaultAsync();
-                if(products == null) {
+                if (products == null) {
                     return NotFound();
                 }
 

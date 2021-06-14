@@ -130,7 +130,7 @@ function displayQuerySearch(data, url_param) {
         name.textContent = el.name
         name.className = 'm-0 p-2';
 
-        //p element (description)
+        //p element (price)
         let price = document.createElement('p');
         price.textContent = `${el.price} ден`;
         price.className = 'm-0 p-2';
