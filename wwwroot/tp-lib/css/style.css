@@ -1446,16 +1446,27 @@ ol {
 }
 
 .benefit-items {
-	border: 1px solid #ebebeb;
+	/*border: 1px solid #ebebeb;*/
 	margin-top: 45px;
 }
 
 .benefit-items .single-benefit {
 	padding-top: 30px;
 	padding-bottom: 25px;
-	padding-left: 55px;
-	padding-right: 55px;
-	border-right: 1px solid #F3F4F0;
+	padding-left: 25px;
+	padding-right: 30px;
+	/*border-right: 1px solid #F3F4F0;*/
+}
+
+.border-custom {
+	margin-right: -1px;
+	margin-bottom: -1px;
+	border: 1px solid #ebebeb;
+	transition: 0.3s;
+}
+
+.border-custom:hover {
+	background-color: #ffdca1;
 }
 
 .benefit-items .single-benefit .sb-icon {

@@ -166,11 +166,11 @@ namespace semenarna_id2.Areas.Cart.Controllers {
                     string result = await engine.CompileRenderStringAsync("templateKey", cshtml, viewModel);
 
                     if (user != null) {
-                        var new_email = new Mailer("billing@semenarna.com.mk", user.Email, result);
+                        var new_email = new Mailer("billing@semenarna.mk", user.Email, result);
                         new_email.Send();
                     }
                     else {
-                        var new_email = new Mailer("billing@semenarna.com.mk", order.Email, result);
+                        var new_email = new Mailer("billing@semenarna.mk", order.Email, result);
                         new_email.Send();
                     }
 
