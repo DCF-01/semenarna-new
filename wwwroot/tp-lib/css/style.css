@@ -1754,7 +1754,7 @@ ol {
 	margin-bottom: 45px;
 	padding: 30px 0 30px 30px;
 	margin-right: 30px;
-	border: 1px solid grey;
+	border: 1px solid #c9c9c9;
 	border-radius: 8px;
 }
 
@@ -1994,7 +1994,7 @@ ol {
 
 .product-show-option {
 	padding: 30px;
-	border: 1px gray solid;
+	border: 1px solid #c9c9c9;
 	border-radius: 8px;
 }
 
@@ -4089,10 +4089,10 @@ ol {
 	.blog-details-inner .blog-post .next-blog {
 		padding-right: 30px;
 	}
-	.blog-sidebar,
+	/*.blog-sidebar,
 	.produts-sidebar-filter {
 		padding-top: 50px;
-	}
+	}*/
 	.checkout-content input {
 		margin-top: 50px;
 	}

@@ -159,7 +159,7 @@ html {
     height: 1px;
     width: 100%;
     padding-top: 20px;
-    border-bottom: 1px solid #a9a9a9;
+    border-bottom: 1px solid #ebebeb;
 }
 
 #search-suggestions {
@@ -173,17 +173,17 @@ html {
 .search-box-list-item:hover {
     background-color: lightgreen;
     transition: 0.3s;
-} 
+}
 
 .page-item.active .page-link {
     z-index: 3;
     color: #fff;
-    background-color: orange !important;
-    border-color: orange !important;
+    background-color: #e7ab3c !important;
+    border-color: #e7ab3c !important;
 }
 
 .page-item .page-link {
-    color: orange;
+    color: #e7ab3c;
 }
 
 
@@ -202,7 +202,7 @@ html {
     color: black;
     padding: 8px 20px;
     border-radius: 8px;
-    border: 1px solid orange;
+    border: 1px solid #e7ab3c;
 }
 
 @media (min-width: 992px) {
@@ -218,7 +218,11 @@ html {
     }
 }
 
-
+.product-list {
+    border-radius: 8px;
+    padding: 0px 30px 0px 30px;
+    border: 1px solid #c9c9c9;
+}
 
 
 /* SINGLE PRODUCT */
@@ -310,7 +314,7 @@ html {
 }
 
 #active-category {
-    background: orange;
+    background: #e7ab3c;
     color: white;
 }
 
