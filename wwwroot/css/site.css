@@ -398,3 +398,14 @@ p {
 .privacy-container .privacy-list {
     padding: 15px 0px 15px 30px;
 }
+
+.google-maps-container {
+    width: 100vw;
+    height: 65vh;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+    z-index: 1000;
+}

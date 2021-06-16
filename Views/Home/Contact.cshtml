@@ -13,17 +13,20 @@
 </div>
 <!-- Breadcrumb Section Begin -->
 <!-- Map Section Begin -->
-<div class="map spad">
-    <div class="container">
-        <div class="map-inner">
-            <iframe src=""
-                    height="610" style="border:0" allowfullscreen="">
-            </iframe>
-            <div class="icon">
-                <i class="fa fa-map-marker"></i>
-            </div>
-        </div>
-    </div>
+<div class="google-maps-container">
+    <div id="map"></div>
+    <script>
+        var map;
+        let markerLatLng = { lat: 41.96923793331189, lng: 21.452602892117998 };
+      function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+              center: markerLatLng,
+              zoom: 19
+            });
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCL6SbXulklyEcPRb-MgOrzaHtRDta_F5o&callback=initMap"
+            async defer></script>
 </div>
 <!-- Map Section Begin -->
 <!-- Contact Section Begin -->

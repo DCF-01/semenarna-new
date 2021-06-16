@@ -1518,15 +1518,16 @@ ol {
 .owl-carousel .owl-item img {
 	display: block;
 	width: auto;
+}
+
+.owl-carousel .owl-item .brand-logo img {
 	object-fit: scale-down;
 	max-width: 165px;
 	max-height: 50px;
 }
-
 /*---------------------
   Footer
 -----------------------*/
-
 .footer-section {
 	background: #191919;
 	padding-top: 75px;
