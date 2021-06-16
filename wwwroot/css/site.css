@@ -194,20 +194,32 @@ html {
 }
 
 
+.filter-categories li {
+    margin-bottom: 20px;
+}
+
+.filter-categories li a {
+    color: black;
+    padding: 8px 20px;
+    border-radius: 8px;
+    border: 1px solid orange;
+}
+
 @media (min-width: 992px) {
-    .filter-categories a {
-        font-size: 10px;
+    .filter-categories li {
+        font-size: 0.9rem;
     }
-    .filter-categories li a {
-        padding: 0;
-    }
+    
 }
 
 @media (min-width: 1200px) {
-    .filter-categories a {
-        font-size: 0.9rem;
+    .filter-categories li {
+        font-size: 1rem;
     }
 }
+
+
+
 
 /* SINGLE PRODUCT */
 #product-image {
@@ -378,10 +390,7 @@ p {
     padding: 15px 0px; 
 }
 
-.filter-categories li a {
-    color: black;
-    padding: 2px 5px;
-}
+
 
 .filter-categories li a:hover {
     color: #e7ab3c;

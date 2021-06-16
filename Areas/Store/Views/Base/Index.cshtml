@@ -23,7 +23,7 @@
 <section class="product-shop spad">
     <div class="container">
         <div class="row mb-5">
-            <div class="col-lg-2 col-md-4 col-sm-8 order-2 order-lg-1 produts-sidebar-filter">
+            <div class="col-lg-4 col-md-5 col-sm-12 order-1 order-lg-1 produts-sidebar-filter">
                 <div class="filter-widget">
                     <h4 class="fw-title">Категории</h4>
                     <ul class="filter-categories">
@@ -46,15 +46,19 @@
                     <button href="#" class="filter-btn">Филтрирај</button>
                 </div>
             </div>
-            <div class="col-lg-10 order-1 order-lg-2">
-                <div class="product-show-option">
+            <div class="col-lg-8 col-md-7 col-sm-12 order-2 order-lg-2">
+                <div class="product-show-option mb-sm-5 mb-md-3">
                     <div class="row">
-                        <div class="col-lg-7 col-md-7">
+                        <div class="col-lg-6 col-md-12 mb-3 mt-3">
                             <div class="select-option">
                                 <select class="sorting">
                                     <option value="price_descending" class="option-one">Подреди по цена</option>
                                     <option value="name_descending" class="option-two">Подреди по име</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-12 mb-3 mt-3">
+                            <div class="select-option">
                                 <select class="p-show" id="show-product-number">
                                     @switch (@Model.Products_on_page) {
                                         case 12:
@@ -71,7 +75,7 @@
                                             <option value="12" class="option-one">Прикажи: 12</option>
                                             <option value="24" class="option-two">Прикажи: 24</option>
                                             <option value="48" class="option-three" selected>Прикажи: 48</option>
-                                                        break;
+                                            break;
                                         default:
                                             <option value="12" class="option-one">Прикажи: 12</option>
                                             <option value="24" class="option-two" selected>Прикажи: 24</option>
@@ -81,9 +85,6 @@
                                     }
                                 </select>
                             </div>
-                        </div>
-                        <div class="col-lg-5 col-md-5 text-right">
-                            <p>@*Showing @Model.ProductsShowingCount Of @Model.AllProductsCount Products*@</p>
                         </div>
                     </div>
                 </div>
