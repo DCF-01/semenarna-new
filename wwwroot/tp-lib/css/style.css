@@ -149,8 +149,12 @@ ol {
 	margin: 0 auto;
 }
 
-.section-title p {
-	color: #6e6e6e;
+.promotion-background .section-title p {
+	color: #ffffff;
+}
+
+.promotion-background .section-title .product-price span {
+	color: #ffffff;
 }
 
 .set-bg {
@@ -840,9 +844,9 @@ ol {
 
 .hero-items .single-hero-items h1 {
 	color: #252525;
-	font-size: 72px;
+	font-size: 45px;
 	font-weight: 700;
-	margin-bottom: 6px;
+	margin-bottom: 10px;
 	position: relative;
 	top: 50px;
 	opacity: 0;
@@ -850,6 +854,7 @@ ol {
 
 .hero-items .single-hero-items p {
 	margin-bottom: 42px;
+	margin-top: 15px;
 	position: relative;
 	top: 100px;
 	opacity: 0;
@@ -1513,6 +1518,9 @@ ol {
 .owl-carousel .owl-item img {
 	display: block;
 	width: auto;
+	object-fit: scale-down;
+	max-width: 165px;
+	max-height: 50px;
 }
 
 /*---------------------

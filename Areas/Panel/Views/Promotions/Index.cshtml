@@ -1,0 +1,36 @@
+﻿@model List<Promotion>
+@{
+
+    ViewBag.Title = User.Identity.Name;
+    Layout = "~/Areas/Panel/Views/Shared/_PanelLayout.cshtml";
+    var i = 0;
+}
+
+<table class="table table-striped table-dark">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Date Created</th>
+            <th scope="col">Manage</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var promotion in Model) {
+            i += 1;
+            <tr>
+                <th scope="row">@i</th>
+                <td>@promotion.Name</td>
+                <td>@promotion.DateFrom</td>
+                <td><a href="@Context.Request.Path/Manage/@promotion.PromotionId">Edit</a></td>
+                <td>
+                    <button type="button" class="close delete-item-btn" aria-label="Close">
+                        <div class="item-id">@promotion.PromotionId</div>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

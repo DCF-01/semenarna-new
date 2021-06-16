@@ -20,6 +20,7 @@ namespace semenarna_id2.Data {
         public DbSet<Image> Images { get; set; }
         public DbSet<Variation> Variations { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<Promotion> Promotions { get; set; }
     }
     
 }

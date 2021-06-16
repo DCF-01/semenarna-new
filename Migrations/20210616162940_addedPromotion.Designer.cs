@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using semenarna_id2.Data;
@@ -9,9 +10,10 @@ using semenarna_id2.Data;
 namespace semenarna_id2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210616162940_addedPromotion")]
+    partial class addedPromotion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -440,9 +442,6 @@ namespace semenarna_id2.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<bool>("Active")
-                        .HasColumnType("boolean");
-
                     b.Property<DateTime>("DateFrom")
                         .HasColumnType("timestamp without time zone");
 
@@ -451,9 +450,6 @@ namespace semenarna_id2.Migrations
 
                     b.Property<byte[]>("Img")
                         .HasColumnType("bytea");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
 
                     b.HasKey("PromotionId");
 

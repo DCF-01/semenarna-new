@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using semenarna_id2.Areas.Panel.ViewModels;
 using semenarna_id2.Data;
 using semenarna_id2.Models;
 using semenarna_id2.ViewModels;
@@ -37,6 +39,20 @@ namespace semenarna_id2.Controllers {
         public IActionResult Faq() {
 
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetPromotion() {
+            var active_promotion = await _ctx.Promotions
+                                             .Where(p => p.Active == true)
+                                             .Select(p => new PromotionViewModel {
+                                                 DateToMil = p.DateTo.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds,
+                                                 GetImg = Convert.ToBase64String(p.Img)
+                                             })
+                                             .FirstOrDefaultAsync();
+
+
+            return Ok(active_promotion);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

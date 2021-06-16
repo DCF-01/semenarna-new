@@ -1,0 +1,38 @@
+﻿@model PromotionViewModel
+
+@{
+    ViewBag.Title = User.Identity.Name;
+}
+
+<div class="container-lg pt-3">
+    <div class="img-container">
+        <img src="data:image/jpeg;base64,@Model.GetImg">
+    </div>
+    <form action="" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label>Име на промоција</label>
+            <input type="text" class="form-control" value="@Model.Name" asp-for="Name">
+        </div>
+        <div class="form-group">
+            <label for="promotion-date">Краен датум:</label>
+            <input type="date" id="promotion-date" value="@Model.DateTo" asp-for="DateTo">
+        </div>
+        <div class="form-group">
+            <label for="Imageinput">Слика</label>
+            <input type="file" name="Img" id="Imageinput" asp-for="Img">
+        </div>
+        <div class="form-group">
+            @if (Model.Active) {
+                <input type="checkbox" id="bool-active" asp-for="Active" checked>
+            }
+            else {
+                <input type="checkbox" id="bool-active" asp-for="Active" >
+            }
+            <label for="bool-active">Active</label>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </form>
+</div>

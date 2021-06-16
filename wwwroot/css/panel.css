@@ -15,3 +15,8 @@
 .remove-option-btn i {
     pointer-events: none;
 }
+
+.img-container img {
+    object-fit: scale-down;
+    max-height: 350px;
+}

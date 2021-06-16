@@ -41,7 +41,7 @@
                     </div>
                     <div class="phone-service">
                         <i class=" fa fa-phone"></i>
-                        389 684 698
+                        +389 (0)2 2783 225
                     </div>
                 </div>
                 <div class="ht-right">
@@ -49,10 +49,10 @@
                         <a asp-area="Panel" asp-controller="Base" asp-action="Index" class="login-panel"><i class="fas fa-user-shield"></i>Admin Panel</a>
                     }
                     @if (User.Identity.IsAuthenticated) {
-                        <a asp-area="" asp-controller="Auth" asp-action="Logout" class="login-panel"><i class="fa fa-user"></i>Logout</a>
+                        <a asp-area="" asp-controller="Auth" asp-action="Logout" class="login-panel"><i class="fa fa-user"></i>Одјави се</a>
                     }
                     else {
-                        <a asp-area="" asp-controller="Auth" asp-action="Login" class="login-panel"><i class="fa fa-user"></i>Login</a>
+                        <a asp-area="" asp-controller="Auth" asp-action="Login" class="login-panel"><i class="fa fa-user"></i>Најави се</a>
                     }
                     <div class="lan-selector">
                         <select class="language_drop" name="countries" id="countries" style="width:300px;">
@@ -137,27 +137,27 @@
             <div class="logo-carousel owl-carousel">
                 <div class="logo-item">
                     <div class="tablecell-inner">
-                        <img src="~/tp-lib/img/logo-carousel/logo-1.png" alt="">
+                        <img src="/img/brand-1.png" alt="">
                     </div>
                 </div>
                 <div class="logo-item">
                     <div class="tablecell-inner">
-                        <img src="~/tp-lib/img/logo-carousel/logo-2.png" alt="">
+                        <img src="/img/brand-2.png" alt="">
                     </div>
                 </div>
                 <div class="logo-item">
                     <div class="tablecell-inner">
-                        <img src="~/tp-lib/img/logo-carousel/logo-3.png" alt="">
+                        <img src="/img/brand-3.png" alt="">
                     </div>
                 </div>
                 <div class="logo-item">
                     <div class="tablecell-inner">
-                        <img src="~/tp-lib/img/logo-carousel/logo-4.png" alt="">
+                        <img src="/img/brand-4.png" alt="">
                     </div>
                 </div>
                 <div class="logo-item">
                     <div class="tablecell-inner">
-                        <img src="~/tp-lib/img/logo-carousel/logo-5.png" alt="">
+                        <img src="/img/brand-5.png" alt="">
                     </div>
                 </div>
             </div>
@@ -231,6 +231,7 @@
     </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/tp-lib/js/jquery-ui.min.js"></script>
     <script src="/tp-lib/js/jquery.countdown.min.js"></script>
     <script src="/tp-lib/js/jquery.nice-select.min.js"></script>

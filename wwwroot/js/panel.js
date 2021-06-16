@@ -1,6 +1,7 @@
 ﻿const delete_item_btn = document.querySelectorAll('.delete-item-btn');
 const current_url = window.location.href;
 const panel_search_box = document.querySelector('#panel-search-box');
+const promotion_date = document.querySelector('#promotion-date');
 
 delete_item_btn.forEach(element => {
     element.addEventListener('click', (e) => {
@@ -351,4 +352,16 @@ function displayPanelQuery(data) {
 
     table.appendChild(tbody);
 
+}
+
+/* promotions */
+if (promotion_date !== null) {
+    setMinDate(promotion_date);
+}
+
+
+function setMinDate(date_item) {
+    date_item.min = new Date().toISOString().split("T")[0];
+    date_item.value = new Date().toISOString().split("T")[0];
+    console.log(Date.now())
 }
