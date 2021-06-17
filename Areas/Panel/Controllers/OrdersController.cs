@@ -38,13 +38,22 @@ namespace semenarna_id2.Areas.Panel.Controllers {
         }
 
         [HttpDelete]
-        public IActionResult Delete([FromRoute] int id) {
+        public async Task<IActionResult> Delete([FromRoute] int id) {
             try {
                 //delete product
                 var order = _ctx.Orders.Find(id);
 
+                var cart_products = await _ctx.Orders
+                                        .Include(o => o.CartProducts)
+                                        .Where(o => o.OrderId == id)
+                                        .Select(o => o.CartProducts)
+                                        .ToListAsync();
+
+                
+
                 if (order != null) {
-                    _ctx.Orders.Remove(order);
+                    _ctx.RemoveRange(cart_products.SelectMany(x => x));
+                    _ctx.Remove(order);
                     _ctx.SaveChanges();
                     return Ok();
                 }
