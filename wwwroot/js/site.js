@@ -1081,9 +1081,7 @@ function populateCarousel(parent_element, data) {
                             <i class="icon_heart_alt"></i>
                         </div>
                         <ul>
-                            <li class="w-icon active"><a href="/Store/Product/Single/${item.id}"><i class="fas fa-shopping-bag"></i></a></li>
-                            <li class="quick-view"><a href="/Store/Product/Single/${item.id}">+ Quick View</a></li>
-                            <li class="w-icon"><a href="#"><i class="fas fa-random"></i></a></li>
+                            <li class="quick-view"><a href="/Store/Product/Single/${item.id}">Види <i class="fas fa-arrow-right"></i></a></li>
                         </ul>
                     </div>
                     <div class="pi-text">
@@ -1108,9 +1106,7 @@ function populateCarousel(parent_element, data) {
                             <i class="icon_heart_alt"></i>
                         </div>
                         <ul>
-                            <li class="w-icon active"><a href="/Store/Product/Single/${item.id}"><i class="fas fa-shopping-bag"></i></a></li>
-                            <li class="quick-view"><a href="/Store/Product/Single/${item.id}">+ Quick View</a></li>
-                            <li class="w-icon"><a href="#"><i class="fas fa-random"></i></a></li>
+                            <li class="quick-view"><a href="/Store/Product/Single/${item.id}">Види <i class="fas fa-arrow-right"></i></a></li>
                         </ul>
                     </div>
                     <div class="pi-text">

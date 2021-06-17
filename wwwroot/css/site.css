@@ -422,3 +422,16 @@ p {
     width: 100%;
     z-index: 1000;
 }
+
+/*footer*/
+
+.logo-section {
+    text-align: -moz-center;
+    text-align: -webkit-center;
+}
+
+.logo-section .logo-item img {
+    object-fit: scale-down;
+    max-width: 165px;
+    max-height: 80px;
+}

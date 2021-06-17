@@ -1,8 +1,8 @@
-;(function ($, document, window) {
+﻿;(function ($, document, window) {
     var
     // default settings object.
         defaults = {
-            label: 'MENU',
+            label: 'МЕНИ',
             duplicate: true,
             duration: 200,
             easingOpen: 'swing',

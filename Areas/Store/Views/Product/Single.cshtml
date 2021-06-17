@@ -227,7 +227,7 @@
                     <div class="product-item">
                         <div class="pi-pic">
                             @{ var img = Convert.ToBase64String(@Model.RelatedProducts[i].Img);}
-                            <a asp-area="Store" asp-controller="Single" asp-route-id="@Model.RelatedProducts[i].ProductId"><img src="data:image/png;base64, @img" alt=""></a>
+                            <a asp-area="Store" asp-controller="Product" asp-action="Single" asp-route-id="@Model.RelatedProducts[i].ProductId"><img src="data:image/png;base64, @img" alt=""></a>
                             @if (Model.RelatedProducts[i].OnSale) {
                                 <div class="sale">Промоција</div>
                             }
@@ -235,9 +235,7 @@
                                 <i class="icon_heart_alt"></i>
                             </div>
                             <ul>
-                                <li class="w-icon active"><a asp-area="Store" asp-controller="Product" asp-action="Single" asp-route-id="@Model.RelatedProducts[i].ProductId"><i class="icon_bag_alt"></i></a></li>
-                                <li class="quick-view"><a asp-area="Store" asp-controller="Product" asp-action="Single" asp-route-id="@Model.RelatedProducts[i].ProductId">+ View</a></li>
-                                <li class="w-icon"><a asp-area="Store" asp-controller="Product" asp-action="Single" asp-route-id="@Model.RelatedProducts[i].ProductId"><i class="fa fa-random"></i></a></li>
+                                <li class="quick-view"><a asp-area="Store" asp-controller="Product" asp-action="Single" asp-route-id="@Model.RelatedProducts[i].ProductId">Види <i class="fas fa-arrow-right"></i></a></li>
                             </ul>
                         </div>
                         <div class="pi-text">

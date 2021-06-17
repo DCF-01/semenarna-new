@@ -75,7 +75,7 @@ moment().format();
     /*------------------
        logo Carousel
     --------------------*/
-    $(".logo-carousel").owlCarousel({
+    /*$(".logo-carousel").owlCarousel({
         loop: false,
         margin: 30,
         nav: false,
@@ -94,7 +94,7 @@ moment().format();
                 items: 5,
             }
         }
-    });
+    });*/
 
     /*-----------------------
        Product Single Slider
