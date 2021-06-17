@@ -536,7 +536,7 @@ function updateCartTotalDOM() {
 
     let total_element = document.querySelector('.cart-total');
     if (total_element !== null) {
-        total_element.innerHTML = `Total <span>${total} ДЕН</span>`;
+        total_element.innerHTML = `Total <span>${total} ден</span>`;
     }
 
     let cart_quantity_hover = document.getElementById('cart-quantity-hover');
@@ -1090,8 +1090,8 @@ function populateCarousel(parent_element, data) {
                             <h5>${item.name}</h5>
                         </a>
                         <div class="product-price">
-                            ${item.price} ДЕН
-                            <span>${item.salePrice} ДЕН</span>
+                            ${item.price} ден
+                            <span>${item.salePrice} ден</span>
                         </div>
                     </div>
                 `;
@@ -1115,7 +1115,7 @@ function populateCarousel(parent_element, data) {
                             <h5>${item.name}</h5>
                         </a>
                         <div class="product-price">
-                            ${item.price} ДЕН
+                            ${item.price} ден
                         </div>
                     </div>
                 `;

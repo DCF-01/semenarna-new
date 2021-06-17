@@ -67,10 +67,10 @@
                                     @Model.ShortDescription
                                 </p>
                                 @if (Model.OnSale) {
-                                    <h4 id="item-price">@Model.SalePrice ДЕН<span>@Model.Price ДЕН</span></h4>
+                                    <h4 id="item-price">@Model.SalePrice ден<span>@Model.Price ден</span></h4>
                                 }
                                 else {
-                                    <h4 id="item-price">@Model.Price ДЕН</h4>
+                                    <h4 id="item-price">@Model.Price ден</h4>
                                 }
                             </div>
                             @*<div class="pd-color">
@@ -240,18 +240,18 @@
                         </div>
                         <div class="pi-text">
                             <div class="catagory-name">@Model.RelatedProducts[i].Categories.FirstOrDefault().Name</div>
-                            <a href="#">
+                            <a asp-area="Store" asp-controller="Product" asp-action="Single" asp-route-id="@Model.RelatedProducts[i].ProductId">
                                 <h5>@Model.RelatedProducts[i].Name</h5>
                             </a>
                             @if (Model.RelatedProducts[i].OnSale) {
                                 <div class="product-price">
-                                    @Model.RelatedProducts[i].SalePrice ДЕН
-                                    <span>@Model.RelatedProducts[i].Price ДЕН</span>
+                                    @Model.RelatedProducts[i].SalePrice ден
+                                    <span>@Model.RelatedProducts[i].Price ден</span>
                                 </div>
                             }
                             else {
                                 <div class="product-price">
-                                    @Model.RelatedProducts[i].Price ДЕН
+                                    @Model.RelatedProducts[i].Price ден
                                 </div>
                             }
                         </div>
