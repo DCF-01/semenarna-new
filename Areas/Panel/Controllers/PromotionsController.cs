@@ -114,7 +114,7 @@ namespace semenarna_id2.Areas.Panel.Controllers {
                 }
             }
 
-            
+
 
             _ctx.Promotions.Add(new_promotion);
             await _ctx.SaveChangesAsync();
@@ -133,6 +133,33 @@ namespace semenarna_id2.Areas.Panel.Controllers {
 
 
             return Ok(active_promotion);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromRoute] int id) {
+
+            try {
+                var promotion = await _ctx.Promotions.FindAsync(id);
+                
+                if(promotion != null) {
+                    _ctx.Remove(promotion);
+                    await _ctx.SaveChangesAsync();
+
+                    return Ok();
+                }
+
+                else {
+                    return BadRequest();
+                }
+
+            
+                
+            }
+
+            catch (Exception e) {
+                return BadRequest();
+            }
+
         }
     }
 }
