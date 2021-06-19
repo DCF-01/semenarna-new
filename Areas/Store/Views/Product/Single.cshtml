@@ -96,12 +96,13 @@
                             <ul class="pd-tags">
                                 <li>
                                     @if (Model.InStock) {
-                                        <span>Производот е на залиха.<i class="fas fa-times" style="color: red;"></i></span>
+                                        <p>Производот е на залиха.<i class="fas fa-times" style="color: red;"></i></p>
                                     }
                                     else {
-                                        <span>Производот моментално не е на залиха.<i class="far fa-check-square" style="color: forestgreen;"></i></span>
+                                        <p>Производот моментално не е на залиха.<i class="far fa-check-square" style="color: forestgreen;"></i></p>
 
                                     }
+                                    <br />
                                     <span>КАТЕГОРИИ</span>:
                                     @foreach (var i in Model.Categories) {
                                         <span><a href="~/Store/Base/Index/1?category_id=@i.CategoryId">@i.Name</a></span>
