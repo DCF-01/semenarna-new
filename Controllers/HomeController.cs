@@ -21,23 +21,24 @@ namespace semenarna_id2.Controllers {
             _logger = logger;
         }
 
-        public IActionResult Index() {
+        public async Task<IActionResult> Index() {
+            ViewBag.Categories = await _ctx.Categories.ToListAsync();
 
             return View();
         }
 
-        public IActionResult Privacy() {
-
+        public async Task<IActionResult> Privacy() {
+            ViewBag.Categories = await _ctx.Categories.ToListAsync();
             return View();
         }
 
-        public IActionResult Contact() {
-
+        public async Task<IActionResult> Contact() {
+            ViewBag.Categories = await _ctx.Categories.ToListAsync();
             return View();
         }
 
-        public IActionResult Faq() {
-
+        public async Task<IActionResult> Faq() {
+            ViewBag.Categories = await _ctx.Categories.ToListAsync();
             return View();
         }
 

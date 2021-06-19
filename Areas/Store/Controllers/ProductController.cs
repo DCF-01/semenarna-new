@@ -16,7 +16,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
         }
         [HttpGet]
         public async Task<IActionResult> Single(int id) {
-
+            ViewBag.Categories = await _ctx.Categories.ToListAsync();
             try {
 
 

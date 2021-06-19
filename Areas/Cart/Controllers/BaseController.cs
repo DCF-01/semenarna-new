@@ -22,6 +22,7 @@ namespace semenarna_id2.Areas.Cart.Controllers {
         }
 
         public async Task<IActionResult> Index() {
+            ViewBag.Categories = await _ctx.Categories.ToListAsync();
             var user = await _userManager.GetUserAsync(HttpContext.User);
 
             if (user != null) {
@@ -112,9 +113,9 @@ namespace semenarna_id2.Areas.Cart.Controllers {
 
 
         }
-        public IActionResult Checkout() {
-            
-            
+        public async Task<IActionResult> Checkout() {
+            ViewBag.Categories = await _ctx.Categories.ToListAsync();
+
             return View();
         }
     }

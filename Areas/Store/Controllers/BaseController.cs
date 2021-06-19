@@ -79,6 +79,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
 
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] int products_on_page = 24, int id = 0) {
+            ViewBag.Categories = await _ctx.Categories.ToListAsync();
             // all products
             var all_products = await _ctx.Products
                                         .Include(item => item.Categories)
@@ -104,6 +105,8 @@ namespace semenarna_id2.Areas.Store.Controllers {
         }
         [HttpGet]
         public async Task<IActionResult> Find([FromQuery] string name = "", [FromQuery] string product_id = "") {
+            ViewBag.Categories = await _ctx.Categories.ToListAsync();
+
             if (Request.Query.ContainsKey("name")) {
 
                 var all_products = _ctx.Products
@@ -137,7 +140,7 @@ namespace semenarna_id2.Areas.Store.Controllers {
 
         [HttpGet]
         public async Task<IActionResult> Category([FromQuery] int products_on_page = 24, int id = 0, [FromQuery] int category_id = 0, [FromQuery] int product_id = 0) {
-            
+            ViewBag.Categories = await _ctx.Categories.ToListAsync();
             try {
                 var available_numbers = new[] { 12, 24, 48 };
 

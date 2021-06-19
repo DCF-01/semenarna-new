@@ -192,7 +192,8 @@ namespace semenarna_id2.Areas.Cart.Controllers {
 
         }
         [HttpGet]
-        public IActionResult Result(string OrderId, string EmailSent, string Message, string OrderStatus) {
+        public async Task<IActionResult> Result(string OrderId, string EmailSent, string Message, string OrderStatus) {
+            ViewBag.Categories = await _ctx.Categories.ToListAsync();
 
             var result = new ResultViewModel {
                 OrderId = OrderId,

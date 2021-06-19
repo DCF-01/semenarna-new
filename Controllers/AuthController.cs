@@ -1,6 +1,7 @@
 ﻿using Google.Rpc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RazorLight;
 using semenarna_id2.Data;
 using semenarna_id2.Models;
@@ -55,8 +56,8 @@ namespace semenarna_id2.Controllers {
         }
 
         [HttpGet]
-        public IActionResult Login() {
-
+        public async Task<IActionResult> Login() {
+            ViewBag.Categories = await _ctx.Categories.ToListAsync();
 
 
             return View();
@@ -105,7 +106,8 @@ namespace semenarna_id2.Controllers {
         }
 
         [HttpGet]
-        public IActionResult ResetPassword(string user_id, string token) {
+        public async Task<IActionResult> ResetPassword(string user_id, string token) {
+            ViewBag.Categories = await _ctx.Categories.ToListAsync();
 
             var model = new ResetPasswordViewModel {
                 UserId = user_id,
@@ -208,7 +210,8 @@ namespace semenarna_id2.Controllers {
         }
 
         [HttpGet]
-        public IActionResult RequestReset() {
+        public async Task<IActionResult> RequestReset() {
+            ViewBag.Categories = await _ctx.Categories.ToListAsync();
 
             var message_model = new RequestResetViewModel() {
                 Message = "If an account is associated with your email, you will receive a password reset link"
