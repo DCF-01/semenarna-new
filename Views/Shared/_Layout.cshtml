@@ -113,7 +113,7 @@
                     <span>Категории</span>
                     <ul class="depart-hover">
                         @foreach (var item in ViewBag.Categories) {
-                            <li><a href="~/Store/Base/Index/@item.CategoryId">@item.Name</a></li>
+                            <li><a href="~/Store/Base/Category/1?category_id=@item.CategoryId">@item.Name</a></li>
                         }
                     </ul>
                 </div>
