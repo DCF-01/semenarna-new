@@ -152,6 +152,12 @@ html {
         left: 0;
     }
 
+.promotion-background {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 
 /* STORE CSS */
 
