@@ -2,6 +2,17 @@
 const current_url = window.location.href;
 const panel_search_box = document.querySelector('#panel-search-box');
 const promotion_date = document.querySelector('#promotion-date');
+const form = document.querySelector('form');
+const submitBtn = document.querySelector('.btn-default');
+
+
+
+//on key Enter submit the form
+document.addEventListener('keyup', (e) => {
+    if (e.key == 'Enter') {
+        form.submit();
+    }
+});
 
 delete_item_btn.forEach(element => {
     element.addEventListener('click', (e) => {
