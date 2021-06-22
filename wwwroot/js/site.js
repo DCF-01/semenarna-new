@@ -149,7 +149,7 @@ function displayQuerySearch(data, url_param) {
 
         search_suggestions_box.appendChild(new_node);
     });
-    
+
 
     /*if (max >= 1) {
         const new_node = document.createElement('li');
@@ -1054,8 +1054,13 @@ if (carousel_control_items[0] !== null) {
         });
     })
 }
-
+// 2/3 width carousel
 function populateCarousel(parent_element, data) {
+    let isFullWidth = false;
+    if (parent_element.classList.contains('full-width-carousel')) {
+        isFullWidth = true;
+    }
+
 
     $(parent_element).owlCarousel('destroy');
     /*parent_element.innerHTML = '';*/
@@ -1124,32 +1129,60 @@ function populateCarousel(parent_element, data) {
     };
 
 
-
-    $(parent_element).owlCarousel({
-        loop: true,
-        margin: 25,
-        nav: true,
-        items: 4,
-        dots: true,
-        navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
-        smartSpeed: 1200,
-        autoHeight: false,
-        autoplay: true,
-        responsive: {
-            0: {
-                items: 1,
-            },
-            576: {
-                items: 2,
-            },
-            992: {
-                items: 2,
-            },
-            1200: {
-                items: 3,
+    if (isFullWidth) {
+        $(parent_element).owlCarousel({
+            loop: true,
+            margin: 25,
+            nav: true,
+            items: 4,
+            dots: true,
+            navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
+            smartSpeed: 1200,
+            autoHeight: false,
+            autoplay: true,
+            responsive: {
+                0: {
+                    items: 1,
+                },
+                576: {
+                    items: 3,
+                },
+                992: {
+                    items: 5,
+                },
+                1200: {
+                    items: 6,
+                }
             }
-        }
-    });
+        });
+    }
+    else {
+        $(parent_element).owlCarousel({
+            loop: true,
+            margin: 25,
+            nav: true,
+            items: 3,
+            dots: true,
+            navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
+            smartSpeed: 1200,
+            autoHeight: false,
+            autoplay: true,
+            responsive: {
+                0: {
+                    items: 1,
+                },
+                576: {
+                    items: 2,
+                },
+                992: {
+                    items: 2,
+                },
+                1200: {
+                    items: 3,
+                }
+            }
+        });
+    }
 
 
 
