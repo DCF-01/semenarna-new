@@ -1059,12 +1059,16 @@ function populateCarousel(parent_element, data) {
     let isFullWidth = false;
     if (parent_element.classList.contains('full-width-carousel')) {
         isFullWidth = true;
+        $(parent_element).owlCarousel('destroy');
+        parent_element.className = 'product-slider owl-carousel full-width-carousel';
+    }
+    else {
+        $(parent_element).owlCarousel('destroy');
+        parent_element.className = 'product-slider owl-carousel';
+
     }
 
 
-    $(parent_element).owlCarousel('destroy');
-    /*parent_element.innerHTML = '';*/
-    parent_element.className = 'product-slider owl-carousel';
 
 
     while (parent_element.firstChild) {
