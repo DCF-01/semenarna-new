@@ -227,7 +227,6 @@ moment().format();
         }
     });
 
-    $('.product-pic-zoom').zoom();
 
     /*-------------------
         Quantity change
