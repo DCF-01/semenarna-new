@@ -6,14 +6,6 @@ const form = document.querySelector('form');
 const submitBtn = document.querySelector('.btn-default');
 
 
-
-//on key Enter submit the form
-document.addEventListener('keyup', (e) => {
-    if (e.key == 'Enter') {
-        form.submit();
-    }
-});
-
 delete_item_btn.forEach(element => {
     element.addEventListener('click', (e) => {
 
