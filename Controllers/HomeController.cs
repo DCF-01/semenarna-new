@@ -48,7 +48,9 @@ namespace semenarna_id2.Controllers {
                                              .Where(p => p.Active == true)
                                              .Select(p => new PromotionViewModel {
                                                  DateToMil = p.DateTo.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds,
-                                                 GetImg = Convert.ToBase64String(p.Img)
+                                                 GetImg = Convert.ToBase64String(p.Img),
+                                                 Text = p.Text,
+                                                 Price = p.Price
                                              })
                                              .FirstOrDefaultAsync();
 

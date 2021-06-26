@@ -8,21 +8,29 @@
     <form action="" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label>Име на промоција</label>
-            <input type="text" class="form-control" asp-for="Name">
+            <input type="text" class="form-control" asp-for="Name" required>
+        </div>
+        <div class="form-group">
+            <label>Текст</label>
+            <input type="text" class="form-control" asp-for="Text" required>
+        </div>
+        <div class="form-group">
+            <label>Цена</label>
+            <input type="number" class="form-control" asp-for="Price" required>
         </div>
         <div class="form-group">
             <label for="promotion-date">Краен датум:</label>
-            <input type="date" id="promotion-date" asp-for="DateTo">
+            <input type="date" id="promotion-date" asp-for="DateTo" required>
         </div>
         <div class="form-group">
             <label for="Imageinput">Слика</label>
-            <input type="file" name="Img" id="Imageinput" asp-for="Img">
+            <input type="file" name="Img" id="Imageinput" asp-for="Img" required>
         </div>
         <div class="form-group">
             <input type="checkbox" id="bool-active" asp-for="Active">
             <label for="bool-active">Active</label>
         </div>
-        
+
         <div class="form-group">
             <input type="submit" value="Create" class="btn btn-default" />
         </div>

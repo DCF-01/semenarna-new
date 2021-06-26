@@ -7,23 +7,23 @@
     <form asp-controller="Products" asp-action="Create" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label>Име на производ</label>
-            <input type="text" class="form-control" asp-for="Name">
+            <input type="text" class="form-control" asp-for="Name" required>
         </div>
         <div class="form-group">
             <label>SKU</label>
-            <input type="text"  class="form-control" asp-for="SKU">
+            <input type="text"  class="form-control" asp-for="SKU" required>
         </div>
         <div class="form-group">
             <label>Упатство за употреба</label>
-            <textarea type="text" class="form-control" asp-for="Description" rows="2"></textarea>
+            <textarea type="text" class="form-control" asp-for="Description" rows="2" required></textarea>
         </div>
         <div class="form-group">
             <label>Опис</label>
-            <textarea type="text" class="form-control" asp-for="ShortDescription" rows="2"></textarea>
+            <textarea type="text" class="form-control" asp-for="ShortDescription" rows="2" required></textarea>
         </div>
         <div class="form-group">
             <label>Редовна Цена</label>
-            <input type="text" class="form-control" asp-for="Price">
+            <input type="text" class="form-control" asp-for="Price" required>
         </div>
         <div class="form-group">
             <label>Промотивна цена</label>
@@ -77,7 +77,7 @@
         </div>
         <div class="form-group">
             <label>Слика</label>
-            <input type="file" name="Img" id="Imageinput" asp-for="Img">
+            <input type="file" name="Img" id="Imageinput" asp-for="Img" required>
         </div>
         <div class="form-group">
             <label for="files">Select files:</label>

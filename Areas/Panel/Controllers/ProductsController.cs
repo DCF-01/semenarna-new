@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using semenarna_id2.Areas.Panel.ViewModels;
 using semenarna_id2.Data;
 using semenarna_id2.Models;
+using semenarna_id2.Utils;
 using semenarna_id2.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -80,7 +81,7 @@ namespace semenarna_id2.Controllers {
                     OnSale = sale_state,
                     InStock = stock_state,
                 };
-                if(product_data.SalePrice == null) {
+                if (product_data.SalePrice == null) {
                     product.SalePrice = product_data.Price;
                 }
                 else {
@@ -105,7 +106,7 @@ namespace semenarna_id2.Controllers {
                     product.Variations = new_variations;
                 }
                 //set categories if null provided by user
-                if(product_data.Categories == null) {
+                if (product_data.Categories == null) {
                     var default_category = await _ctx.Categories
                                                 .Where(c => c.Name == "uncategorized")
                                                 .Select(c => c)
@@ -136,20 +137,12 @@ namespace semenarna_id2.Controllers {
                 }
 
 
-
-
-
-
                 IFormFile Image = product_data.Img;
 
                 if (Image != null && Image.Length > 0) {
-                    byte[] ba = null;
-                    using (var fs = Image.OpenReadStream())
-                    using (var ms = new MemoryStream()) {
-                        fs.CopyTo(ms);
-                        ba = ms.ToArray();
-                    }
-                    product.Img = ba;
+                    var bytes = await Image.GetBytesAsync();
+                    product.Img = bytes.CompressBytes();
+
                 }
                 else {
                     product.Img = null;
@@ -160,14 +153,8 @@ namespace semenarna_id2.Controllers {
                     product.GalleryImages = new List<Image>();
 
                     foreach (IFormFile image in product_data.GalleryImages) {
-                        byte[] ba = null;
-                        using (var fs = image.OpenReadStream())
-                        using (var ms = new MemoryStream()) {
-                            fs.CopyTo(ms);
-                            ba = ms.ToArray();
-                        }
                         var gallery_image = new Image {
-                            Img = ba
+                            Img = (await image.GetBytesAsync()).CompressBytes()
                         };
                         product.GalleryImages.Add(gallery_image);
                     }
@@ -296,6 +283,7 @@ namespace semenarna_id2.Controllers {
                     .Include(product => product.Categories)
                     .Include(product => product.Variations)
                     .Include(product => product.Spec)
+                    .Include(product => product.GalleryImages)
                     .FirstOrDefaultAsync(item => item.ProductId == id);
 
                 bool sale_state = (productViewModel.OnSale != null) || false;
@@ -309,7 +297,7 @@ namespace semenarna_id2.Controllers {
                 entity.OnSale = sale_state;
                 entity.InStock = stock_state;
 
-                if(productViewModel.SalePrice == null) {
+                if (productViewModel.SalePrice == null) {
                     entity.SalePrice = productViewModel.Price;
                 }
                 else {
@@ -350,7 +338,7 @@ namespace semenarna_id2.Controllers {
                     entity.Categories = new_categories;
                 }
                 //set spec if null provided by user
-                if(productViewModel.CurrentSpec == null) {
+                if (productViewModel.CurrentSpec == null) {
                     var default_spec = await _ctx.Specs
                                                  .Where(s => s.Name == "Empty")
                                                  .Select(s => s)
@@ -368,13 +356,18 @@ namespace semenarna_id2.Controllers {
 
                 if (Image != null) {
                     if (Image.Length > 0) {
-                        byte[] p1 = null;
-                        using (var fs = Image.OpenReadStream())
-                        using (var ms = new MemoryStream()) {
-                            fs.CopyTo(ms);
-                            p1 = ms.ToArray();
-                        }
-                        entity.Img = p1;
+                        entity.Img = (await Image.GetBytesAsync()).CompressBytes();
+                    }
+                }
+
+                if (productViewModel.GalleryImages != null) {
+                    entity.GalleryImages = new List<Image>();
+
+                    foreach (IFormFile image in productViewModel.GalleryImages) {
+                        var gallery_image = new Image {
+                            Img = (await image.GetBytesAsync()).CompressBytes()
+                        };
+                        entity.GalleryImages.Add(gallery_image);
                     }
                 }
 

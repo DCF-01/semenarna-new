@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 moment().format();
 (function ($) {
 
@@ -114,40 +114,44 @@ moment().format();
     /*------------------
         CountDown
     --------------------*/
-    // For demo preview
+   
 
+    let promotion_item = document.querySelector('.promotion-background');
+    if (promotion_item !== null) {
+        // Use this for real timer date
+        let url = location.protocol + '//' + location.host + '/Home/GetPromotion';
+        fetch(url, {
+            method: 'GET', // *GET, POST, PUT, DELETE, etc.
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+        }).then(res => {
+            res.json().then(data => {
+                let promotion_text = document.querySelector('.promotion-background .promotion-text');
+                let promotion_price = document.querySelector('.promotion-background .promotion-price');
 
+                if (promotion_item !== null) {
+                    promotion_item.style.backgroundImage = `url('data:image/png;base64,${data.getImg}')`;
+                    promotion_text.textContent = data.text;
+                    promotion_price.textContent = `${data.price} ден`;
+                }
 
-    // Use this for real timer date
-    let url = location.protocol + '//' + location.host + '/Home/GetPromotion';
-    fetch(url, {
-        method: 'GET', // *GET, POST, PUT, DELETE, etc.
-        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: 'same-origin', // include, *same-origin, omit
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        redirect: 'follow', // manual, *follow, error
-    }).then(res => {
-        res.json().then(data => {
-            let promotion_item = document.querySelector('.promotion-background');
-            if (promotion_item !== null) {
-                promotion_item.style.backgroundImage = `url('data:image/png;base64,${data.getImg}')`;
-            }
+                var date = new Date(data.dateToMil);
+                var year = date.getFullYear();
+                var month = date.getMonth() + 1;
+                var day = date.getDate();
 
-            var date = new Date(data.dateToMil);
-            var year = date.getFullYear();
-            var month = date.getMonth() + 1;
-            var day = date.getDate();
+                let timerdate = `${year}/${month}/${day}`;
 
-            let timerdate = `${year}/${month}/${day}`;
-
-            $("#countdown").countdown(timerdate, function (event) {
-                $(this).html(event.strftime("<div class='cd-item'><span>%D</span> <p>Days</p> </div>" + "<div class='cd-item'><span>%H</span> <p>Hrs</p> </div>" + "<div class='cd-item'><span>%M</span> <p>Mins</p> </div>" + "<div class='cd-item'><span>%S</span> <p>Secs</p> </div>"));
+                $("#countdown").countdown(timerdate, function (event) {
+                    $(this).html(event.strftime("<div class='cd-item'><span>%D</span> <p>Days</p> </div>" + "<div class='cd-item'><span>%H</span> <p>Hrs</p> </div>" + "<div class='cd-item'><span>%M</span> <p>Mins</p> </div>" + "<div class='cd-item'><span>%S</span> <p>Secs</p> </div>"));
+                });
             });
         });
-    });
-
+    }
 
 
     /*----------------------------------------------------

@@ -21,16 +21,6 @@ namespace semenarna_id2.Areas.Panel.Controllers {
         public PromotionsController(ApplicationDbContext applicationDbContext) {
             _ctx = applicationDbContext;
         }
-        /*public static async Task<byte[]> GetBytes(IFormFile file) {
-            using(var stream = new MemoryStream()) {
-                await file.CopyToAsync(stream);
-
-                var optimizer = new ImageOptimizer();
-                optimizer.Compress(stream);
-
-                return stream.ToArray();
-            }
-        }*/
 
         public async Task<IActionResult> Index() {
 
@@ -50,6 +40,8 @@ namespace semenarna_id2.Areas.Panel.Controllers {
 
             var model = new PromotionViewModel {
                 Name = current_promotion.Name,
+                Text = current_promotion.Text,
+                Price = current_promotion.Price,
                 DateFrom = current_promotion.DateFrom,
                 DateTo = current_promotion.DateTo,
                 Active = current_promotion.Active,
@@ -66,6 +58,8 @@ namespace semenarna_id2.Areas.Panel.Controllers {
             var current_promotion = await _ctx.Promotions.FindAsync(id);
             current_promotion.Name = viewModel.Name;
             current_promotion.DateTo = viewModel.DateTo;
+            current_promotion.Text = viewModel.Text;
+            current_promotion.Price = viewModel.Price;
 
             if (viewModel.Active) {
                 var active_promotions = await _ctx.Promotions
@@ -96,9 +90,11 @@ namespace semenarna_id2.Areas.Panel.Controllers {
         public async Task<IActionResult> Create(PromotionViewModel viewModel) {
             var new_promotion = new Promotion {
                 Name = viewModel.Name,
+                Text = viewModel.Text,
+                Price = viewModel.Price,
                 DateTo = viewModel.DateTo,
                 DateFrom = DateTime.Now,
-                Img = await viewModel.Img.GetBytesAsync(),
+                Img = (await viewModel.Img.GetBytesAsync()).CompressBytes(),
                 Active = viewModel.Active
             };
             if (viewModel.Active) {
@@ -114,25 +110,10 @@ namespace semenarna_id2.Areas.Panel.Controllers {
                 }
             }
 
-
-
             _ctx.Promotions.Add(new_promotion);
             await _ctx.SaveChangesAsync();
 
             return RedirectToAction("Create", "Promotions");
-        }
-        [HttpGet]
-        public async Task<IActionResult> GetPromotion() {
-            var active_promotion = await _ctx.Promotions
-                                             .Where(p => p.Active == true)
-                                             .Select(p => new PromotionViewModel {
-                                                 DateToMil = p.DateTo.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds,
-                                                 GetImg = Convert.ToBase64String(p.Img)
-                                             })
-                                             .FirstOrDefaultAsync();
-
-
-            return Ok(active_promotion);
         }
 
         [HttpDelete]
@@ -141,7 +122,7 @@ namespace semenarna_id2.Areas.Panel.Controllers {
             try {
                 var promotion = await _ctx.Promotions.FindAsync(id);
                 
-                if(promotion != null) {
+                if(promotion != null && !promotion.Active) {
                     _ctx.Remove(promotion);
                     await _ctx.SaveChangesAsync();
 
