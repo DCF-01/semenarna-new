@@ -120,7 +120,7 @@ namespace semenarna_id2.Controllers {
 
         [HttpPost]
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel resetPasswordViewModel) {
-
+            ViewBag.Categories = await _ctx.Categories.ToListAsync();
 
             ResetPasswordViewModel resetPasswordView = new ResetPasswordViewModel();
 
@@ -148,7 +148,7 @@ namespace semenarna_id2.Controllers {
         //request password reset
         [HttpPost]
         public async Task<IActionResult> RequestReset(RequestResetViewModel requestResetViewModel) {
-
+            ViewBag.Categories = await _ctx.Categories.ToListAsync();
             var user = await _userManager.FindByEmailAsync(requestResetViewModel.Email);
             string token = "";
             if (user != null) {
