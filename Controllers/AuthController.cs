@@ -154,7 +154,6 @@ namespace semenarna_id2.Controllers {
             if (user != null) {
                 token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-                /* reset_url += "https://localhost:44380/Auth/ResetPassword" + $"?reset_token={reset_token}&user_id={user.Id}";*/
                 var callbackUrl = Url.Action("ResetPassword", "Auth",
                 new { user_id = user.Id, token = token }, protocol: Request.Scheme);
 
@@ -179,7 +178,7 @@ namespace semenarna_id2.Controllers {
                     var templatePage = cacheResult.Template.TemplatePageFactory();
                     string processedHtml = await engine.RenderTemplateAsync(templatePage, email_reset_model);
 
-                    var mailer = new Mailer("admin@paralax.mk", user.Email, processedHtml);
+                    var mailer = new Mailer("support@semenarna.mk", user.Email, processedHtml);
                     mailer.Send();
                 }
                 else {
@@ -191,7 +190,7 @@ namespace semenarna_id2.Controllers {
                     string processedHtml = await engine.CompileRenderStringAsync("resetPasswordTemplateKey", htmlString, email_reset_model);
 
                     //create and send email
-                    var mailer = new Mailer("admin@paralax.mk", user.Email, processedHtml);
+                    var mailer = new Mailer("support@semenarna.mk", user.Email, processedHtml);
                     mailer.Send();
                 }
 
