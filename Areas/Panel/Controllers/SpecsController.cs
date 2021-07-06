@@ -72,7 +72,7 @@ namespace semenarna_id2.Areas.Panel.Controllers {
 
             }
             catch (Exception e) {
-                return View("An error has ocurred.");
+                return View("An error has ocurred.", e);
             }
         }
 
@@ -129,7 +129,7 @@ namespace semenarna_id2.Areas.Panel.Controllers {
             }
             catch (Exception e) {
                 //used only for spec foreign key conflict
-                return StatusCode(450);
+                return StatusCode(450, e);
             }
         }
     }

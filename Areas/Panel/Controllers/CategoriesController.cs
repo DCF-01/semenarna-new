@@ -66,9 +66,6 @@ namespace semenarna_id2.Areas.Panel.Controllers {
         [HttpDelete]
         public async Task<IActionResult> Delete(int id) {
             try {
-                if (id == null) {
-                    throw new Exception("Item id not cannot be empty.");
-                }
                 var category = await _ctx.Categories.FindAsync(id);
                 var res = _ctx.Categories.Remove(category);
 

@@ -138,7 +138,7 @@ namespace semenarna_id2.Areas.Panel.Controllers {
             }
 
             catch (Exception e) {
-                return BadRequest();
+                return BadRequest(e);
             }
 
         }
