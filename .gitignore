@@ -363,3 +363,6 @@ MigrationBackup/
 FodyWeavers.xsd
 /wwwroot/tp-lib/img
 /wwwroot/tp-lib/fonts
+
+# app settings file
+appsettings.json
