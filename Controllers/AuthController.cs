@@ -28,11 +28,13 @@ namespace semenarna_id2.Controllers {
 
         [HttpGet]
         public IActionResult Register() {
+            ViewBag.Categories = _ctx.Categories.ToList();
             return View(new RegisterViewModel());
         }
 
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel) {
+            ViewBag.Categories = await _ctx.Categories.ToListAsync();
             if (ModelState.IsValid) {
                 /* var userRole = new IdentityRole("User");*//**/
 
