@@ -1753,7 +1753,6 @@ ol {
 .filter-widget {
 	margin-bottom: 45px;
 	padding: 30px 0 30px 30px;
-	margin-right: 30px;
 	border: 1px solid #c9c9c9;
 	border-radius: 8px;
 }
@@ -1993,7 +1992,7 @@ ol {
 }
 
 .product-show-option {
-	padding: 30px;
+	padding: 0px 5px 0px 25px;
 	border: 1px solid #c9c9c9;
 	border-radius: 8px;
 }
