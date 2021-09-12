@@ -22,5 +22,6 @@ namespace semenarna_id2.Areas.Cart.ViewModels {
         public string DeliveryMethod { get; set; }
         public string Date { get; set; }
         public string Total { get; set; }
+        public string OrderUrl { get; set; }
     }
 }

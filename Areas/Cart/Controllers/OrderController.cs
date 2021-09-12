@@ -148,7 +148,8 @@ namespace semenarna_id2.Areas.Cart.Controllers {
                         PaymentMethod = order.PaymentMethod,
                         DeliveryMethod = order.DeliveryMethod,
                         Date = order.DateTime.ToString(new CultureInfo("en-GB")),
-                        Total = totalAll.ToString()
+                        Total = totalAll.ToString(),
+                        OrderUrl = $"https://semenarna.mk/Cart/Order/Single/{order_id}"
                     };
 
                     var engine = new RazorLightEngineBuilder()
@@ -204,6 +205,18 @@ namespace semenarna_id2.Areas.Cart.Controllers {
 
 
             return View(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Single(int id)
+        {
+            var order = await _ctx.Orders
+                .Include(o => o.CartProducts)
+                .Where(o => o.OrderId == id)
+                .FirstAsync();
+
+
+            return View(order);
         }
 
     }
