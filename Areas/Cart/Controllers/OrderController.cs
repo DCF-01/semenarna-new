@@ -210,6 +210,8 @@ namespace semenarna_id2.Areas.Cart.Controllers {
         [HttpGet]
         public async Task<IActionResult> Single(int id)
         {
+            ViewBag.Categories = await _ctx.Categories.ToListAsync();
+
             var order = await _ctx.Orders
                 .Include(o => o.CartProducts)
                 .Where(o => o.OrderId == id)
