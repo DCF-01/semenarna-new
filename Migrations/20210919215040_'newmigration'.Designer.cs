@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using semenarna_id2.Data;
+using application.Data;
 
-namespace semenarna_id2.Migrations
+namespace application.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20210919215040_'newmigration'")]
@@ -185,7 +185,7 @@ namespace semenarna_id2.Migrations
                     b.ToTable("ProductVariation");
                 });
 
-            modelBuilder.Entity("semenarna_id2.Models.ApplicationUser", b =>
+            modelBuilder.Entity("application.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -249,7 +249,7 @@ namespace semenarna_id2.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("semenarna_id2.Models.Cart", b =>
+            modelBuilder.Entity("application.Models.Cart", b =>
                 {
                     b.Property<int>("CartId")
                         .ValueGeneratedOnAdd()
@@ -267,7 +267,7 @@ namespace semenarna_id2.Migrations
                     b.ToTable("Carts");
                 });
 
-            modelBuilder.Entity("semenarna_id2.Models.CartProduct", b =>
+            modelBuilder.Entity("application.Models.CartProduct", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -303,7 +303,7 @@ namespace semenarna_id2.Migrations
                     b.ToTable("CartProducts");
                 });
 
-            modelBuilder.Entity("semenarna_id2.Models.Category", b =>
+            modelBuilder.Entity("application.Models.Category", b =>
                 {
                     b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
@@ -318,7 +318,7 @@ namespace semenarna_id2.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("semenarna_id2.Models.Image", b =>
+            modelBuilder.Entity("application.Models.Image", b =>
                 {
                     b.Property<int>("ImageId")
                         .ValueGeneratedOnAdd()
@@ -338,7 +338,7 @@ namespace semenarna_id2.Migrations
                     b.ToTable("Images");
                 });
 
-            modelBuilder.Entity("semenarna_id2.Models.Order", b =>
+            modelBuilder.Entity("application.Models.Order", b =>
                 {
                     b.Property<int>("OrderId")
                         .ValueGeneratedOnAdd()
@@ -391,7 +391,7 @@ namespace semenarna_id2.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("semenarna_id2.Models.Product", b =>
+            modelBuilder.Entity("application.Models.Product", b =>
                 {
                     b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd()
@@ -435,7 +435,7 @@ namespace semenarna_id2.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("semenarna_id2.Models.Promotion", b =>
+            modelBuilder.Entity("application.Models.Promotion", b =>
                 {
                     b.Property<int>("PromotionId")
                         .ValueGeneratedOnAdd()
@@ -468,7 +468,7 @@ namespace semenarna_id2.Migrations
                     b.ToTable("Promotions");
                 });
 
-            modelBuilder.Entity("semenarna_id2.Models.Spec", b =>
+            modelBuilder.Entity("application.Models.Spec", b =>
                 {
                     b.Property<int>("SpecId")
                         .ValueGeneratedOnAdd()
@@ -492,7 +492,7 @@ namespace semenarna_id2.Migrations
                     b.ToTable("Specs");
                 });
 
-            modelBuilder.Entity("semenarna_id2.Models.Variation", b =>
+            modelBuilder.Entity("application.Models.Variation", b =>
                 {
                     b.Property<int>("VariationId")
                         .ValueGeneratedOnAdd()
@@ -512,13 +512,13 @@ namespace semenarna_id2.Migrations
 
             modelBuilder.Entity("CategoryProduct", b =>
                 {
-                    b.HasOne("semenarna_id2.Models.Category", null)
+                    b.HasOne("application.Models.Category", null)
                         .WithMany()
                         .HasForeignKey("CategoriesCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("semenarna_id2.Models.Product", null)
+                    b.HasOne("application.Models.Product", null)
                         .WithMany()
                         .HasForeignKey("ProductsProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -536,7 +536,7 @@ namespace semenarna_id2.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("semenarna_id2.Models.ApplicationUser", null)
+                    b.HasOne("application.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -545,7 +545,7 @@ namespace semenarna_id2.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("semenarna_id2.Models.ApplicationUser", null)
+                    b.HasOne("application.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -560,7 +560,7 @@ namespace semenarna_id2.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("semenarna_id2.Models.ApplicationUser", null)
+                    b.HasOne("application.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -569,7 +569,7 @@ namespace semenarna_id2.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("semenarna_id2.Models.ApplicationUser", null)
+                    b.HasOne("application.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -578,39 +578,39 @@ namespace semenarna_id2.Migrations
 
             modelBuilder.Entity("ProductVariation", b =>
                 {
-                    b.HasOne("semenarna_id2.Models.Product", null)
+                    b.HasOne("application.Models.Product", null)
                         .WithMany()
                         .HasForeignKey("ProductsProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("semenarna_id2.Models.Variation", null)
+                    b.HasOne("application.Models.Variation", null)
                         .WithMany()
                         .HasForeignKey("VariationsVariationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("semenarna_id2.Models.Cart", b =>
+            modelBuilder.Entity("application.Models.Cart", b =>
                 {
-                    b.HasOne("semenarna_id2.Models.ApplicationUser", "User")
+                    b.HasOne("application.Models.ApplicationUser", "User")
                         .WithOne("Cart")
-                        .HasForeignKey("semenarna_id2.Models.Cart", "UserId");
+                        .HasForeignKey("application.Models.Cart", "UserId");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("semenarna_id2.Models.CartProduct", b =>
+            modelBuilder.Entity("application.Models.CartProduct", b =>
                 {
-                    b.HasOne("semenarna_id2.Models.Cart", null)
+                    b.HasOne("application.Models.Cart", null)
                         .WithMany("CartProducts")
                         .HasForeignKey("CartId");
 
-                    b.HasOne("semenarna_id2.Models.Order", null)
+                    b.HasOne("application.Models.Order", null)
                         .WithMany("CartProducts")
                         .HasForeignKey("OrderId");
 
-                    b.HasOne("semenarna_id2.Models.Product", "Product")
+                    b.HasOne("application.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -619,49 +619,49 @@ namespace semenarna_id2.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("semenarna_id2.Models.Image", b =>
+            modelBuilder.Entity("application.Models.Image", b =>
                 {
-                    b.HasOne("semenarna_id2.Models.Product", null)
+                    b.HasOne("application.Models.Product", null)
                         .WithMany("GalleryImages")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("semenarna_id2.Models.Order", b =>
+            modelBuilder.Entity("application.Models.Order", b =>
                 {
-                    b.HasOne("semenarna_id2.Models.ApplicationUser", null)
+                    b.HasOne("application.Models.ApplicationUser", null)
                         .WithMany("Orders")
                         .HasForeignKey("ApplicationUserId");
                 });
 
-            modelBuilder.Entity("semenarna_id2.Models.Product", b =>
+            modelBuilder.Entity("application.Models.Product", b =>
                 {
-                    b.HasOne("semenarna_id2.Models.Spec", "Spec")
+                    b.HasOne("application.Models.Spec", "Spec")
                         .WithMany()
                         .HasForeignKey("SpecId");
 
                     b.Navigation("Spec");
                 });
 
-            modelBuilder.Entity("semenarna_id2.Models.ApplicationUser", b =>
+            modelBuilder.Entity("application.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Cart");
 
                     b.Navigation("Orders");
                 });
 
-            modelBuilder.Entity("semenarna_id2.Models.Cart", b =>
+            modelBuilder.Entity("application.Models.Cart", b =>
                 {
                     b.Navigation("CartProducts");
                 });
 
-            modelBuilder.Entity("semenarna_id2.Models.Order", b =>
+            modelBuilder.Entity("application.Models.Order", b =>
                 {
                     b.Navigation("CartProducts");
                 });
 
-            modelBuilder.Entity("semenarna_id2.Models.Product", b =>
+            modelBuilder.Entity("application.Models.Product", b =>
                 {
                     b.Navigation("GalleryImages");
                 });

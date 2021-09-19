@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using semenarna_id2.Models;
+using application.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace semenarna_id2.Data {
+namespace application.Data {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser> {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) {

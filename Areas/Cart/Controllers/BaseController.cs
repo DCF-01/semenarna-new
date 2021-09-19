@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using semenarna_id2.Areas.Cart.ViewModels;
-using semenarna_id2.Data;
-using semenarna_id2.Models;
+using application.Areas.Cart.ViewModels;
+using application.Data;
+using application.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace semenarna_id2.Areas.Cart.Controllers {
+namespace application.Areas.Cart.Controllers {
     [Area("Cart")]
     public class BaseController : Controller {
         private readonly ApplicationDbContext _ctx;

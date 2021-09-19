@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using semenarna_id2.Data;
-using semenarna_id2.Models;
+using application.Data;
+using application.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using semenarna_id2.Areas.Store.Controllers;
+using application.Areas.Store.Controllers;
 using Microsoft.EntityFrameworkCore;
-using semenarna_id2.Areas.Store.ViewModels;
+using application.Areas.Store.ViewModels;
 using ImageMagick;
 using System.IO;
 
-namespace semenarna_id2.Areas.Store.Controllers {
+namespace application.Areas.Store.Controllers {
     [Area("Store")]
     public class QueryController : Controller {
         private ApplicationDbContext _ctx;

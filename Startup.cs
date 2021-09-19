@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using semenarna_id2.Data;
-using semenarna_id2.Models;
+using application.Data;
+using application.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 using Microsoft.Extensions.Primitives;
 
-namespace semenarna_id2 {
+namespace application {
     public class Startup {
         public Startup(IConfiguration configuration) {
             Configuration = configuration;

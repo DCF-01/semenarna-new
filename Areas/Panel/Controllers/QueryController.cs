@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using semenarna_id2.Areas.Panel.ViewModels;
-using semenarna_id2.Data;
+using application.Areas.Panel.ViewModels;
+using application.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace semenarna_id2.Areas.Panel.Controllers {
+namespace application.Areas.Panel.Controllers {
     [Authorize(Roles = "Admin")]
     [Area("Panel")]
     public class QueryController : Controller {

@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using semenarna_id2.Models;
+using application.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace semenarna_id2.ViewModels {
+namespace application.ViewModels {
     public class UserViewModel {
         public string UserId { get; set; }
         public string UserName { get; set; }

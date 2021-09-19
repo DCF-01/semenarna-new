@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace semenarna_id2.Models {
+namespace application.Models {
     public class Cart {
         public int CartId { get; set; }
         public string UserId { get; set; }

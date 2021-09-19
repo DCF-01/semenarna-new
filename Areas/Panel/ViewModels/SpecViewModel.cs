@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace semenarna_id2.Areas.Panel.ViewModels {
+namespace application.Areas.Panel.ViewModels {
     public class SpecViewModel  {
         public string Name { get; set; }
         public string[] First { get; set; }

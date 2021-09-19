@@ -3,18 +3,18 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using semenarna_id2.Areas.Panel.ViewModels;
-using semenarna_id2.Data;
-using semenarna_id2.Models;
-using semenarna_id2.Utils;
-using semenarna_id2.ViewModels;
+using application.Areas.Panel.ViewModels;
+using application.Data;
+using application.Models;
+using application.Utils;
+using application.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace semenarna_id2.Controllers {
+namespace application.Controllers {
     [Authorize(Roles = "Admin")]
     [Area("Panel")]
     public class ProductsController : Controller {

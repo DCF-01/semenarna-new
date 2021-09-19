@@ -1,11 +1,11 @@
-﻿using semenarna_id2.Areas.Store.ViewModels;
-using semenarna_id2.Models;
+﻿using application.Areas.Store.ViewModels;
+using application.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace semenarna_id2.Areas.Store.ViewModels {
+namespace application.Areas.Store.ViewModels {
     public class StoreViewModel {
         public IEnumerable<ProductViewModel> Products { get; set; }
         public List<Category> Categories { get; set; }

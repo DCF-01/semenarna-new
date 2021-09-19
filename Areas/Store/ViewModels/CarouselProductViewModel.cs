@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace semenarna_id2.Areas.Store.ViewModels {
+namespace application.Areas.Store.ViewModels {
     public class CarouselProductViewModel {
         public int Id { get; set; }
         public string Name { get; set; }

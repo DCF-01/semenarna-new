@@ -1,9 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <UserSecretsId>aspnet-semenarna_id2-5FBB90D9-0D7C-4723-886F-386B949A6E16</UserSecretsId>
-    <RootNamespace>semenarna_id2</RootNamespace>
+    <UserSecretsId>aspnet-application-5FBB90D9-0D7C-4723-886F-386B949A6E16</UserSecretsId>
+    <RootNamespace>application</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
