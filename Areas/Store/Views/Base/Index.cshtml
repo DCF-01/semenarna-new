@@ -1,7 +1,5 @@
 ﻿@model StoreViewModel
 @{
-    string prev = $"{@Model.BaseURL}/{Model.Page_number - 1}?{@Model.URLParameters}";
-    string next = $"{@Model.BaseURL}/{Model.Page_number + 1}?{@Model.URLParameters}";
 }
 <div id="alert-container">
 </div>
@@ -60,7 +58,7 @@
                         <div class="col-lg-6 col-md-12 mb-3 mt-3">
                             <div class="select-option">
                                 <select class="p-show" id="show-product-number">
-                                    @switch (@Model.Products_on_page) {
+                                    @switch (@Model.PageSize) {
                                         case 12:
                                             <option value="12" class="option-one" selected>Прикажи: 12</option>
                                             <option value="24" class="option-two">Прикажи: 24</option>
@@ -139,18 +137,21 @@
         <div class="row justify-content-center">
             <nav aria-label="..." class="d-flex">
                 <ul class="pagination" style="justify-content: center">
-                    @if (Model.Page_number < 2) {
+                    @if (!Model.HasPrevious) {
                         <li class="page-item disabled">
                             <a class="page-link" href="#" tabindex="-1">Претходна</a>
                         </li>
                     }
                     else {
                         <li class="page-item">
-                            <a class="page-link" href="@prev" tabindex="-1">Претходна</a>
+                            <a class="page-link" href="@Model.Previous" tabindex="-1">Претходна</a>
                         </li>
                     }
-                    @for (int i = 1; i <= Model.Number_of_pages; i++) {
-                        if (i == Model.Page_number) {
+                    @for (int i = Model.Page - 1; i <= Model.Page + 1; i++) {
+                        if(i < 1) {
+                            continue;
+                        }
+                        if (i == Model.Page) {
                             <li class="page-item active">
                                 <a class="page-link" href="@Model.BaseURL/@i?@Model.URLParameters">@i<span class="sr-only">(current)</span></a>
                             </li>
@@ -160,14 +161,14 @@
                         }
 
                     }
-                    @if (Model.Page_number >= Model.Number_of_pages) {
+                    @if (!Model.HasNext) {
                         <li class="page-item disabled">
                             <a class="page-link" href="#">Следна</a>
                         </li>
                     }
                     else {
                         <li class="page-item">
-                            <a class="page-link" href="@next">Следна</a>
+                            <a class="page-link" href="@Model.Next">Следна</a>
                         </li>
                     }
                 </ul>

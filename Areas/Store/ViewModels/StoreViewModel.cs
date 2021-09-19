@@ -7,15 +7,38 @@ using System.Threading.Tasks;
 
 namespace semenarna_id2.Areas.Store.ViewModels {
     public class StoreViewModel {
-        public List<ProductViewModel> Products { get; set; }
+        public IEnumerable<ProductViewModel> Products { get; set; }
         public List<Category> Categories { get; set; }
         public string CurrentCategory { get; set; }
         public string BaseURL { get; set; }
-        public int Page_number { get; set; }
-        public int Number_of_pages { get; set; }
-        public int AllProductsCount { get; set; }
-        public int ProductsShowingCount { get; set; }
+        public int Page { get; set; }
+        public int TotalPages { 
+            get {
+                return (int)Math.Ceiling(Total / (double)PageSize);
+            }
+        }
+        public int Total { get; set; } = 0;
         public string URLParameters { get; set; }
-        public int Products_on_page { get; set; }
+        public int PageSize { get; set; }
+        public bool HasPrevious {
+            get {
+                return Page > 1;
+            }
+        }
+        public bool HasNext {
+            get {
+                return Page < TotalPages;
+            }
+        }
+        public string Next {
+            get {
+                return $"{BaseURL}/{Page - 1}?{URLParameters}";
+            }
+        }
+        public string Previous {
+            get {
+                return $"{BaseURL}/{Page - 1}?{URLParameters}";
+            }
+        }
     }
 }

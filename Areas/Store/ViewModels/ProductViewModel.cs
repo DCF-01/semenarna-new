@@ -13,7 +13,12 @@ namespace semenarna_id2.Areas.Store.ViewModels {
         public string ShortDescription { get; set; }
         public string Description { get; set; }
         public int Price { get; set; }
-        public int SalePrice { get; set; }
+        public int SalePrice {
+            get {
+                return OnSale ? SalePrice : 0;
+            }
+            set { }
+        }
         public bool OnSale { get; set; }
         public bool InStock { get; set; }
         public ICollection<Category> Categories { get; set; }

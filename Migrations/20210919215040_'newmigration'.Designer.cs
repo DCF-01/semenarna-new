@@ -10,8 +10,8 @@ using semenarna_id2.Data;
 namespace semenarna_id2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210603221216_addedManyToManyProductVariation")]
-    partial class addedManyToManyProductVariation
+    [Migration("20210919215040_'newmigration'")]
+    partial class newmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -433,6 +433,39 @@ namespace semenarna_id2.Migrations
                     b.HasIndex("SpecId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("semenarna_id2.Models.Promotion", b =>
+                {
+                    b.Property<int>("PromotionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("DateFrom")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("DateTo")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<byte[]>("Img")
+                        .HasColumnType("bytea");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Price")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("text");
+
+                    b.HasKey("PromotionId");
+
+                    b.ToTable("Promotions");
                 });
 
             modelBuilder.Entity("semenarna_id2.Models.Spec", b =>

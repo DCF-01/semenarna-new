@@ -16,121 +16,121 @@ namespace semenarna_id2.Areas.Store.Controllers {
             _ctx = ctx;
         }
         // returns 24 products (size of page) of page number (id) 
-        public StoreViewModel GetProductList(int id, Product[] all, int products_on_page = 24) {
 
-            int page_number;
+        private async Task<IEnumerable<ProductViewModel>> GetSortedProducts(string categoryId, string sortOrder = "",  int id = 1, int pageSize = 24) {
 
-            if (id < 1) {
-                page_number = 1;
+            IEnumerable<ProductViewModel> products;
+            if (!string.IsNullOrEmpty(categoryId)) {
+                var category = await _ctx.Categories.FindAsync(int.Parse(categoryId));
+
+                products = _ctx.Products
+                .Include(p => p.Categories)
+                .Where(p => p.Categories.Contains(category))
+                .Select(p => new ProductViewModel {
+                    ProductId = p.ProductId,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = int.Parse(p.Price),
+                    OnSale = p.OnSale,
+                    InStock = p.InStock,
+                    Categories = p.Categories,
+                    Img = Convert.ToBase64String(p.Img)
+                })
+                .Skip(pageSize * (id - 1))
+                .Take(pageSize);
             }
             else {
-                page_number = id;
+                products = _ctx.Products
+                .Include(p => p.Categories)
+                .Select(p => new ProductViewModel {
+                    ProductId = p.ProductId,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = int.Parse(p.Price),
+                    OnSale = p.OnSale,
+                    InStock = p.InStock,
+                    Categories = p.Categories,
+                    Img = Convert.ToBase64String(p.Img)
+                })
+                .Skip(pageSize * (id - 1))
+                .Take(pageSize);
             }
+            var productsList = SortProducts(products: products, sortOrder);
 
-
-            //max page number
-            int number_of_pages = (all.Length + products_on_page - 1) / products_on_page;
-
-            //products that will return to view
-            List<Product> product_list = new List<Product>();
-
-            //start, end, max at
-            int start = (page_number - 1) * products_on_page;
-            int end = start + products_on_page;
-            int max;
-            if (all.Length < end) {
-                max = all.Length;
-            }
-            else {
-                max = end;
-            }
-
-            //item list to return
-            List<ProductViewModel> item_list = new List<ProductViewModel>();
-            //array with products --> start to max
-            var products_range = all[start..max];
-
-            foreach (var item in products_range) {
-                var new_item = new ProductViewModel {
-                    ProductId = item.ProductId,
-                    Name = item.Name,
-                    Description = item.Description,
-                    Price = int.Parse(item.Price),
-                    OnSale = item.OnSale,
-                    InStock = item.InStock,
-                    Categories = item.Categories,
-                    Img = Convert.ToBase64String(item.Img)
-                };
-                if (new_item.OnSale) {
-                    new_item.SalePrice = int.Parse(item.SalePrice);
-                }
-
-                item_list.Add(new_item);
-            }
-
-            var view_model = new StoreViewModel {
-                Products = item_list,
-                Page_number = page_number,
-                Number_of_pages = number_of_pages,
-            };
-
-            return view_model;
+            return await Task.FromResult(products);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery] int products_on_page = 24, int id = 0) {
-            ViewBag.Categories = await _ctx.Categories.ToListAsync();
-            // all products
-            var all_products = await _ctx.Products
-                                        .Include(item => item.Categories)
-                                        .ToArrayAsync();
+        public async Task<IActionResult> Index([FromQuery] int products_on_page = 24, int id = 1) {
             var categories = await _ctx.Categories.ToListAsync();
 
-            //return # product of selected page(id)
-            var available_numbers = new[] { 12, 24, 48 };
-            StoreViewModel model;
+            ViewBag.Categories = categories;
 
-            if (available_numbers.Contains(products_on_page)) {
-                model = GetProductList(id, all_products, products_on_page);
-            }
-            else {
-                model = GetProductList(id, all_products);
-            }
+            StoreViewModel model = new() {
+                Categories = categories,
+                BaseURL = $"{this.Request.Scheme}://{this.Request.Host}/Store/Base/Index",
+                URLParameters = $"products_on_page={products_on_page}",
+                PageSize = products_on_page,
+                Products = await GetSortedProducts(categoryId: "", id: id, pageSize: products_on_page),
+                Total = await _ctx.Products.CountAsync()
+            };
 
-            model.Categories = categories;
-            model.BaseURL = $"{this.Request.Scheme}://{this.Request.Host}/Store/Base/Index";
-            model.URLParameters = $"products_on_page={products_on_page}";
-            model.Products_on_page = products_on_page;
             return View("Index", model);
         }
         [HttpGet]
         public async Task<IActionResult> Find([FromQuery] string name = "", [FromQuery] string product_id = "") {
-            ViewBag.Categories = await _ctx.Categories.ToListAsync();
+            var categories = await _ctx.Categories.ToListAsync();
+            ViewBag.Categories = categories;
 
             if (Request.Query.ContainsKey("name")) {
 
-                var all_products = _ctx.Products
-                                .Where(p => EF.Functions.ILike(p.Name, $"%{name}%"))
-                                .Select(p => p)
-                                .ToArray();
+                var products = await _ctx.Products
+                .Include(p => p.Categories)
+                .Where(p => EF.Functions.ILike(p.Name, $"%{name}%"))
+                .Select(p => new ProductViewModel {
+                    ProductId = p.ProductId,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = int.Parse(p.Price),
+                    OnSale = p.OnSale,
+                    InStock = p.InStock,
+                    Categories = p.Categories,
+                    Img = Convert.ToBase64String(p.Img)
+                })
+                .Take(5)
+                .ToListAsync();
 
-                var model = GetProductList(0, all_products);
-                model.Categories = await _ctx.Categories.ToListAsync();
-                model.CurrentCategory = "none";
+                var model = new StoreViewModel {
+                    Products = products,
+                    Categories = categories,
+                    CurrentCategory = "none"
+                };
 
                 return View("Index", model);
             }
             else if (Request.Query.ContainsKey("product_id")) {
+                
+                var products = await _ctx.Products
+                .Include(p => p.Categories)
+                .Where(p => EF.Functions.ILike(p.ProductId.ToString(), $"%{product_id}%"))
+                .Select(p => new ProductViewModel {
+                    ProductId = p.ProductId,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = int.Parse(p.Price),
+                    OnSale = p.OnSale,
+                    InStock = p.InStock,
+                    Categories = p.Categories,
+                    Img = Convert.ToBase64String(p.Img)
+                })
+                .Take(5)
+                .ToListAsync();
 
-                var all_products = _ctx.Products
-                                .Where(p => EF.Functions.ILike(p.ProductId.ToString(), $"%{product_id}%"))
-                                .Select(p => p)
-                                .ToArray();
-
-                var model = GetProductList(0, all_products);
-                model.Categories = await _ctx.Categories.ToListAsync();
-                model.CurrentCategory = "none";
-
+                var model = new StoreViewModel {
+                    Products = products,
+                    Categories = categories,
+                    CurrentCategory = "none"
+                };
                 return View("Index", model);
             }
             else {
@@ -139,44 +139,52 @@ namespace semenarna_id2.Areas.Store.Controllers {
         }
 
         [HttpGet]
-        public async Task<IActionResult> Category([FromQuery] int products_on_page = 24, int id = 0, [FromQuery] int category_id = 0, [FromQuery] int product_id = 0) {
+        public async Task<IActionResult> Category([FromQuery] string category_id, [FromQuery] int products_on_page = 24, int id = 0, [FromQuery] int product_id = 0) {
             ViewBag.Categories = await _ctx.Categories.ToListAsync();
             try {
-                var available_numbers = new[] { 12, 24, 48 };
-
-
-
                 var category = await _ctx.Categories
-                                        .Where(c => c.CategoryId == category_id)
+                                        .Where(c => c.CategoryId == int.Parse(category_id))
                                         .FirstOrDefaultAsync();
 
-                var all_products = _ctx.Products
-                                .Include(p => p.Categories)
-                                .Where(p => p.Categories.Contains(category))
-                                .Select(p => p)
-                                .ToArray();
-
-                StoreViewModel model;
-
-                if (available_numbers.Contains(products_on_page)) {
-                    model = GetProductList(id, all_products, products_on_page);
-                }
-                else {
-                    model = GetProductList(id, all_products);
-                }
-
-                model.Categories = await _ctx.Categories.ToListAsync();
-                model.CurrentCategory = category.Name;
-                model.BaseURL = $"{this.Request.Scheme}://{this.Request.Host}/Store/Base/Category";
-                model.URLParameters = $"category_id={category_id}&products_on_page={products_on_page}";
-                model.Products_on_page = products_on_page;
+                StoreViewModel model = new StoreViewModel {
+                    Categories = await _ctx.Categories.ToListAsync(),
+                    CurrentCategory = category.Name,
+                    BaseURL = $"{this.Request.Scheme}://{this.Request.Host}/Store/Base/Category",
+                    URLParameters = $"category_id={category_id}&products_on_page={products_on_page}",
+                    PageSize = products_on_page,
+                    Products = await GetSortedProducts(categoryId: category_id, id: id, pageSize: products_on_page),
+                    Total = await _ctx.Products.CountAsync()
+                };
 
                 return View("Index", model); ;
             }
-            catch(Exception e) {
+            catch (Exception e) {
                 Console.WriteLine(e.Message);
                 return BadRequest();
             }
+        }
+
+        private IEnumerable<ProductViewModel> SortProducts(IEnumerable<ProductViewModel> products, string sortOrder) {
+            switch (sortOrder) {
+                case "name_ascending":
+                    products = products.OrderBy(p => p.Name);
+                    break;
+                case "name_descending":
+                    products = products.OrderByDescending(p => p.Name);
+                    break;
+                case "price_ascending":
+                    products = products.OrderBy(p => p.Price);
+                    break;
+                case "price_descending":
+                    products = products.OrderByDescending(p => p.Price);
+                    break;
+                default:
+                    products = products.OrderBy(p => p.Price);
+                    break;
+
+            }
+            return products;
+
         }
     }
 }
