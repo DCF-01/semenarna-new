@@ -2,13 +2,31 @@
 <div class="container-fluid d-flex justify-content-center align-items-center">
     <div class="order-success-box d-block">
         <div class="order-success-box-inner">
-            @if (Model.CartProducts != null)
-            {
-                @foreach (var item in Model.CartProducts)
-                {
-                    <p>@item.Id | @item.Price x @item.Quantity | @string.Join(", ", item.Variations)</p>
-                }
-            }
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Id</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.CartProducts != null) {
+                        <tr>
+                            @foreach (var item in Model.CartProducts) {
+                                <td>#</td>
+                                <td>@item.Id</td>
+                                <td>@item.Price</td>
+                                <td>@item.Quantity</td>
+                                <td>@string.Join(", ", item.Variations)</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
 
         </div>
     </div>
