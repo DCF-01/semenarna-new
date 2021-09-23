@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace application.Migrations
 {
-    public partial class newmigration : Migration
+    public partial class newMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -68,7 +68,7 @@ namespace application.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Text = table.Column<string>(type: "text", nullable: true),
-                    Price = table.Column<string>(type: "text", nullable: true),
+                    Price = table.Column<double>(type: "double precision", nullable: false),
                     DateFrom = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     DateTo = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     Img = table.Column<byte[]>(type: "bytea", nullable: true),
@@ -275,8 +275,8 @@ namespace application.Migrations
                     Name = table.Column<string>(type: "text", nullable: true),
                     ShortDescription = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
-                    Price = table.Column<string>(type: "text", nullable: true),
-                    SalePrice = table.Column<string>(type: "text", nullable: true),
+                    Price = table.Column<double>(type: "double precision", nullable: false),
+                    SalePrice = table.Column<double>(type: "double precision", nullable: false),
                     OnSale = table.Column<bool>(type: "boolean", nullable: false),
                     InStock = table.Column<bool>(type: "boolean", nullable: false),
                     SpecId = table.Column<int>(type: "integer", nullable: true),
@@ -301,7 +301,7 @@ namespace application.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ProductId = table.Column<int>(type: "integer", nullable: false),
                     Quantity = table.Column<int>(type: "integer", nullable: false),
-                    Price = table.Column<int>(type: "integer", nullable: false),
+                    Price = table.Column<double>(type: "double precision", nullable: false),
                     Variations = table.Column<string[]>(type: "text[]", nullable: true),
                     CartId = table.Column<int>(type: "integer", nullable: true),
                     OrderId = table.Column<int>(type: "integer", nullable: true)

@@ -11,8 +11,8 @@ namespace application.Areas.Panel.ViewModels {
         public string SKU { get; set; }
         public string Description { get; set; }
         public string ShortDescription { get; set; }
-        public string Price { get; set; }
-        public string SalePrice { get; set; }
+        public double Price { get; set; }
+        public double SalePrice { get; set; }
         public string OnSale { get; set; }
         public string InStock { get; set; }
         public string[] Categories { get; set; }

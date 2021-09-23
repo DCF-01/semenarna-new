@@ -278,8 +278,8 @@ namespace application.Migrations
                     b.Property<int?>("OrderId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("integer");
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("integer");
@@ -411,14 +411,14 @@ namespace application.Migrations
                     b.Property<bool>("OnSale")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("Price")
-                        .HasColumnType("text");
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
 
                     b.Property<string>("SKU")
                         .HasColumnType("text");
 
-                    b.Property<string>("SalePrice")
-                        .HasColumnType("text");
+                    b.Property<double>("SalePrice")
+                        .HasColumnType("double precision");
 
                     b.Property<string>("ShortDescription")
                         .HasColumnType("text");
@@ -455,8 +455,8 @@ namespace application.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<string>("Price")
-                        .HasColumnType("text");
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
 
                     b.Property<string>("Text")
                         .HasColumnType("text");

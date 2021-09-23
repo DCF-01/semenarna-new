@@ -1,5 +1,5 @@
 ﻿@model Order
-@{ int all_total = 0; }
+@{ double all_total = 0; }
 <div class="container-lg pt-3">
     <form action="" method="post" enctype="multipart/form-data">
         <div class="form-group row">
@@ -78,7 +78,7 @@
                     variations_string += $"{v} ";
                 }
 
-                int product_total = item.Price * item.Quantity;
+                double product_total = item.Price * item.Quantity;
                 all_total += product_total;
 
                 <div class="form-group row">

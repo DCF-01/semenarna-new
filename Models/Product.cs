@@ -11,8 +11,8 @@ namespace application.Models
         public string Name { get; set; }
         public string ShortDescription { get; set; }
         public string Description { get; set; }
-        public string Price { get; set; }
-        public string SalePrice { get; set; }
+        public double Price { get; set; }
+        public double SalePrice { get; set; }
         public bool OnSale { get; set; }
         public bool InStock { get; set; }
         public ICollection<Category> Categories { get; set; }

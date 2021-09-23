@@ -10,8 +10,8 @@ using application.Data;
 namespace application.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210919215040_'newmigration'")]
-    partial class newmigration
+    [Migration("20210923183155_newMigration")]
+    partial class newMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -280,8 +280,8 @@ namespace application.Migrations
                     b.Property<int?>("OrderId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("integer");
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("integer");
@@ -413,14 +413,14 @@ namespace application.Migrations
                     b.Property<bool>("OnSale")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("Price")
-                        .HasColumnType("text");
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
 
                     b.Property<string>("SKU")
                         .HasColumnType("text");
 
-                    b.Property<string>("SalePrice")
-                        .HasColumnType("text");
+                    b.Property<double>("SalePrice")
+                        .HasColumnType("double precision");
 
                     b.Property<string>("ShortDescription")
                         .HasColumnType("text");
@@ -457,8 +457,8 @@ namespace application.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<string>("Price")
-                        .HasColumnType("text");
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
 
                     b.Property<string>("Text")
                         .HasColumnType("text");

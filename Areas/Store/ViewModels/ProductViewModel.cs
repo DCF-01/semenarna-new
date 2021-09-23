@@ -7,17 +7,18 @@ using System.Threading.Tasks;
 
 namespace application.Areas.Store.ViewModels {
     public class ProductViewModel {
+        private double _salePrice { get; set; }
         public int ProductId { get; set; }
         public string SKU { get; set; }
         public string Name { get; set; }
         public string ShortDescription { get; set; }
         public string Description { get; set; }
-        public int Price { get; set; }
-        public int SalePrice {
+        public double Price { get; set; }
+        public double SalePrice {
             get {
-                return OnSale ? SalePrice : 0;
+                return this.OnSale ? _salePrice : 0d;
             }
-            set { }
+            set { _salePrice = value; }
         }
         public bool OnSale { get; set; }
         public bool InStock { get; set; }

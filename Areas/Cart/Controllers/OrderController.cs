@@ -49,7 +49,7 @@ namespace application.Areas.Cart.Controllers {
                     if (p.ProductId == product.Id) {
                         var new_product = new CartProduct {
                             Product = p,
-                            Price = int.Parse(p.Price),
+                            Price = p.Price,
                             Quantity = product.Quantity,
                         };
                         if (product.Variations != null) {
@@ -127,7 +127,7 @@ namespace application.Areas.Cart.Controllers {
                         order_id = order.OrderId.ToString();
                     }
 
-                    int totalAll = 0;
+                    double totalAll = 0;
                     foreach(var item in validatedProducts) {
                         var totalProduct = item.Quantity * item.Price;
                         totalAll += totalProduct;
