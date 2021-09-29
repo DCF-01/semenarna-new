@@ -31,7 +31,7 @@
                             }
                             else {
                                 foreach (var c in Model.Categories) {
-                                    if (c.Name == Model.CurrentCategory) {
+                                    if (c.CategoryId == Model.CurrentCategoryId) {
                                         <li><a asp-controller="Base" asp-action="Category" asp-route-id="1" asp-route-category_id="@c.CategoryId" id="active-category">@c.Name</a></li>
                                     }
                                     else {
@@ -41,49 +41,52 @@
                             }
                         }
                     </ul>
-                    <button href="#" class="filter-btn">Филтрирај</button>
+                    <button class="filter-btn" type="submit" form="filter-form">Филтрирај</button>
                 </div>
             </div>
             <div class="col-xl-9 col-md-7 col-sm-12 order-2 order-lg-2">
                 <div class="product-show-option mb-sm-5 mb-md-4">
                     <div class="row">
-                        <div class="col-lg-6 col-md-12 mb-3 mt-3">
-                            <div class="select-option">
-                                <select class="sorting">
-                                    <option value="price_descending" class="option-one">Подреди по цена</option>
-                                    <option value="name_descending" class="option-two">Подреди по име</option>
-                                </select>
+                        <form class="row" id="filter-form" method="post">
+                            <input type="hidden" id="current-page-input" value="@Model.Page" asp-for="@Model.Page" />
+                            <div class="col-lg-6 col-md-12 mb-3 mt-3">
+                                <div class="select-option">
+                                    <select class="sorting" asp-items="@Html.GetEnumSelectList<FilterItems>()" asp-for="@Model.FilterItems">
+                                        @*<option value="price_descending" class="option-one">Подреди по цена</option>
+                                        <option value="name_descending" class="option-two">Подреди по име</option>*@
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-lg-6 col-md-12 mb-3 mt-3">
-                            <div class="select-option">
-                                <select class="p-show" id="show-product-number">
-                                    @switch (@Model.PageSize) {
-                                        case 12:
-                                            <option value="12" class="option-one" selected>Прикажи: 12</option>
-                                            <option value="24" class="option-two">Прикажи: 24</option>
-                                            <option value="48" class="option-three">Прикажи: 48</option>
-                                            break;
-                                        case 24:
-                                            <option value="12" class="option-one">Прикажи: 12</option>
-                                            <option value="24" class="option-two" selected>Прикажи: 24</option>
-                                            <option value="48" class="option-three">Прикажи: 48</option>
-                                            break;
-                                        case 48:
-                                            <option value="12" class="option-one">Прикажи: 12</option>
-                                            <option value="24" class="option-two">Прикажи: 24</option>
-                                            <option value="48" class="option-three" selected>Прикажи: 48</option>
-                                            break;
-                                        default:
-                                            <option value="12" class="option-one">Прикажи: 12</option>
-                                            <option value="24" class="option-two" selected>Прикажи: 24</option>
-                                            <option value="48" class="option-three">Прикажи: 48</option>
-                                            break;
+                            <div class="col-lg-6 col-md-12 mb-3 mt-3">
+                                <div class="select-option">
+                                    <select class="p-show" id="show-product-number" asp-for="@Model.PageSize">
+                                        @switch (@Model.PageSize) {
+                                            case 12:
+                                                <option value="12" class="option-one" selected>Прикажи: 12</option>
+                                                <option value="24" class="option-two">Прикажи: 24</option>
+                                                <option value="48" class="option-three">Прикажи: 48</option>
+                                                break;
+                                            case 24:
+                                                <option value="12" class="option-one">Прикажи: 12</option>
+                                                <option value="24" class="option-two" selected>Прикажи: 24</option>
+                                                <option value="48" class="option-three">Прикажи: 48</option>
+                                                break;
+                                            case 48:
+                                                <option value="12" class="option-one">Прикажи: 12</option>
+                                                <option value="24" class="option-two">Прикажи: 24</option>
+                                                <option value="48" class="option-three" selected>Прикажи: 48</option>
+                                                break;
+                                            default:
+                                                <option value="12" class="option-one">Прикажи: 12</option>
+                                                <option value="24" class="option-two" selected>Прикажи: 24</option>
+                                                <option value="48" class="option-three">Прикажи: 48</option>
+                                                break;
 
-                                    }
-                                </select>
+                                        }
+                                    </select>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
                 <div class="product-list pt-sm-3 pt-md-4 pt-lg-5">
@@ -147,18 +150,21 @@
                             <a class="page-link" href="@Model.Previous" tabindex="-1">Претходна</a>
                         </li>
                     }
-                    @for (int i = Model.Page - 1; i <= Model.Page + 1; i++) {
-                        if(i < 1) {
-                            continue;
-                        }
+                    @{ int start = Model.Page > 1 ? Model.Page - 1 : 1;}
+                    @{ int end = Model.HasNext ? Model.Page + 1 : Model.Page;}
+                    @{ int i = start;}
+                    @while(i <= end) {
                         if (i == Model.Page) {
                             <li class="page-item active">
-                                <a class="page-link" href="@Model.BaseURL/@i?@Model.URLParameters">@i<span class="sr-only">(current)</span></a>
+                                 <button class="page-link page-btn" form="filter-form" data-page="@i"/>@i
                             </li>
                         }
                         else {
-                            <li class="page-item"><a class="page-link" href="@Model.BaseURL/@i?@Model.URLParameters">@i</a></li>
+                             <li class="page-item">
+                                <button class="page-link page-btn" form="filter-form" data-page="@i" />@i
+                             </li>
                         }
+                        i++;
 
                     }
                     @if (!Model.HasNext) {

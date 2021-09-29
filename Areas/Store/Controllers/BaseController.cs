@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using application.Enums;
 
 namespace application.Areas.Store.Controllers {
     [Area("Store")]
@@ -17,11 +18,11 @@ namespace application.Areas.Store.Controllers {
         }
         // returns 24 products (size of page) of page number (id) 
 
-        private async Task<IEnumerable<ProductViewModel>> GetSortedProducts(string categoryId, string sortOrder = "",  int id = 1, int pageSize = 24) {
+        private async Task<IEnumerable<ProductViewModel>> GetSortedProducts(int categoryId = -1, FilterItems sortOrder = FilterItems.NameDescending,  int page = 1, int pageSize = 24) {
 
             IEnumerable<ProductViewModel> products;
-            if (!string.IsNullOrEmpty(categoryId)) {
-                var category = await _ctx.Categories.FindAsync(int.Parse(categoryId));
+            if (categoryId > 0) {
+                var category = await _ctx.Categories.FindAsync(categoryId);
 
                 products = _ctx.Products
                 .Include(p => p.Categories)
@@ -36,7 +37,7 @@ namespace application.Areas.Store.Controllers {
                     Categories = p.Categories,
                     Img = Convert.ToBase64String(p.Img)
                 })
-                .Skip(pageSize * (id - 1))
+                .Skip(pageSize * (page - 1))
                 .Take(pageSize);
             }
             else {
@@ -52,7 +53,7 @@ namespace application.Areas.Store.Controllers {
                     Categories = p.Categories,
                     Img = Convert.ToBase64String(p.Img)
                 })
-                .Skip(pageSize * (id - 1))
+                .Skip(pageSize * (page - 1))
                 .Take(pageSize);
             }
             var productsList = SortProducts(products: products, sortOrder);
@@ -61,7 +62,7 @@ namespace application.Areas.Store.Controllers {
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery] int products_on_page = 24, int id = 1) {
+        public async Task<IActionResult> Index(StoreViewModel storeViewModel, int id) {
             var categories = await _ctx.Categories.ToListAsync();
 
             ViewBag.Categories = categories;
@@ -69,14 +70,23 @@ namespace application.Areas.Store.Controllers {
             StoreViewModel model = new() {
                 Categories = categories,
                 BaseURL = $"{this.Request.Scheme}://{this.Request.Host}/Store/Base/Index",
-                URLParameters = $"products_on_page={products_on_page}",
-                PageSize = products_on_page,
-                Products = await GetSortedProducts(categoryId: "", id: id, pageSize: products_on_page),
+                Page = storeViewModel.Page,
+                PageSize = storeViewModel.PageSize,
                 Total = await _ctx.Products.CountAsync()
             };
+            //check page valid before getting products
+            if(model.Page > model.TotalPages) {
+                return RedirectToAction("Index", new StoreViewModel());
+            }
+            model.Products = await GetSortedProducts(categoryId: -1, sortOrder: storeViewModel.FilterItems, page: storeViewModel.Page, pageSize: storeViewModel.PageSize);
 
             return View("Index", model);
         }
+        [HttpPost]
+        public IActionResult Index([FromForm] StoreViewModel model) {
+            return RedirectToAction("Index", model);
+        }
+
         [HttpGet]
         public async Task<IActionResult> Find([FromQuery] string name = "", [FromQuery] string product_id = "") {
             var categories = await _ctx.Categories.ToListAsync();
@@ -103,7 +113,7 @@ namespace application.Areas.Store.Controllers {
                 var model = new StoreViewModel {
                     Products = products,
                     Categories = categories,
-                    CurrentCategory = "none"
+                    CurrentCategoryId = -1
                 };
 
                 return View("Index", model);
@@ -129,7 +139,7 @@ namespace application.Areas.Store.Controllers {
                 var model = new StoreViewModel {
                     Products = products,
                     Categories = categories,
-                    CurrentCategory = "none"
+                    CurrentCategoryId = -1
                 };
                 return View("Index", model);
             }
@@ -139,23 +149,17 @@ namespace application.Areas.Store.Controllers {
         }
 
         [HttpGet]
-        public async Task<IActionResult> Category([FromQuery] string category_id, [FromQuery] int products_on_page = 24, int id = 0, [FromQuery] int product_id = 0) {
+        public async Task<IActionResult> Category(StoreViewModel storeViewModel, int id) {
             ViewBag.Categories = await _ctx.Categories.ToListAsync();
             try {
-                var category = await _ctx.Categories
-                                        .Where(c => c.CategoryId == int.Parse(category_id))
-                                        .FirstOrDefaultAsync();
 
                 StoreViewModel model = new StoreViewModel {
                     Categories = await _ctx.Categories.ToListAsync(),
-                    CurrentCategory = category.Name,
-                    BaseURL = $"{this.Request.Scheme}://{this.Request.Host}/Store/Base/Category",
-                    URLParameters = $"category_id={category_id}&products_on_page={products_on_page}",
-                    PageSize = products_on_page,
-                    Products = await GetSortedProducts(categoryId: category_id, id: id, pageSize: products_on_page),
+                    CurrentCategoryId = id,
+                    PageSize = storeViewModel.PageSize,
+                    Products = await GetSortedProducts(categoryId: id, sortOrder: storeViewModel.FilterItems, page: storeViewModel.Page, pageSize: storeViewModel.PageSize),
                     Total = await _ctx.Products.CountAsync()
                 };
-
                 return View("Index", model); ;
             }
             catch (Exception e) {
@@ -163,19 +167,23 @@ namespace application.Areas.Store.Controllers {
                 return BadRequest();
             }
         }
+        [HttpPost]
+        public IActionResult Category([FromForm]StoreViewModel storeViewModel) {
+            return RedirectToAction("Category", storeViewModel);
+        }
 
-        private IEnumerable<ProductViewModel> SortProducts(IEnumerable<ProductViewModel> products, string sortOrder) {
+        private IEnumerable<ProductViewModel> SortProducts(IEnumerable<ProductViewModel> products, FilterItems sortOrder) {
             switch (sortOrder) {
-                case "name_ascending":
+                case FilterItems.NameAscending:
                     products = products.OrderBy(p => p.Name);
                     break;
-                case "name_descending":
+                case FilterItems.NameDescending:
                     products = products.OrderByDescending(p => p.Name);
                     break;
-                case "price_ascending":
+                case FilterItems.PriceAscending:
                     products = products.OrderBy(p => p.Price);
                     break;
-                case "price_descending":
+                case FilterItems.PriceDescending:
                     products = products.OrderByDescending(p => p.Price);
                     break;
                 default:

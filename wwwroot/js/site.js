@@ -980,9 +980,19 @@ if (order_submit_btn !== null) {
     });
 }
 
+let page_btns = document.querySelectorAll('.page-btn');
+
+if (page_btns !== null) {
+    page_btns.forEach(b => {
+        b.addEventListener('click', e => {
+            document.getElementById('current-page-input').value = e.target.dataset.page;
+            document.getElementById('filter-form').submit();
+        });
+    });
+}
 
 //filter products query on click via url params GET request
-let filter_products_btn = document.querySelector('.filter-btn');
+/*let filter_products_btn = document.querySelector('.filter-btn');
 if (filter_products_btn !== null) {
 
 
@@ -1013,7 +1023,7 @@ if (filter_products_btn !== null) {
         window.location.href = new_url;
 
     });
-}
+}*/
 
 /* home page carousels*/
 function GetCarousel(parent_element, category, clicked_element = null) {
