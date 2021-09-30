@@ -1006,6 +1006,27 @@ if (category_btns) {
     });
 }
 
+let search_btn = document.getElementById("search-link-btn");
+let search_field = document.getElementById("store-search");
+
+if (search_field) {
+    const params = new URLSearchParams(window.location.search);
+    let paramOne = params.get('SearchString');
+    let paramTwo = params.get('q');
+
+    paramOne ? search_field.value = paramOne : search_field.value = paramTwo;
+
+    search_field.addEventListener('keyup', e => {
+        search_btn.href = window.location.protocol +
+            '//' +
+            window.location.host +
+            window.location.pathname.split('/')[0] +
+            '/Store/Base/Index' +
+            '/?q=' +
+            search_field.value;
+    });
+}
+
 /* home page carousels*/
 function GetCarousel(parent_element, category, clicked_element = null) {
     let url = location.protocol + '//' + location.host + '/Store/Query/GetCarousel?category=' + category;

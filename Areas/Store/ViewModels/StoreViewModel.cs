@@ -10,6 +10,7 @@ namespace application.Areas.Store.ViewModels {
     public class StoreViewModel {
         public IEnumerable<ProductViewModel> Products { get; set; }
         public List<Category> Categories { get; set; }
+        public string SearchString { get; set; } = "";
         public int CurrentCategoryId { get; set; }
         public string BaseURL { get; set; } 
         public int Page { get; set; } = 1;

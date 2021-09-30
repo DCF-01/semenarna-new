@@ -18,7 +18,7 @@ namespace application.Areas.Store.Controllers {
         }
         // returns 24 products (size of page) of page number (id) 
 
-        private async Task<IEnumerable<ProductViewModel>> GetSortedProducts(int categoryId = 0, FilterItems sortOrder = FilterItems.NameDescending,  int page = 1, int pageSize = 24) {
+        private async Task<IEnumerable<ProductViewModel>> GetSortedProducts(int categoryId = 0, FilterItems sortOrder = FilterItems.NameDescending, int page = 1, int pageSize = 24, string searchString = "") {
 
             IEnumerable<ProductViewModel> products;
             if (categoryId > 0) {
@@ -26,6 +26,7 @@ namespace application.Areas.Store.Controllers {
 
                 products = _ctx.Products
                 .Include(p => p.Categories)
+                .Where(p => p.Name.ToLower().StartsWith(searchString.ToLower()))
                 .Where(p => p.Categories.Any(c => c == category))
                 .Select(p => new ProductViewModel {
                     ProductId = p.ProductId,
@@ -43,6 +44,7 @@ namespace application.Areas.Store.Controllers {
             else {
                 products = _ctx.Products
                 .Include(p => p.Categories)
+                .Where(p => p.Name.ToLower().StartsWith(searchString.ToLower()))
                 .Select(p => new ProductViewModel {
                     ProductId = p.ProductId,
                     Name = p.Name,
@@ -62,7 +64,7 @@ namespace application.Areas.Store.Controllers {
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(StoreViewModel storeViewModel, int id) {
+        public async Task<IActionResult> Index(StoreViewModel storeViewModel, int id, [FromQuery(Name = "q")] string searchString = "") {
             var categories = await _ctx.Categories.ToListAsync();
             var currentCategory = await _ctx.Categories.FindAsync(storeViewModel.CurrentCategoryId);
 
@@ -73,13 +75,20 @@ namespace application.Areas.Store.Controllers {
                 CurrentCategoryId = storeViewModel.CurrentCategoryId,
                 BaseURL = $"{this.Request.Scheme}://{this.Request.Host}/Store/Base/Index",
                 Page = storeViewModel.Page,
-                PageSize = storeViewModel.PageSize
+                PageSize = storeViewModel.PageSize,
+                SearchString = storeViewModel.SearchString
             };
+            //if q parameter available set; else use last searchQuery
+            model.SearchString = storeViewModel.SearchString;
+            if (!string.IsNullOrEmpty(searchString)) {
+                model.SearchString = searchString;
+            }
 
             //dont filter for category if CategoryId is less than 1 
-            if(storeViewModel.CurrentCategoryId > 0) {
+            if (storeViewModel.CurrentCategoryId > 0) {
                 model.Total = await _ctx.Products
                     .Where(p => p.Categories.Any(c => c == currentCategory))
+                    .Where(p => p.Name.ToLower().StartsWith(model.SearchString.ToLower()))
                     .CountAsync();
             }
             else {
@@ -87,10 +96,10 @@ namespace application.Areas.Store.Controllers {
             }
 
             //redirect to Index if page > totalPages
-            if(model.Page > model.TotalPages) {
+            if (model.Page > model.TotalPages) {
                 return RedirectToAction("Index", new StoreViewModel());
             }
-            model.Products = await GetSortedProducts(categoryId: storeViewModel.CurrentCategoryId, sortOrder: storeViewModel.FilterItems, page: storeViewModel.Page, pageSize: storeViewModel.PageSize);
+            model.Products = await GetSortedProducts(searchString: model.SearchString, categoryId: storeViewModel.CurrentCategoryId, sortOrder: storeViewModel.FilterItems, page: storeViewModel.Page, pageSize: storeViewModel.PageSize);
 
             return View("Index", model);
         }
@@ -108,7 +117,7 @@ namespace application.Areas.Store.Controllers {
 
                 var products = await _ctx.Products
                 .Include(p => p.Categories)
-                .Where(p => EF.Functions.ILike(p.Name, $"%{name}%"))
+                .Where(p => p.Name.ToLower().StartsWith(name.ToLower()))
                 .Select(p => new ProductViewModel {
                     ProductId = p.ProductId,
                     Name = p.Name,
@@ -131,10 +140,10 @@ namespace application.Areas.Store.Controllers {
                 return View("Index", model);
             }
             else if (Request.Query.ContainsKey("product_id")) {
-                
+
                 var products = await _ctx.Products
                 .Include(p => p.Categories)
-                .Where(p => EF.Functions.ILike(p.ProductId.ToString(), $"%{product_id}%"))
+                .Where(p => p.ProductId.ToString().ToLower().StartsWith(product_id.ToLower()))
                 .Select(p => new ProductViewModel {
                     ProductId = p.ProductId,
                     Name = p.Name,
