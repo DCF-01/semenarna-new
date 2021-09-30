@@ -91,6 +91,7 @@ namespace application.Areas.Cart.Controllers {
                     var cart_product = new CartProduct {
                         Product = product_entity,
                         Quantity = item.Quantity,
+                        Name = product_entity.Name,
                     };
                     if(item.Variations != null) {
                         cart_product.Variations = item.Variations;

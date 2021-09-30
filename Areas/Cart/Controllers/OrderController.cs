@@ -37,19 +37,20 @@ namespace application.Areas.Cart.Controllers {
             }
 
             //get equivalent client side products
-            List<Product> clientSideProducts = _ctx.Products
+            List<Product> serverSideProducts = _ctx.Products
                 .Where(p => itemIds.Contains(p.ProductId))
                 .ToList();
 
             //return CartProducts generated via client products ids
             List<CartProduct> validatedProducts = new List<CartProduct>();
             foreach (var product in cartViewModel.Items) {
-                foreach (var p in clientSideProducts) {
+                foreach (var p in serverSideProducts) {
 
                     if (p.ProductId == product.Id) {
                         var new_product = new CartProduct {
                             Product = p,
                             Price = p.Price,
+                            Name = p.Name,
                             Quantity = product.Quantity,
                         };
                         if (product.Variations != null) {
