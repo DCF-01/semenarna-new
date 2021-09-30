@@ -210,7 +210,7 @@ html {
     border-radius: 8px;
     border: 1px solid #e7ab3c;
     transition: background-color 0.3s; 
-    transition: color 0.2s; 
+    transition: color 0.3s; 
 }
 
 .category-btn {
