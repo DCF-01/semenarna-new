@@ -991,39 +991,20 @@ if (page_btns !== null) {
     });
 }
 
-//filter products query on click via url params GET request
-/*let filter_products_btn = document.querySelector('.filter-btn');
-if (filter_products_btn !== null) {
+let category_btns = document.querySelectorAll('.category-btn');
+if (category_btns) {
+    category_btns.forEach(b => {
+        b.addEventListener('click', e => {
+            document.getElementById('current-category-input').value = e.target.dataset.id;
+            let activeCategory = document.getElementById('active-category');
 
-
-
-    filter_products_btn.addEventListener('click', (e) => {
-        let product_show_number = document.querySelector('.p-show .selected');
-        let order_by = document.querySelector('.sorting .selected')
-
-        let number = product_show_number.dataset.value;
-        let order = order_by.dataset.value
-
-        let current_url = new URL(window.location.href);
-
-        let params = new URLSearchParams(current_url.search);
-
-        params.set('products_on_page', number);
-        params.set('order', order);
-
-        console.log(params.toString());
-
-        let base = location.protocol + '//' + location.host + location.pathname;
-        //remove page number (id) and '/' ten set to '/1' to avoid 400 errors
-        if (isNumeric(base.charAt(base.length - 1))) {
-            base = base.slice(0, -2);
-        }
-        let new_url = `${base}/1?${params.toString()}`;
-
-        window.location.href = new_url;
-
+            if (activeCategory) {
+                activeCategory.id = "";
+            }
+            e.target.id = "active-category";
+        });
     });
-}*/
+}
 
 /* home page carousels*/
 function GetCarousel(parent_element, category, clicked_element = null) {

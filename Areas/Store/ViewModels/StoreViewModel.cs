@@ -15,7 +15,7 @@ namespace application.Areas.Store.ViewModels {
         public int Page { get; set; } = 1;
         public int TotalPages { 
             get {
-                return (int)Math.Ceiling(Total / (double)PageSize);
+                return Math.Max((int)Math.Ceiling(Total / (double)PageSize), 1);
             }
         }
         public int Total { get; set; } = 0;

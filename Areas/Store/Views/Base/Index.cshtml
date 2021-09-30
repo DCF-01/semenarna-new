@@ -32,16 +32,17 @@
                             else {
                                 foreach (var c in Model.Categories) {
                                     if (c.CategoryId == Model.CurrentCategoryId) {
-                                        <li><a asp-controller="Base" asp-action="Category" asp-route-id="1" asp-route-category_id="@c.CategoryId" id="active-category">@c.Name</a></li>
+                                        <li><a data-id="@c.CategoryId" id="active-category" class="category-btn">@c.Name</a></li>
                                     }
                                     else {
-                                        <li><a asp-controller="Base" asp-action="Category" asp-route-id="1" asp-route-category_id="@c.CategoryId">@c.Name</a></li>
+                                        <li><a data-id="@c.CategoryId" class="category-btn">@c.Name</a></li>
                                     }
                                 }
                             }
                         }
                     </ul>
                     <button class="filter-btn" type="submit" form="filter-form">Филтрирај</button>
+                    <p><a class="clear-filter-btn" type="submit" form="filter-form" asp-area="Store" asp-controller="Base" asp-controller="Index">Избриши филтер</a></p>
                 </div>
             </div>
             <div class="col-xl-9 col-md-7 col-sm-12 order-2 order-lg-2">
@@ -49,6 +50,7 @@
                     <div class="row">
                         <form class="row" id="filter-form" method="post">
                             <input type="hidden" id="current-page-input" value="@Model.Page" asp-for="@Model.Page" />
+                            <input type="hidden" id="current-category-input" value="@Model.CurrentCategoryId" asp-for="@Model.CurrentCategoryId" />
                             <div class="col-lg-6 col-md-12 mb-3 mt-3">
                                 <div class="select-option">
                                     <select class="sorting" asp-items="@Html.GetEnumSelectList<FilterItems>()" asp-for="@Model.FilterItems">
@@ -147,7 +149,7 @@
                     }
                     else {
                         <li class="page-item">
-                            <a class="page-link" href="@Model.Previous" tabindex="-1">Претходна</a>
+                            <button class="page-link page-btn" form="filter-form" data-page="@(Model.Page-1)" /> Претходна
                         </li>
                     }
                     @{ int start = Model.Page > 1 ? Model.Page - 1 : 1;}
@@ -174,7 +176,7 @@
                     }
                     else {
                         <li class="page-item">
-                            <a class="page-link" href="@Model.Next">Следна</a>
+                            <button class="page-link page-btn" form="filter-form" data-page="@(Model.Page+1)" /> Следна
                         </li>
                     }
                 </ul>
