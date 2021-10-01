@@ -44,4 +44,8 @@ namespace application.Areas.Store.ViewModels {
         public FilterItems FilterItems { get; set; }
     }
 
+    public class SearchViewModel {
+        public string SearchString { get; set; } = "";
+    }
+
 }

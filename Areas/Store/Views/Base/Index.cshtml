@@ -41,7 +41,7 @@
                             }
                         }
                     </ul>
-                    <button class="filter-btn" type="submit" form="filter-form">Филтрирај</button>
+                    <button class="filter-btn" id="filter-btn" type="submit" form="filter-form">Филтрирај</button>
                     <p><a class="clear-filter-btn" type="submit" form="filter-form" asp-area="Store" asp-controller="Base" asp-controller="Index">Избриши филтер</a></p>
                 </div>
             </div>
@@ -49,7 +49,6 @@
                 <div class="product-show-option mb-sm-5 mb-md-4">
                     <div class="row">
                         <form class="row" id="filter-form" method="post">
-                            <input type="hidden" value="@Model.SearchString" asp-for="@Model.SearchString" />
                             <input type="hidden" id="current-page-input" value="@Model.Page" asp-for="@Model.Page" />
                             <input type="hidden" id="current-category-input" value="@Model.CurrentCategoryId" asp-for="@Model.CurrentCategoryId" />
                             <div class="col-lg-6 col-md-12 mb-3 mt-3">

@@ -63,12 +63,18 @@ namespace application.Areas.Store.Controllers {
             return await Task.FromResult(resultList);
         }
 
+        [HttpPost]
+        public IActionResult Search(SearchViewModel model) {
+            return RedirectToAction("Index", new StoreViewModel() { SearchString = model.SearchString });
+        }
+
         [HttpGet]
-        public async Task<IActionResult> Index(StoreViewModel storeViewModel, int id, [FromQuery(Name = "q")] string searchString = "") {
+        public async Task<IActionResult> Index(StoreViewModel storeViewModel, int id) {
             var categories = await _ctx.Categories.ToListAsync();
             var currentCategory = await _ctx.Categories.FindAsync(storeViewModel.CurrentCategoryId);
 
             ViewBag.Categories = categories;
+            ViewBag.SearchString = storeViewModel.SearchString;
 
             StoreViewModel model = new() {
                 Categories = categories,
@@ -78,11 +84,6 @@ namespace application.Areas.Store.Controllers {
                 PageSize = storeViewModel.PageSize,
                 SearchString = storeViewModel.SearchString
             };
-            //if q parameter available set; else use last searchQuery
-            model.SearchString = storeViewModel.SearchString;
-            if (!string.IsNullOrEmpty(searchString)) {
-                model.SearchString = searchString;
-            }
 
             //dont filter for category if CategoryId is less than 1 
             if (storeViewModel.CurrentCategoryId > 0) {

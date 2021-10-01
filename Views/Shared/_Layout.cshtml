@@ -85,8 +85,9 @@
                     <div class="col-lg-6 col-md-6">
                         <div class="advanced-search">
                             <div class="input-group">
-                                <input type="text" placeholder="Пребарај" id="store-search">
-                                <a href="#" id="search-link-btn"><i class="fas fa-search"></i></a>
+                                <form asp-area="Store" asp-controller="Base" asp-action="Search" id="search-form" method="post" style="display: none"></form>
+                                <input type="text" name="SearchString" value="@ViewBag.SearchString" placeholder="Пребарај" id="store-search" form="search-form">
+                                <button type="submit" form="search-form" id="submit-search-btn"><i class="fas fa-search"></i></button>
                                 <ul class="list-group" id="search-suggestions">
                                 </ul>
                             </div>

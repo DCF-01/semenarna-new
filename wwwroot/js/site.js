@@ -1006,26 +1006,19 @@ if (category_btns) {
     });
 }
 
-let search_btn = document.getElementById("search-link-btn");
-let search_field = document.getElementById("store-search");
+let search_btn = document.getElementById('submit-search-btn');
+let search_field = document.getElementById('store-search');
+let filter_btn = document.getElementById('filter-btn');
 
-if (search_field) {
-    const params = new URLSearchParams(window.location.search);
-    let paramOne = params.get('SearchString');
-    let paramTwo = params.get('q');
+if (filter_btn) {
+    search_field.setAttribute('form', 'filter-form');
+    search_btn.setAttribute('form', 'filter-form');
 
-    paramOne ? search_field.value = paramOne : search_field.value = paramTwo;
-
-    search_field.addEventListener('keyup', e => {
-        search_btn.href = window.location.protocol +
-            '//' +
-            window.location.host +
-            window.location.pathname.split('/')[0] +
-            '/Store/Base/Index' +
-            '/?q=' +
-            search_field.value;
+    search_btn.addEventListener('click', e => {
+        document.getElementById('filter-form').submit();
     });
 }
+
 
 /* home page carousels*/
 function GetCarousel(parent_element, category, clicked_element = null) {
