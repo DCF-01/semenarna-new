@@ -18,7 +18,9 @@ using Microsoft.Extensions.Primitives;
 namespace application {
     public class Program {
         public static void Main(string[] args) {
-            var host = CreateHostBuilder(args).Build();
+            var host = CreateHostBuilder(args)
+                .UseSystemd()
+                .Build();
 
             try {
 
@@ -86,7 +88,6 @@ namespace application {
             catch (Exception e) {
                 Console.WriteLine(e.Message);
             }
-
             host.Run();
         }
 
