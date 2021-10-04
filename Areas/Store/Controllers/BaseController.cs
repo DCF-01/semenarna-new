@@ -34,6 +34,7 @@ namespace application.Areas.Store.Controllers {
                     Description = p.Description,
                     Price = p.Price,
                     OnSale = p.OnSale,
+                    SalePrice = p.SalePrice,
                     InStock = p.InStock,
                     Categories = p.Categories,
                     Img = Convert.ToBase64String(p.Img)
@@ -48,6 +49,7 @@ namespace application.Areas.Store.Controllers {
                 .Select(p => new ProductViewModel {
                     ProductId = p.ProductId,
                     Name = p.Name,
+                    SalePrice = p.SalePrice,
                     Description = p.Description,
                     Price = p.Price,
                     OnSale = p.OnSale,
