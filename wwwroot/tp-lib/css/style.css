@@ -88,6 +88,10 @@ img {
 	max-width: 100%;
 }
 
+.logo img {
+	max-height: 100px;
+}
+
 input:focus,
 select:focus,
 button:focus,
@@ -159,7 +163,7 @@ ol {
 
 .set-bg {
 	background-repeat: no-repeat;
-	background-size: cover;
+	background-size: contain;
 	background-position: top center;
 }
 
@@ -418,7 +422,7 @@ ol {
 }
 
 .inner-header {
-	padding: 39px 0;
+	padding: 25px 0;
 }
 
 .inner-header .logo {
