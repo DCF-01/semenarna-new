@@ -38,9 +38,7 @@ namespace application.Areas.Store.Controllers {
                     InStock = p.InStock,
                     Categories = p.Categories,
                     Img = Convert.ToBase64String(p.Img)
-                })
-                .Skip(pageSize * (page - 1))
-                .Take(pageSize);
+                });
             }
             else {
                 products = _ctx.Products
@@ -56,11 +54,11 @@ namespace application.Areas.Store.Controllers {
                     InStock = p.InStock,
                     Categories = p.Categories,
                     Img = Convert.ToBase64String(p.Img)
-                })
+                });
+            }
+            var resultList = SortProducts(products: products, sortOrder)
                 .Skip(pageSize * (page - 1))
                 .Take(pageSize);
-            }
-            var resultList = SortProducts(products: products, sortOrder);
 
             return await Task.FromResult(resultList);
         }
