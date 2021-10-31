@@ -141,6 +141,11 @@ ol {
 	position: relative;
 }
 
+.section-title .related-products-title {
+	display: inline-block;
+	border-bottom: 2px solid black;
+}
+
 .section-title h2:before {
 	position: absolute;
 	left: 0;

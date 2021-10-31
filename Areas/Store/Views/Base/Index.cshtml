@@ -31,6 +31,9 @@
                             }
                             else {
                                 foreach (var c in Model.Categories) {
+                                    if(c.Name == "uncategorized") {
+                                        continue;
+                                    }
                                     if (c.CategoryId == Model.CurrentCategoryId) {
                                         <li><a data-id="@c.CategoryId" id="active-category" class="category-btn">@c.Name</a></li>
                                     }
