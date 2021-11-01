@@ -10,8 +10,8 @@ using application.Data;
 namespace application.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210929204743_newMigration")]
-    partial class newMigration
+    [Migration("20211101192000_orderIsCompleted")]
+    partial class orderIsCompleted
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -277,6 +277,9 @@ namespace application.Migrations
                     b.Property<int?>("CartId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
                     b.Property<int?>("OrderId")
                         .HasColumnType("integer");
 
@@ -371,6 +374,9 @@ namespace application.Migrations
 
                     b.Property<string>("FirstName")
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("LastName")
                         .HasColumnType("text");

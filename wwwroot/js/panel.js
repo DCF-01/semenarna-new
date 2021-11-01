@@ -275,27 +275,43 @@ if (panel_search_box !== null) {
         panel_search_box.value = '';
         let key = "None";
         let value = null;
-        getPanelItems(key, value);
+        getPanelItemsData(key, value);
     });
 
-    panel_search_box.addEventListener('keyup', (e) => {
+    panel_search_box.addEventListener('keyup', async (e) => {
         let table = document.querySelector('.content .table');
         if (table !== null) {
-
             let key = document.querySelector('input:checked').value;
             let value = e.target.value;
-            getPanelItems(key, value);
+
+            let displayCallback = GetCallbackFromKey(key);
+            await getPanelItemsData(key, value, displayCallback);
         }
 
     });
 }
 
-function getPanelItems(k, v) {
+function GetCallbackFromKey(key) {
+    let callbackFunction;
+    switch (key) {
+        case 'OrderId':
+            callbackFunction = displayOrdersCallback;
+            break;
+        default:
+            callbackFunction = displayProductsCallback;
+            break;
+    }
+    return callbackFunction;
+}
+
+async function getPanelItemsData(k, v, displayCallback) {
+    let controllerAction = window.location.pathname.split("/").slice(-1)[0];
     let key = k;
     let value = v;
-    let query = `${location.protocol}//${location.host}/Panel/Query/Products?${key}=${value}`;
+    let query = `${location.protocol}//${location.host}/Panel/Query/${controllerAction}?${key}=${value}`;
 
-    fetch(query, {
+
+    let result = await fetch(query, {
         method: 'GET', // POST, PUT, DELETE, etc.
         headers: {
             'Content-Type': 'text/plain;charset=UTF-8'
@@ -303,14 +319,56 @@ function getPanelItems(k, v) {
         credentials: 'include', // omit, include
         redirect: 'follow', // manual, error
     }).then(res => {
-        res.json().then(data => {
-            displayPanelQuery(data);
-        });
+        res.json()
+            .then(data => {
+                displayCallback(data);
+            });
+    })
+
+}
+function displayOrdersCallback(data) {
+    let table = document.querySelector('.content .table');
+
+    table.removeChild(table.lastElementChild);
+
+    let tbody = document.createElement('tbody');
+
+    let i = 1;
+    data.forEach(el => {
+        let tr = document.createElement('tr');
+
+        let th = document.createElement('th');
+        th.scope = 'row';
+        th.textContent = `${i}`;
+        i += 1;
+
+        let td_1 = document.createElement('td');
+        td_1.innerHTML = `${el.firstName}`;
+
+        let td_2 = document.createElement('td');
+        td_2.innerHTML = `${el.dateTime}`;
+
+        let td_3 = document.createElement('td');
+        td_3.innerHTML = `${el.email}`;
+
+        let td_4 = document.createElement('td');
+        td_4.innerHTML = `<a href="/Panel/Orders/Manage/${el.orderId}">Edit</a>`;
+
+        tr.appendChild(th);
+        tr.appendChild(td_1);
+        tr.appendChild(td_2);
+        tr.appendChild(td_3);
+        tr.appendChild(td_4);
+
+
+        tbody.appendChild(tr);
     });
+
+
+    table.appendChild(tbody);
 }
 
-
-function displayPanelQuery(data) {
+function displayProductsCallback(data) {
     let table = document.querySelector('.content .table');
 
     table.removeChild(table.lastElementChild);

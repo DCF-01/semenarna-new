@@ -19,5 +19,6 @@ namespace application.Models {
         public string DeliveryMethod { get; set; }
         public ICollection<CartProduct> CartProducts { get; set; }
         public DateTime DateTime { get; set; }
+        public bool IsCompleted { get; set; } = false;
     }
 }

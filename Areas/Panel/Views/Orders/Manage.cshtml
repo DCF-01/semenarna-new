@@ -1,7 +1,7 @@
 ﻿@model Order
 @{ double all_total = 0; }
 <div class="container-lg pt-3">
-    <form action="" method="post" enctype="multipart/form-data">
+    <form asp-area="Panel" asp-controller="Orders" asp-action="@(Model.IsCompleted ? "Delete" : "Complete")" asp-route-id="@Model.OrderId" method="post" enctype="multipart/form-data">
         <div class="form-group row">
             <div class="col">
                 <label>Order ID</label>
@@ -112,7 +112,7 @@
             </div>
         </div>
         <div class="form-group">
-            <input type="submit" value="Delete" class="btn btn-default" />
+            <input type="submit" value="@(Model.IsCompleted ? "Delete" : "Complete")" class="btn btn-default" />
         </div>
     </form>
 </div>

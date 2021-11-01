@@ -50,7 +50,6 @@
     <Folder Include="Areas\Store\Data\" />
     <Folder Include="Areas\Store\Models\" />
     <Folder Include="Areas\Store\Views\Shared\" />
-    <Folder Include="Migrations\" />
     <Folder Include="wwwroot\lib\" />
   </ItemGroup>
 

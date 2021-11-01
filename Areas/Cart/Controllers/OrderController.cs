@@ -116,15 +116,12 @@ namespace application.Areas.Cart.Controllers {
                             user.Orders = new List<Order>();
                         }
                         user.Orders.Add(order);
-
-                        await _ctx.SaveChangesAsync();
                         order_id = order.OrderId.ToString();
 
                     }
                     else {
 
                         await _ctx.Orders.AddAsync(order);
-                        await _ctx.SaveChangesAsync();
                         order_id = order.OrderId.ToString();
                     }
 
@@ -180,6 +177,8 @@ namespace application.Areas.Cart.Controllers {
 
                     var success_message = $"Your order has been placed successfully. An email containing your order's details has been sent to";
 
+
+                    await _ctx.SaveChangesAsync();
                     return RedirectToAction("Result", new ResultViewModel { OrderId = order_id, EmailSent = order.Email, Message = success_message, OrderStatus = "true" });
                 }
                 else {
@@ -188,7 +187,6 @@ namespace application.Areas.Cart.Controllers {
                 }
             }
             catch (Exception e) {
-                var exc = e;
                 return BadRequest();
             }
 

@@ -32,18 +32,34 @@ namespace application.Areas.Panel.Controllers {
         public async Task<IActionResult> Categories([FromQuery] string name) {
 
             var categories = await _ctx.Categories
-                                 .Where(c => c.Name == name)
+                                 .Where(c => c.Name.Replace(" ", "").ToLower() == name.Replace(" ", "").ToLower())
                                  .ToListAsync();
 
             return Ok(categories);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Orders([FromQuery] string orderId = "") {
+            if (orderId != null) {
+                var orders = await _ctx.Orders
+                                        .Where(o => o.OrderId.ToString().StartsWith(orderId))
+                                        .ToListAsync();
+                return Ok(orders);
+            }
+            else {
+                var orders = await _ctx.Orders
+                                        .ToListAsync();
+                return Ok(orders);
+            }
+        }
+
         [HttpGet]
         public async Task<IActionResult> Products([FromQuery] string name, [FromQuery] string sku, [FromQuery] string category) {
 
             List<QueryProductViewModel> products;
             if (name != null) {
                 products = await _ctx.Products
-                                   .Where(p => p.Name.StartsWith(name))
+                                   .Where(p => p.Name.Replace(" ", "").ToLower().StartsWith(name.Replace(" ", "").ToLower()))
                                    .Select(p => new QueryProductViewModel {
                                        Id = p.ProductId,
                                        Name = p.Name,
@@ -53,7 +69,7 @@ namespace application.Areas.Panel.Controllers {
             }
             else if(sku != null) {
                 products = await _ctx.Products
-                                   .Where(p => p.SKU.StartsWith(sku))
+                                   .Where(p => p.SKU.Replace(" ", "").ToLower().StartsWith(sku.Replace(" ", "").ToLower()))
                                    .Select(p => new QueryProductViewModel {
                                        Id = p.ProductId,
                                        Name = p.Name,
@@ -65,7 +81,7 @@ namespace application.Areas.Panel.Controllers {
 
                 var all_products = await _ctx.Categories
                                            .Include(c => c.Products)
-                                           .Where(c => c.Name.StartsWith(category))
+                                           .Where(c => c.Name.Replace(" ", "").ToLower().StartsWith(category.Replace(" ", "").ToLower()))
                                            .Select(c => c.Products)
                                            .ToListAsync();
 

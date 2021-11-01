@@ -22,6 +22,18 @@ namespace application.Areas.Panel.Controllers {
             var result = await _ctx.Orders
                         .Include(order => order.CartProducts)
                         .ThenInclude(order => order.Product)
+                        .Where(order => !order.IsCompleted)
+                        .ToListAsync();
+
+            return View(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Archived() {
+            var result = await _ctx.Orders
+                        .Include(order => order.CartProducts)
+                        .ThenInclude(order => order.Product)
+                        .Where(order => order.IsCompleted)
                         .ToListAsync();
 
             return View(result);
@@ -37,7 +49,26 @@ namespace application.Areas.Panel.Controllers {
             return View(order);
         }
 
-        [HttpDelete]
+        [HttpPost]
+        public async Task<IActionResult> Complete([FromRoute] int id) {
+            try {
+                //delete product
+                var order = _ctx.Orders.Find(id);
+                if (order != null) {
+                    order.IsCompleted = true;
+                    _ctx.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else {
+                    return StatusCode(500);
+                }
+            }
+            catch (Exception e) {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Delete([FromRoute] int id) {
             try {
                 //delete product
@@ -55,7 +86,7 @@ namespace application.Areas.Panel.Controllers {
                     _ctx.RemoveRange(cart_products.SelectMany(x => x));
                     _ctx.Remove(order);
                     _ctx.SaveChanges();
-                    return Ok();
+                    return RedirectToAction("Archived");
                 }
                 else {
                     return StatusCode(500);

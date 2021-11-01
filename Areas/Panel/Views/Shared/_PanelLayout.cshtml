@@ -202,6 +202,10 @@
                         <input type="radio" value="Category" id="category-radio" name="customRadio" class="custom-control-input">
                         <label class="custom-control-label" for="category-radio">Категорија</label>
                     </div>
+                    <div class="custom-control custom-radio pb-1">
+                        <input type="radio" value="OrderId" id="orderId-radio" name="customRadio" class="custom-control-input">
+                        <label class="custom-control-label" for="orderId-radio">Order Id</label>
+                    </div>
 
                 </div>
 
@@ -298,7 +302,13 @@
                                 <li class="nav-item">
                                     <a asp-controller="Orders" asp-action="Index" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>View Orders</p>
+                                        <p>View Current Orders</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-controller="Orders" asp-action="Archived" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>View Completed Orders (Archive)</p>
                                     </a>
                                 </li>
                             </ul>
