@@ -536,7 +536,7 @@ function updateCartTotalDOM() {
 
     let total_element = document.querySelector('.cart-total');
     if (total_element !== null) {
-        total_element.innerHTML = `Total <span>${total} ден</span>`;
+        total_element.innerHTML = `Вкупно <span>${total} ден</span>`;
     }
 
     let cart_quantity_hover = document.getElementById('cart-quantity-hover');

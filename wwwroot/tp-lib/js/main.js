@@ -39,7 +39,8 @@ moment().format();
         animateIn: 'fadeIn',
         navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
         smartSpeed: 1200,
-        autoHeight: false,
+        lazyLoad: true,
+        autoHeight: true,
         autoplay: true,
     });
 

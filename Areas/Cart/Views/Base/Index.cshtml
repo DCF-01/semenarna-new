@@ -30,9 +30,9 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="breadcrumb-text product-more">
-                    <a href="./home.html"><i class="fa fa-home"></i> Home</a>
-                    <a href="./shop.html">Shop</a>
-                    <span>Shopping Cart</span>
+                    <a asp-area="" asp-controller="Home" asp-action="Index"><i class="fa fa-home"></i> Почетна</a>
+                    <a asp-area="Store" asp-controller="Base" asp-action="Index">Продавница</a>
+                    <span>Кошница</span>
                 </div>
             </div>
         </div>
@@ -49,12 +49,12 @@
                         <thead>
                             <tr>
                                 <th style="display: none"></th>
-                                <th>Product</th>
-                                <th class="p-name">Product Name</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Details</th>
-                                <th>Total</th>
+                                <th>Производ</th>
+                                <th class="p-name">Име на производ</th>
+                                <th>Цена</th>
+                                <th>Количина</th>
+                                <th>Детали</th>
+                                <th>Вкупно</th>
                                 <th><i class="ti-close"></i></th>
                             </tr>
                         </thead>
@@ -80,7 +80,7 @@
                     </table>
                 </div>
                 <div class="row">
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 invisible">
                         <div class="cart-buttons">
                             <a href="#" class="primary-btn continue-shop">Continue shopping</a>
                             <a href="#" class="primary-btn up-cart">Update cart</a>
@@ -96,9 +96,9 @@
                     <div class="col-lg-4 offset-lg-4">
                         <div class="proceed-checkout">
                             <ul>
-                                <li class="cart-total">Total <span>0 ден</span></li>
+                                <li class="cart-total">Вкупно <span>0 ден</span></li>
                             </ul>
-                            <a asp-area="Cart" asp-controller="Base" asp-action="Checkout" class="proceed-btn">PROCEED TO CHECK OUT</a>
+                            <a asp-area="Cart" asp-controller="Base" asp-action="Checkout" class="proceed-btn">Продолжи кон наплата</a>
                         </div>
                     </div>
                 </div>

@@ -3,9 +3,9 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="breadcrumb-text product-more">
-                    <a href="./index.html"><i class="fa fa-home"></i> Home</a>
-                    <a href="./shop.html">Shop</a>
-                    <span>Check Out</span>
+                    <a asp-area="" asp-controller="Home" asp-action="Index"><i class="fa fa-home"></i> Почетна</a>
+                    <a asp-area="Store" asp-controller="Base" asp-action="Index">Продавница</a>
+                    <span>Наплата</span>
                 </div>
             </div>
         </div>
@@ -21,42 +21,42 @@
                     @*<div class="checkout-content">
                         <a href="#" class="content-btn">Click Here To Login</a>
                     </div>*@
-                    <h4>Biiling Details</h4>
+                    <h4>Детали за наплата</h4>
                     <div class="row">
                         <div class="col-lg-6">
-                            <label for="first">First Name<span>*</span></label>
+                            <label for="first">Име<span>*</span></label>
                             <input type="text" id="first" required>
                         </div>
                         <div class="col-lg-6">
-                            <label for="last">Last Name<span>*</span></label>
+                            <label for="last">Презиме<span>*</span></label>
                             <input type="text" id="last" required>
                         </div>
                         <div class="col-lg-12">
-                            <label for="co-name">Company Name</label>
+                            <label for="co-name">Име на фирма (не задолжително)</label>
                             <input type="text" id="co-name">
                         </div>
                         <div class="col-lg-12">
-                            <label for="country">Country<span></span></label>
+                            <label for="country">Држава<span></span></label>
                             <input type="text" id="country">
                         </div>
                         <div class="col-lg-12">
-                            <label for="address">Street Address<span>*</span></label>
+                            <label for="address">Адреса на достава<span>*</span></label>
                             <input type="text" id="address" class="street-first" required>
                         </div>
                         <div class="col-lg-12">
-                            <label for="zip">Postcode / ZIP (optional)</label>
+                            <label for="zip">Поштенски број</label>
                             <input type="text" id="zip">
                         </div>
                         <div class="col-lg-12">
-                            <label for="city">Town / City<span>*</span></label>
+                            <label for="city">Град<span>*</span></label>
                             <input type="text" id="city" required>
                         </div>
                         <div class="col-lg-6">
-                            <label for="email">Email Address<span>*</span></label>
+                            <label for="email">Email<span>*</span></label>
                             <input type="text" id="email" required>
                         </div>
                         <div class="col-lg-6">
-                            <label for="phone">Phone<span>*</span></label>
+                            <label for="phone">Телефонски број<span>*</span></label>
                             <input type="text" id="phone" required>
                         </div>
                         <div class="col-lg-12">
@@ -71,10 +71,10 @@
                         <input type="text" placeholder="Enter Your Coupon Code">
                     </div>*@
                     <div class="place-order">
-                        <h4>Your Order</h4>
+                        <h4>Вашата нарачка</h4>
                         <div class="order-total">
                             <ul class="order-table">
-                                <li>Product <span>Total</span></li>
+                                <li>Производ <span>Вкупно</span></li>
                                 @*<li class="fw-normal">Combination x 1 <span>$60.00</span></li>
             <li class="fw-normal">Combination x 1 <span>$60.00</span></li>
             <li class="fw-normal">Combination x 1 <span>$120.00</span></li>
@@ -96,13 +96,6 @@
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
-                                @*<div class="pc-item">
-                                    <label for="pc-drone">
-                                        Дрон
-                                        <input type="checkbox" class="order-checkmark delivery-method" id="pc-drone" name="delivery_method" value="дрон">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>*@
                             </div>
                             <div class="payment-check">
                                 <div class="pc-item">
@@ -121,7 +114,7 @@
                                 </div>
                             </div>
                             <div class="order-btn">
-                                <button type="button" class="site-btn place-btn" id="checkout-submit-btn">Place Order</button>
+                                <button type="button" class="site-btn place-btn" id="checkout-submit-btn">Направи нарачка</button>
                             </div>
                         </div>
                     </div>
