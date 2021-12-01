@@ -183,11 +183,11 @@ namespace application.Areas.Cart.Controllers {
                 }
                 else {
                     var error_message = $"Your order has not been been placed. Please review your contact information and try again.";
-                    return BadRequest();
+                    return BadRequest($"Error: {error_message}");
                 }
             }
             catch (Exception e) {
-                return BadRequest();
+                return BadRequest($"Error: {e.Message}");
             }
 
         }
