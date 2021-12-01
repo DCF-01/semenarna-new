@@ -159,7 +159,7 @@ namespace application.Areas.Cart.Controllers {
                     .Build();
 
 
-                    string cshtml = System.IO.File.ReadAllText("/home/ubuntu/projects/semenarna/Utils/Views/OrderConfirmationEmail.cshtml");
+                    string cshtml = System.IO.File.ReadAllText("/home/ubuntu/projects/application/Utils/Views/OrderConfirmationEmail.cshtml");
 
 
                     string result = await engine.CompileRenderStringAsync("templateKey", cshtml, viewModel);
